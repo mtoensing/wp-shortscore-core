@@ -25,7 +25,7 @@ class MarcTVShortScore
         $this->initDataStructures();
 
         load_plugin_textdomain('marctv-shortscore', false, dirname(plugin_basename(__FILE__)) . '/language/');
-        
+
     }
 
 
@@ -48,6 +48,9 @@ class MarcTVShortScore
         add_filter('the_content', array($this, 'append_content_to_post'));
         add_action('comment_post', array($this, 'save_comment_meta_data'));
         add_filter('preprocess_comment', array($this, 'verify_comment_meta_data'));
+
+        add_filter('preprocess_comment', array($this, 'verify_comment_duplicate_email'));
+
         add_filter('comment_form_default_fields', array($this, 'alter_comment_form_fields'));
         add_filter('comment_text', array($this, 'append_score'), 99);
         add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
@@ -249,6 +252,28 @@ class MarcTVShortScore
             }
 
         }
+
+        return $commentdata;
+    }
+
+    public function verify_comment_duplicate_email($commentdata){
+        global $post;
+
+        $email =  $commentdata["comment_author_email"];
+
+        $args = array(
+            'status' => 'approve',
+            'post_id' => $post->ID
+        );
+
+        $comments = get_comments($args);
+
+        foreach ($comments as $comment) :
+            if ($email == $comment->comment_author_email ) {
+                wp_die(__('Sorry, this email address already submitted a shortscore for this game.','marctv-shortscore'));
+            }
+        endforeach;
+
 
         return $commentdata;
     }

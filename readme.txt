@@ -18,5 +18,15 @@ Extends the comment fields by a review score field and add hreview-aggregate.
 
 == Changelog ==
 
+
+= 0.2 =
+
+* Removed empty ratings and replace them with a "review me" nag.
+* Allow only one e-mail address to review a game per post.
+
 = 0.1 =
+
+* Comments feature a new field called rating from 1-10 with form validation.
+* Removed HTML from comments.
+* Added new post type called "game".
 
