@@ -1,0 +1,15 @@
+.shortscore {
+    background: lightblue;
+    height: 2em;
+    width: 2em;
+    border-radius: 55%;
+    display: block;
+    text-align: center;
+    line-height: 2em;
+    font-size: 140%;
+    font-family: Impact, Charcoal, sans-serif;
+}
+
+.hreview-aggregate .shortscore {
+    font-size: 260%;
+}
