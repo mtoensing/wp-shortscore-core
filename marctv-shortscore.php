@@ -19,25 +19,44 @@ class MarcTVShortScore
 
     public function __construct()
     {
+        load_plugin_textdomain('marctv-shortscore', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 
         $this->initComments();
 
         $this->initDataStructures();
 
-        load_plugin_textdomain('marctv-shortscore', false, dirname(plugin_basename(__FILE__)) . '/language/');
+        $this->initFrontend();
 
     }
 
 
+
+
+    public function my_get_posts( $query ) {
+
+        if ( is_home() && $query->is_main_query() )
+            $query->set( 'post_type', array( 'post', 'page', 'game' ) );
+
+        return $query;
+    }
+
     public function initFrontend()
     {
+        add_action('wp_print_styles', array($this, 'enqueScripts'));
+    }
+
+    public function enqueScripts()
+    {
         wp_enqueue_style($this->pluginPrefix . '_style', plugins_url(false, __FILE__) . "/marctv-shortscore.css", false, $this->version);
+        wp_enqueue_script($this->pluginPrefix . '-js', plugins_url(false, __FILE__) . "/marctv-shortscore.js", array("jquery"), $this->version, true);
+
     }
 
     public function initDataStructures()
     {
+        add_filter( 'pre_get_posts', array($this, 'my_get_posts' ));
         add_action('init', array($this, 'create_post_type_game'));
-        add_action('init', array($this, 'create_plattform_taxonomy'));
+        add_action('init', array($this, 'create_platform_taxonomy'));
         add_action('init', array($this, 'create_genre_taxonomy'));
     }
 
@@ -90,16 +109,16 @@ class MarcTVShortScore
         );
     }
 
-    public function create_plattform_taxonomy()
+    public function create_platform_taxonomy()
     {
         // create a new taxonomy
         register_taxonomy(
-            'plattform',
+            'platform',
             'game',
             array(
-                'label' => __('Plattform'),
+                'label' => __('Platform'),
                 'rewrite' => array(
-                    'slug' => 'plattform',
+                    'slug' => 'platform',
                     'hierarchical' => true
                 ),
 
@@ -107,19 +126,7 @@ class MarcTVShortScore
         );
     }
 
-    public function create__taxonomy()
-    {
-        // create a new taxonomy
-        register_taxonomy(
-            'plattform',
-            'shortscore_game',
-            array(
-                'label' => __('Plattform'),
-                'rewrite' => array('slug' => 'plattform'),
 
-            )
-        );
-    }
 
 
     public function add_hreview_aggregate_class($classes)
@@ -152,8 +159,20 @@ class MarcTVShortScore
         global $post;
 
         if (get_post_type($post->ID) == 'game') {
-            $default['comment_field'] .= '<p class="comment-form-score"><label for="score">' . __('Score (e.g. 7.5)', 'marctv-shortscore') . '<span class="required">*</span></label>
-            <input id="score" name="score" min="1" step="0.5" max="10" size="2" type="number" /></p>';
+
+            $markup = '<p class="comment-form-score"><label for="score">' . __('ShortScore 1 to 10 (e.g. 7.5)', 'marctv-shortscore') . '<span class="required">*</span></label><select id="score" name="score">';
+
+            for ($i = 1; $i <= 100; $i++) {
+                if ($i == 50 ) {
+                    $markup .= '<option size="4" selected="selected" value="' . $i / 10 . '">' . $i / 10 . '</option>';
+                } else {
+                    $markup .= '<option size="4" value="' . $i / 10 . '">' . $i / 10 . '</option>';
+                }
+            }
+
+            $markup .= '</select>';
+
+            $default['comment_field'] = $markup . $default['comment_field'];
         }
 
 
@@ -163,25 +182,30 @@ class MarcTVShortScore
 
     public function append_content_to_post($content)
     {
-        global $post;
+        $id = get_the_ID();
 
-        if (get_post_type($post->ID) == 'game') {
+        $score_count = get_post_meta($id, 'score_count', true);
 
-            $score_sum = get_post_meta($post->ID, 'score_sum', true);
-            $score_count = get_post_meta($post->ID, 'score_count', true);
+        if (get_post_type($id) == 'game') {
 
-            $aggregate_score = round($score_sum / $score_count, 1);
+            if ($score_count > 0) {
+                $score_sum = get_post_meta($id, 'score_sum', true);
 
-            $markup = '<span class="rating"><span class="average shortscore">' . $aggregate_score . '</span> out of <span class="best">10</span>
- based on <span class="count">' . $score_count . '</span> reviews</span>';
 
-            $markup = '<span class="rating">';
-            $markup .= sprintf(__('%s out of %s based on %s reviews', 'marctv-shortscore'),
-                '<span class="average shortscore">' . $aggregate_score . '</span>',
-                '<span class="best">10</span>',
-                '<span class="count">' . $score_count . '</span>'
-            );
-            $markup .= '</span>';
+                $aggregate_score = round($score_sum / $score_count, 1);
+
+                $markup = '<p></p><span class="rating">';
+                $markup .= sprintf(__('%s out of %s based on %s reviews', 'marctv-shortscore'),
+                    '<span class="average shortscore">' . $aggregate_score . '</span>',
+                    '<span class="best">10</span>',
+                    '<span class="count">' . $score_count . '</span>'
+                );
+                $markup .= '</span></p>';
+                $markup .= '<p>' . sprintf(__('<a href="%s">Submit your ShortScore</a>!', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
+            } else {
+                $markup = '<p>' . sprintf(__('No ShortScore yet! Be the first to <a href="%s">submit your ShortScore</a>!', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
+            }
+
 
             return $content . $markup;
         }
@@ -256,10 +280,11 @@ class MarcTVShortScore
         return $commentdata;
     }
 
-    public function verify_comment_duplicate_email($commentdata){
+    public function verify_comment_duplicate_email($commentdata)
+    {
         global $post;
 
-        $email =  $commentdata["comment_author_email"];
+        $email = $commentdata["comment_author_email"];
 
         $args = array(
             'status' => 'approve',
@@ -269,8 +294,8 @@ class MarcTVShortScore
         $comments = get_comments($args);
 
         foreach ($comments as $comment) :
-            if ($email == $comment->comment_author_email ) {
-                wp_die(__('Sorry, this email address already submitted a shortscore for this game.','marctv-shortscore'));
+            if ($email == $comment->comment_author_email) {
+                wp_die(__('Sorry, this email address already submitted a shortscore for this game.', 'marctv-shortscore'));
             }
         endforeach;
 

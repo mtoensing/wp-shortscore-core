@@ -23,6 +23,7 @@ Extends the comment fields by a review score field and add hreview-aggregate.
 
 * Removed empty ratings and replace them with a "review me" nag.
 * Allow only one e-mail address to review a game per post.
+* Dropdown for easy ShortScore submitting.
 
 = 0.1 =
 
