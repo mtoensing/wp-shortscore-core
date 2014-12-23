@@ -43,6 +43,7 @@ class MarcTVShortScore
     public function initFrontend()
     {
         add_action('wp_print_styles', array($this, 'enqueScripts'));
+        add_filter('pre_get_posts', array($this, 'filter_search'));
     }
 
     public function enqueScripts()
@@ -54,15 +55,25 @@ class MarcTVShortScore
 
     public function initDataStructures()
     {
-        add_filter( 'pre_get_posts', array($this, 'my_get_posts' ));
+       // add_filter( 'pre_get_posts', array($this, 'my_get_posts' ));
         add_action('init', array($this, 'create_post_type_game'));
         add_action('init', array($this, 'create_platform_taxonomy'));
         add_action('init', array($this, 'create_genre_taxonomy'));
     }
 
+    public function filter_search($query) {
+
+
+
+        return $query;
+    }
+
+
+
+
     public function initComments()
     {
-        add_filter('pre_comment_content', 'wp_specialchars');
+        add_filter('pre_comment_content', 'esc_html');
         add_filter('comment_form_defaults', array($this, 'change_comment_form_defaults'));
         add_filter('the_content', array($this, 'append_content_to_post'));
         add_action('comment_post', array($this, 'save_comment_meta_data'));
@@ -88,6 +99,7 @@ class MarcTVShortScore
                 'public' => true,
                 'taxonomies' => array(),
                 'has_archive' => true,
+                'yarpp_support' => true,
                 'supports' => array('title', 'editor', 'thumbnail', 'comments', 'custom-fields')
             )
         );
@@ -143,11 +155,11 @@ class MarcTVShortScore
 
     function add_hreview_title($title)
     {
-        global $post;
+       // global $post;
 
-        if (get_post_type($post->ID) == 'game' && is_single()) {
-            $title = '<span class="fn">' . $title . '</span>';
-        }
+        //if (get_post_type($post->ID) == 'game' && is_single()) {
+           // $title = '<span class="fn">' . $title . '</span>';
+        //}
 
         return $title;
     }
