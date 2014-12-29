@@ -4,7 +4,7 @@
 Plugin Name: MarcTV ShortScore
 Plugin URI: http://marctv.de/blog/marctv-wordpress-plugins/
 Description: Extends the comment fields by a review score field.
-Version:  0.1
+Version:  0.2
 Author:  Marc Tönsing
 Author URI: marctv.de
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,14 +23,9 @@ class MarcTVShortScore
 
         $this->initComments();
 
-        $this->initDataStructures();
-
         $this->initFrontend();
 
     }
-
-
-
 
     public function my_get_posts( $query ) {
 
@@ -53,13 +48,7 @@ class MarcTVShortScore
 
     }
 
-    public function initDataStructures()
-    {
-       // add_filter( 'pre_get_posts', array($this, 'my_get_posts' ));
-        add_action('init', array($this, 'create_post_type_game'));
-        add_action('init', array($this, 'create_platform_taxonomy'));
-        add_action('init', array($this, 'create_genre_taxonomy'));
-    }
+
 
     public function filter_search($query) {
 
@@ -88,55 +77,6 @@ class MarcTVShortScore
 
     }
 
-    public function create_post_type_game()
-    {
-        register_post_type('game',
-            array(
-                'labels' => array(
-                    'name' => __('Games'),
-                    'singular_name' => __('Game')
-                ),
-                'public' => true,
-                'taxonomies' => array(),
-                'has_archive' => true,
-                'yarpp_support' => true,
-                'supports' => array('title', 'editor', 'thumbnail', 'comments', 'custom-fields')
-            )
-        );
-    }
-
-
-    public function create_genre_taxonomy()
-    {
-        // create a new taxonomy
-        register_taxonomy(
-            'genre',
-            'game',
-            array(
-                'label' => __('Genre'),
-                'rewrite' => array(
-                    'slug' => 'genre'
-                ),
-            )
-        );
-    }
-
-    public function create_platform_taxonomy()
-    {
-        // create a new taxonomy
-        register_taxonomy(
-            'platform',
-            'game',
-            array(
-                'label' => __('Platform'),
-                'rewrite' => array(
-                    'slug' => 'platform',
-                    'hierarchical' => true
-                ),
-
-            )
-        );
-    }
 
 
 
