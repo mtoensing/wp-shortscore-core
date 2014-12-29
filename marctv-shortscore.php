@@ -24,7 +24,6 @@ class MarcTVShortScore
         $this->initComments();
 
         $this->initFrontend();
-
     }
 
     public function my_get_posts( $query ) {
@@ -48,18 +47,6 @@ class MarcTVShortScore
 
     }
 
-
-
-    public function filter_search($query) {
-
-
-
-        return $query;
-    }
-
-
-
-
     public function initComments()
     {
         add_filter('pre_comment_content', 'esc_html');
@@ -76,11 +63,7 @@ class MarcTVShortScore
         add_filter('the_title', array($this, 'add_hreview_title'));
 
     }
-
-
-
-
-
+    
     public function add_hreview_aggregate_class($classes)
     {
         global $post;
