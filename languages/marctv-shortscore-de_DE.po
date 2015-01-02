@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
-"POT-Creation-Date: 2014-12-19 13:36+0100\n"
-"PO-Revision-Date: 2014-12-19 13:36+0100\n"
+"POT-Creation-Date: 2015-01-02 21:57+0100\n"
+"PO-Revision-Date: 2015-01-02 21:57+0100\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.7.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
@@ -18,63 +18,72 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: marctv-shortscore.php:75
-msgid "Games"
-msgstr "Spiele"
-
-#: marctv-shortscore.php:76
-msgid "Game"
-msgstr "Spiel"
-
-#: marctv-shortscore.php:94
-msgid "Genre"
-msgstr "Genre"
-
-#: marctv-shortscore.php:109 marctv-shortscore.php:126
-msgid "Plattform"
-msgstr "Plattform"
-
-#: marctv-shortscore.php:165
+#: marctv-shortscore.php:104
 msgid "ShortScore 1 to 10 (e.g. 7.5)"
 msgstr "ShortScore von 1 bis 10 (z.B. 7.5)"
 
-#: marctv-shortscore.php:200
+#: marctv-shortscore.php:142
 #, php-format
-msgid "%s out of %s based on %s reviews"
-msgstr "%s von %s. Basiert auf %s Bewertung(en)"
+msgid "%s out of %s based on %s user reviews"
+msgstr "%s von %s basieren auf %s Communitybewertungen"
 
-#: marctv-shortscore.php:207
+#: marctv-shortscore.php:170
 #, php-format
-msgid ""
-"No ShortScore yet! Be the first to <a href=\"%s\">submit your ShortScore</a>"
-msgstr ""
-"Noch keine ShortScore! Sei der Erste und <a href=\"%s\">vergib deine "
-"ShortScore!</a>"
+msgid "<a class=\"btn\" href=\"%s\">Submit your ShortScore</a>"
+msgstr "<a class=\"btn\" href=\"%s\">Gib deinen ShortScore ab</a>"
 
-#: marctv-shortscore.php:272
+#: marctv-shortscore.php:235
 msgid "Error: please fill the required field (score)."
-msgstr "Fehler: Bitte fühl das Feld für die ShortScore aus."
+msgstr "Fehler: Bitte fühl das Feld für den ShortScore aus."
 
-#: marctv-shortscore.php:276
+#: marctv-shortscore.php:239
 msgid "Error: enter a rating smaller than 10 and greater than 0 for (score)."
 msgstr ""
-"Fehler: Gib eine ShortScore kleiner als 10 und größer als 0 ein für (score)."
+"Fehler: Gib einen ShortScore kleiner als 10 und größer als 0 ein für (score)."
 
-#: marctv-shortscore.php:299
+#: marctv-shortscore.php:262
 msgid "Sorry, this email address already submitted a shortscore for this game."
 msgstr ""
-"Tut uns leid, aber diese E-Mail Adresse hat bereits eine ShortScore "
+"Tut uns leid, aber diese E-Mail Adresse hat bereits einen ShortScore "
 "abgegeben. "
 
-#~ msgid "Score (e.g. 7.5)"
-#~ msgstr "Wertung (z.B. 7.5)"
+#~ msgid "<a href=\"%s\">Submit your ShortScore</a>!"
+#~ msgstr "<a href=\"%s\">Gib deinen ShortScore ab!</a>"
+
+#~ msgid "Be the first to <a href=\"%s\">submit your ShortScore</a>!"
+#~ msgstr "Sei der Erste und <a href=\"%s\">gib deinen ShortScore ab</a>!"
+
+#~ msgid "%s out of %s based on %s reviews"
+#~ msgstr "%s von %s. Basiert auf %s Bewertung(en)"
 
 #~ msgid ""
 #~ "No ShortScore yet! Be the first to <a href=\"%s\">submit your ShortScore</"
 #~ "a>!"
 #~ msgstr ""
 #~ "Noch keine ShortScore! Sei der Erste und <a href=\"%s\">vergib deine "
-#~ "ShortScore!</a>!"
+#~ "ShortScore!</a>"
+
+#~ msgid "Games"
+#~ msgstr "Spiele"
+
+#~ msgid "Game"
+#~ msgstr "Spiel"
+
+#~ msgid "Genre"
+#~ msgstr "Genre"
+
+#~ msgid "Plattform"
+#~ msgstr "Plattform"
+
+#~ msgid ""
+#~ "No ShortScore yet! Be the first to <a href=\"%s\">submit your ShortScore</"
+#~ "a>"
+#~ msgstr ""
+#~ "Noch keine ShortScore! Sei der Erste und <a href=\"%s\">vergib deine "
+#~ "ShortScore!</a>"
+
+#~ msgid "Score (e.g. 7.5)"
+#~ msgstr "Wertung (z.B. 7.5)"
 
 #~ msgid ""
 #~ "No ShortScore yet! Be the first to <a href=\"#respond\">submit your "
