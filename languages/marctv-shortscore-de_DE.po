@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
-"POT-Creation-Date: 2015-01-02 21:57+0100\n"
-"PO-Revision-Date: 2015-01-02 21:57+0100\n"
+"POT-Creation-Date: 2015-01-04 02:27+0100\n"
+"PO-Revision-Date: 2015-01-04 02:51+0100\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
@@ -18,9 +18,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: marctv-shortscore.php:104
+#: marctv-shortscore.php:102
 msgid "ShortScore 1 to 10 (e.g. 7.5)"
 msgstr "ShortScore von 1 bis 10 (z.B. 7.5)"
+
+#: marctv-shortscore.php:113
+msgid "Each email address is only allow once per game."
+msgstr "Jede E-Mail Adresse ist nur einmal erlaubt."
+
+#: marctv-shortscore.php:114
+msgid "Submit your ShortScore"
+msgstr "Gib deinen ShortScore ab"
+
+#: marctv-shortscore.php:115
+msgid "Your short review text:"
+msgstr "Dein kurzer Reviewtext:"
 
 #: marctv-shortscore.php:142
 #, php-format

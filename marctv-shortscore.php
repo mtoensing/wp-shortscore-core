@@ -3,7 +3,7 @@
 /*
 Plugin Name: MarcTV ShortScore
 Plugin URI: http://marctv.de/blog/marctv-wordpress-plugins/
-Description: Extends the comment fields by a review score field.
+Description: Extends the comment fields by a review score field and alters queries.
 Version:  0.8
 Author:  Marc Tönsing
 Author URI: marctv.de
@@ -29,7 +29,6 @@ class MarcTVShortScore
 
     public function initSorting()
     {
-        // Hook my above function to the pre_get_posts action
         add_action('pre_get_posts', array($this, 'my_modify_main_query'));
     }
 
@@ -96,7 +95,6 @@ class MarcTVShortScore
 
     public function change_comment_form_defaults($default)
     {
-
         global $post;
 
         if (get_post_type($post->ID) == 'game') {
@@ -110,9 +108,11 @@ class MarcTVShortScore
                     $markup .= '<option size="4" value="' . $i / 10 . '">' . $i / 10 . '</option>';
                 }
             }
-
+            $id = get_the_ID();
             $markup .= '</select>';
-
+            $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.','marctv-shortscore'). '</p>';
+            $default['title_reply'] = __('Submit your ShortScore for ','marctv-shortscore') . get_the_title( $id );
+            $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:','marctv-shortscore'). '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
             $default['comment_field'] = $markup . $default['comment_field'];
         }
 
