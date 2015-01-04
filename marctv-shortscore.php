@@ -54,6 +54,7 @@ class MarcTVShortScore
         add_action('edit_comment', array($this, 'save_comment_meta_data'));
         add_action('deleted_comment', array($this, 'save_comment_meta_data'));
         add_action('trashed_comment', array($this, 'save_comment_meta_data'));
+        add_action('wp_insert_comment', array($this, 'save_comment_meta_data'));
 
         add_action('transition_comment_status', array($this, 'comment_approved_check'), 10, 3);
 
@@ -121,7 +122,7 @@ class MarcTVShortScore
             $id = get_the_ID();
             $markup .= '</select>';
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.', 'marctv-shortscore') . '</p>';
-            $default['title_reply'] = __('Your ShortScore for', 'marctv-shortscore') . ' &ldquo;' . get_the_title($id) . '&rdquo;';
+            $default['title_reply'] = __('Your ShortScore', 'marctv-shortscore');
             $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
             $default['comment_field'] = $markup . $default['comment_field'];
         }
@@ -188,14 +189,13 @@ class MarcTVShortScore
         return $content;
     }
 
-    public function save_comment_meta_data($comment_id)
+    public static function save_comment_meta_data($comment_id)
     {
         $comment = get_comment($comment_id);
 
         if (get_post_type($comment->comment_post_ID) == 'game') {
-
             add_comment_meta($comment_id, 'score', $_POST['score']);
-            $this->save_ratings_to_post($comment->comment_post_ID);
+            MarcTVShortScore::save_ratings_to_post($comment->comment_post_ID);
         }
     }
 
