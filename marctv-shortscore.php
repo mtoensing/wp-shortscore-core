@@ -55,6 +55,8 @@ class MarcTVShortScore
         add_action('deleted_comment', array($this, 'save_comment_meta_data'));
         add_action('trashed_comment', array($this, 'save_comment_meta_data'));
 
+        add_action('transition_comment_status', array($this, 'comment_approved_check'), 10, 3);
+
         add_filter('preprocess_comment', array($this, 'verify_comment_meta_data'));
 
         add_filter('the_content', array($this, 'addShortScoreLink'));
@@ -68,6 +70,14 @@ class MarcTVShortScore
 
 
     }
+
+    public function comment_approved_check($new_status, $old_status, $comment) {
+
+        if($old_status != $new_status) {;
+            $this->save_comment_meta_data($comment->comment_ID);
+        }
+    }
+
 
     public function add_hreview_aggregate_class($classes)
     {
@@ -83,7 +93,7 @@ class MarcTVShortScore
 
     function add_hreview_title($title)
     {
-       global $post;
+        global $post;
 
         if (get_post_type($post->ID) == 'game' && is_single()) {
             $title = '<span class="fn">' . $title . '</span>';
@@ -102,7 +112,7 @@ class MarcTVShortScore
             $markup = '<p class="comment-form-score"><label for="score">' . __('ShortScore 1 to 10 (e.g. 7.5)', 'marctv-shortscore') . '<span class="required">*</span></label><select id="score" name="score">';
 
             for ($i = 1; $i <= 100; $i++) {
-                if ($i == 50 ) {
+                if ($i == 50) {
                     $markup .= '<option size="4" selected="selected" value="' . $i / 10 . '">' . $i / 10 . '</option>';
                 } else {
                     $markup .= '<option size="4" value="' . $i / 10 . '">' . $i / 10 . '</option>';
@@ -110,9 +120,9 @@ class MarcTVShortScore
             }
             $id = get_the_ID();
             $markup .= '</select>';
-            $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.','marctv-shortscore'). '</p>';
-            $default['title_reply'] = __('Submit your ShortScore for ','marctv-shortscore') . get_the_title( $id );
-            $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:','marctv-shortscore'). '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
+            $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.', 'marctv-shortscore') . '</p>';
+            $default['title_reply'] = __('Your ShortScore for', 'marctv-shortscore') . ' &ldquo;' . get_the_title($id) . '&rdquo;';
+            $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
             $default['comment_field'] = $markup . $default['comment_field'];
         }
 
@@ -121,9 +131,9 @@ class MarcTVShortScore
     }
 
 
-    public static function getShortScore($id ='')
+    public static function getShortScore($id = '')
     {
-        if($id == '') {
+        if ($id == '') {
             $id = get_the_ID();
         }
 
@@ -160,17 +170,19 @@ class MarcTVShortScore
     }
 
 
-    public function addShortScoreLink($content){
+    public function addShortScoreLink($content)
+    {
         $id = get_the_ID();
 
-        echo $this->getShortScore();
+
 
         if (get_post_type($id) == 'game') {
 
-            $markup = '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit your ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
+            $markup =  $this->getShortScore();
+
+            $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
             return $content . $markup;
-
         }
 
         return $content;
@@ -178,24 +190,18 @@ class MarcTVShortScore
 
     public function save_comment_meta_data($comment_id)
     {
+        $comment = get_comment($comment_id);
 
-        global $post;
-
-        if (get_post_type($post->ID) == 'game') {
+        if (get_post_type($comment->comment_post_ID) == 'game') {
 
             add_comment_meta($comment_id, 'score', $_POST['score']);
-
-            $comment = get_comment($comment_id);
-            $post_ID = $comment->comment_post_ID;
-
-            $this->save_ratings_to_post($post_ID);
+            $this->save_ratings_to_post($comment->comment_post_ID);
         }
     }
 
 
-    public function save_ratings_to_post($post_ID)
+    private function save_ratings_to_post($post_ID)
     {
-
         $args = array(
             'status' => 'approve',
             'post_id' => $post_ID,
@@ -205,6 +211,7 @@ class MarcTVShortScore
         $score_count = 0;
 
         $comments = get_comments($args);
+
         foreach ($comments as $comment) :
             $comment->comment_ID;
             $meta_score = get_comment_meta($comment->comment_ID, 'score', true);
@@ -216,11 +223,17 @@ class MarcTVShortScore
 
         endforeach;
 
-        $score_value = round($score_sum / $score_count, 1);
+        if ($score_sum > 0 && $score_count > 0) {
+            $score_value = round($score_sum / $score_count, 1);
 
-        add_post_meta($post_ID, 'score_value', $score_value, true) || update_post_meta($post_ID, 'score_value', $score_value);
-        add_post_meta($post_ID, 'score_sum', $score_sum, true) || update_post_meta($post_ID, 'score_sum', $score_sum);
-        add_post_meta($post_ID, 'score_count', $score_count, true) || update_post_meta($post_ID, 'score_count', $score_count);
+            add_post_meta($post_ID, 'score_value', $score_value, true) || update_post_meta($post_ID, 'score_value', $score_value);
+            add_post_meta($post_ID, 'score_sum', $score_sum, true) || update_post_meta($post_ID, 'score_sum', $score_sum);
+            add_post_meta($post_ID, 'score_count', $score_count, true) || update_post_meta($post_ID, 'score_count', $score_count);
+        } else {
+            add_post_meta($post_ID, 'score_value', 0, true) || update_post_meta($post_ID, 'score_value', 0);
+            add_post_meta($post_ID, 'score_sum', 0, true) || update_post_meta($post_ID, 'score_sum', 0);
+            add_post_meta($post_ID, 'score_count', 0, true) || update_post_meta($post_ID, 'score_count', 0);
+        }
     }
 
 
@@ -298,18 +311,18 @@ class MarcTVShortScore
     }
 
     public function my_modify_main_query($query)
-{
-    if ($query->is_home() && $query->is_main_query()) { // Run only on the homepage
-        $query->set('post_type', array('game', 'post'));
-    }
+    {
+        if ($query->is_home() && $query->is_main_query()) { // Run only on the homepage
+            $query->set('post_type', array('game', 'post'));
+        }
 
-    if($query->is_archive() && $query->is_main_query()){
-        $query->set('post_type', array('game', 'post'));
-        $query->set('meta_key', 'score_value');
-        $query->set('orderby', 'meta_value_num date');
-        $query->set('order', 'DESC');
+        if ($query->is_archive() && $query->is_main_query()) {
+            $query->set('post_type', array('game', 'post'));
+            $query->set('meta_key', 'score_value');
+            $query->set('orderby', 'meta_value_num date');
+            $query->set('order', 'DESC');
+        }
     }
-}
 
 
 }

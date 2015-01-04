@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
-"POT-Creation-Date: 2015-01-04 02:27+0100\n"
-"PO-Revision-Date: 2015-01-04 02:51+0100\n"
+"POT-Creation-Date: 2015-01-04 14:47+0100\n"
+"PO-Revision-Date: 2015-01-04 14:47+0100\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
@@ -27,8 +27,8 @@ msgid "Each email address is only allow once per game."
 msgstr "Jede E-Mail Adresse ist nur einmal erlaubt."
 
 #: marctv-shortscore.php:114
-msgid "Submit your ShortScore"
-msgstr "Gib deinen ShortScore ab"
+msgid "Your ShortScore for"
+msgstr "Dein ShortScore für"
 
 #: marctv-shortscore.php:115
 msgid "Your short review text:"
@@ -41,8 +41,8 @@ msgstr "%s von %s basieren auf %s Communitybewertungen"
 
 #: marctv-shortscore.php:170
 #, php-format
-msgid "<a class=\"btn\" href=\"%s\">Submit your ShortScore</a>"
-msgstr "<a class=\"btn\" href=\"%s\">Gib deinen ShortScore ab</a>"
+msgid "<a class=\"btn\" href=\"%s\">Submit ShortScore</a>"
+msgstr "<a class=\"btn\" href=\"%s\">ShortScore abgeben</a>"
 
 #: marctv-shortscore.php:235
 msgid "Error: please fill the required field (score)."
@@ -58,6 +58,18 @@ msgid "Sorry, this email address already submitted a shortscore for this game."
 msgstr ""
 "Tut uns leid, aber diese E-Mail Adresse hat bereits einen ShortScore "
 "abgegeben. "
+
+#~ msgid "Your ShortScore for "
+#~ msgstr "Dein ShortScore für"
+
+#~ msgid "Submit your ShortScore for "
+#~ msgstr "Schick uns deinen ShortScore für"
+
+#~ msgid "<a class=\"btn\" href=\"%s\">Submit your ShortScore</a>"
+#~ msgstr "<a class=\"btn\" href=\"%s\">Gib deinen ShortScore ab</a>"
+
+#~ msgid "Submit your ShortScore"
+#~ msgstr "Gib deinen ShortScore ab"
 
 #~ msgid "<a href=\"%s\">Submit your ShortScore</a>!"
 #~ msgstr "<a href=\"%s\">Gib deinen ShortScore ab!</a>"

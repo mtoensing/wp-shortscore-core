@@ -3,7 +3,7 @@ Contributors:  MarcDK
 Tags: comments, shortscore, extend, custom field
 Requires at least: 3.0
 Tested up to: 4.01
-Stable tag: 0.8
+Stable tag: 0.2
 License: GPL2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,10 @@ Extends the comment fields by a review score field and add hreview-aggregate.
 
 
 == Changelog ==
+
+= 0.3 =
+
+Save comments on publish or approved.
 
 
 
