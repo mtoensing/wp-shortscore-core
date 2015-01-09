@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
-"POT-Creation-Date: 2015-01-04 14:47+0100\n"
-"PO-Revision-Date: 2015-01-04 14:47+0100\n"
+"POT-Creation-Date: 2015-01-04 19:19+0100\n"
+"PO-Revision-Date: 2015-01-05 23:31+0100\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
@@ -18,46 +18,56 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: marctv-shortscore.php:102
+#: marctv-shortscore.php:113
 msgid "ShortScore 1 to 10 (e.g. 7.5)"
 msgstr "ShortScore von 1 bis 10 (z.B. 7.5)"
 
-#: marctv-shortscore.php:113
+#: marctv-shortscore.php:124
 msgid "Each email address is only allow once per game."
 msgstr "Jede E-Mail Adresse ist nur einmal erlaubt."
 
-#: marctv-shortscore.php:114
-msgid "Your ShortScore for"
-msgstr "Dein ShortScore für"
+#: marctv-shortscore.php:125
+msgid "Submit ShortScore:"
+msgstr "ShortScore abgeben:"
 
-#: marctv-shortscore.php:115
+#: marctv-shortscore.php:126
 msgid "Your short review text:"
 msgstr "Dein kurzer Reviewtext:"
 
-#: marctv-shortscore.php:142
+#: marctv-shortscore.php:153
 #, php-format
 msgid "%s out of %s based on %s user reviews"
-msgstr "%s von %s basieren auf %s Communitybewertungen"
+msgstr "%s von %s basierend auf %s Communitybewertungen"
 
-#: marctv-shortscore.php:170
+#: marctv-shortscore.php:184
 #, php-format
 msgid "<a class=\"btn\" href=\"%s\">Submit ShortScore</a>"
 msgstr "<a class=\"btn\" href=\"%s\">ShortScore abgeben</a>"
 
-#: marctv-shortscore.php:235
+#: marctv-shortscore.php:248
 msgid "Error: please fill the required field (score)."
 msgstr "Fehler: Bitte fühl das Feld für den ShortScore aus."
 
-#: marctv-shortscore.php:239
+#: marctv-shortscore.php:252
 msgid "Error: enter a rating smaller than 10 and greater than 0 for (score)."
 msgstr ""
 "Fehler: Gib einen ShortScore kleiner als 10 und größer als 0 ein für (score)."
 
-#: marctv-shortscore.php:262
-msgid "Sorry, this email address already submitted a shortscore for this game."
+#: marctv-shortscore.php:275
+msgid ""
+"Sorry, this email address has already submitted a shortscore for this game."
 msgstr ""
-"Tut uns leid, aber diese E-Mail Adresse hat bereits einen ShortScore "
-"abgegeben. "
+"Tut uns leid aber diese E-Mail Adresse hat bereits eine ShortScore für "
+"dieses Spiel abgegeben. "
+
+#~ msgid ""
+#~ "Sorry, this email address already submitted a shortscore for this game."
+#~ msgstr ""
+#~ "Tut uns leid, aber diese E-Mail Adresse hat bereits einen ShortScore "
+#~ "abgegeben. "
+
+#~ msgid "Your ShortScore for"
+#~ msgstr "Dein ShortScore für"
 
 #~ msgid "Your ShortScore for "
 #~ msgstr "Dein ShortScore für"

@@ -119,14 +119,14 @@ class MarcTVShortScore
                     $markup .= '<option size="4" value="' . $i / 10 . '">' . $i / 10 . '</option>';
                 }
             }
-            $id = get_the_ID();
+
+            $default['email'] = $default['email'] . '<span class="email-notice">' . __('Your email address needs to be verified.', 'marctv-shortscore') . '</span>';
             $markup .= '</select>';
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.', 'marctv-shortscore') . '</p>';
-            $default['title_reply'] = __('Your ShortScore', 'marctv-shortscore');
+            $default['title_reply'] = __('Submit ShortScore:', 'marctv-shortscore');
             $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
             $default['comment_field'] = $markup . $default['comment_field'];
         }
-
 
         return $default;
     }
@@ -194,7 +194,7 @@ class MarcTVShortScore
         $comment = get_comment($comment_id);
 
         if (get_post_type($comment->comment_post_ID) == 'game') {
-            add_comment_meta($comment_id, 'score', $_POST['score']);
+            add_comment_meta($comment_id, 'score', $_POST['score'],true);
             MarcTVShortScore::save_ratings_to_post($comment->comment_post_ID);
         }
     }
@@ -272,7 +272,7 @@ class MarcTVShortScore
 
         foreach ($comments as $comment) :
             if ($email == $comment->comment_author_email) {
-                wp_die(__('Sorry, this email address already submitted a shortscore for this game.', 'marctv-shortscore'));
+                wp_die(__('Sorry, this email address has already submitted a shortscore for this game.', 'marctv-shortscore'));
             }
         endforeach;
 
