@@ -114,17 +114,24 @@ class MarcTVShortScore
 
             for ($i = 1; $i <= 100; $i++) {
                 if ($i == 50) {
-                    $markup .= '<option size="4" selected="selected" value="' . $i / 10 . '">' . $i / 10 . '</option>';
+                    $markup .= '<option size="4"  value="' . $i / 10 . '">' . $i / 10 . '</option>';
+                    $markup .= '<option size="4" selected="selected" value="">?</option>';
                 } else {
                     $markup .= '<option size="4" value="' . $i / 10 . '">' . $i / 10 . '</option>';
                 }
             }
 
-            $default['email'] = $default['email'] . '<span class="email-notice">' . __('Your email address needs to be verified.', 'marctv-shortscore') . '</span>';
+            $commenter = wp_get_current_commenter();
+            $req = get_option( 'require_name_email' );
+            $aria_req = ( $req ? " aria-required='true'" : '' );
+            $default['fields']['email'] = '<p class="comment-form-email"><label for="email">' . __( 'Email', 'marctv-shortscore' ) . ( $req ? '<span class="required">*</span>' : '' ) . '</label> ' .
+                '<input id="email" name="email" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) .
+                '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
+
             $markup .= '</select>';
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Submit ShortScore:', 'marctv-shortscore');
-            $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
+            $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
             $default['comment_field'] = $markup . $default['comment_field'];
         }
 
@@ -189,18 +196,24 @@ class MarcTVShortScore
         return $content;
     }
 
-    public static function save_comment_meta_data($comment_id)
+    public function save_comment_meta_data($comment_id)
     {
         $comment = get_comment($comment_id);
 
         if (get_post_type($comment->comment_post_ID) == 'game') {
             add_comment_meta($comment_id, 'score', $_POST['score'],true);
-            MarcTVShortScore::save_ratings_to_post($comment->comment_post_ID);
+            $this->save_ratings_to_post($comment->comment_post_ID);
         }
     }
 
 
-    private function save_ratings_to_post($post_ID)
+    public function updateScoreOnPost($comment_id) {
+        $comment = get_comment($comment_id);
+        $this->save_ratings_to_post($comment->comment_post_ID);
+
+    }
+
+    public function save_ratings_to_post($post_ID)
     {
         $args = array(
             'status' => 'approve',
