@@ -260,7 +260,6 @@ class MarcTVShortScore
             $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
 
-
             return $content . $markup;
         }
 
@@ -401,15 +400,15 @@ class MarcTVShortScore
             $query->set('post_type', array('game', 'post'));
         }
 
-        if ($query->is_archive() && $query->is_main_query()) {
-            $query->set('post_type', array('game', 'post'));
-            $query->set('meta_key', 'score_value');
-            $query->set('orderby', 'meta_value_num date');
-            $query->set('order', 'DESC');
+        if (!is_admin()) {
+            if ($query->is_archive() && $query->is_main_query()) {
+                $query->set('post_type', array('game', 'post'));
+                $query->set('meta_key', 'score_value');
+                $query->set('orderby', 'meta_value_num date');
+                $query->set('order', 'DESC');
+            }
         }
-    }
-
-
+    }¥
 }
 
 
