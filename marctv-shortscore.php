@@ -46,7 +46,7 @@ class MarcTVShortScore
 
     public function initComments()
     {
-        add_filter( 'get_avatar', array( $this, 'get_avatar' ), 10, 5 );
+        //add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
         add_filter('pre_comment_content', 'esc_html');
         add_filter('comment_form_defaults', array($this, 'change_comment_form_defaults'));
         add_action('comment_post', array($this, 'save_comment_meta_data'));
@@ -73,9 +73,10 @@ class MarcTVShortScore
 
     }
 
-    public function comment_approved_check($new_status, $old_status, $comment) {
+    public function comment_approved_check($new_status, $old_status, $comment)
+    {
 
-        if($old_status != $new_status) {;
+        if ($old_status != $new_status) {
             $this->save_comment_meta_data($comment->comment_ID);
         }
     }
@@ -123,10 +124,10 @@ class MarcTVShortScore
             }
 
             $commenter = wp_get_current_commenter();
-            $req = get_option( 'require_name_email' );
-            $aria_req = ( $req ? " aria-required='true'" : '' );
-            $default['fields']['email'] = '<p class="comment-form-email"><label for="email">' . __( 'Email', 'marctv-shortscore' ) . ( $req ? '<span class="required">*</span>' : '' ) . '</label> ' .
-                '<input id="email" name="email" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) .
+            $req = get_option('require_name_email');
+            $aria_req = ($req ? " aria-required='true'" : '');
+            $default['fields']['email'] = '<p class="comment-form-email"><label for="email">' . __('Email', 'marctv-shortscore') . ($req ? '<span class="required">*</span>' : '') . '</label> ' .
+                '<input id="email" name="email" type="text" value="' . esc_attr($commenter['comment_author_email']) .
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
 
             $markup .= '</select>';
@@ -139,7 +140,8 @@ class MarcTVShortScore
         return $default;
     }
 
-    public function get_avatar($avatar , $id_or_email , $size = '96'  , $default , $alt = false){
+    public function get_avatar($avatar, $id_or_email, $size = '96', $default, $alt = false)
+    {
 
         global $post;
 
@@ -201,12 +203,63 @@ class MarcTVShortScore
         $id = get_the_ID();
 
 
-
         if (get_post_type($id) == 'game') {
 
-            $markup =  $this->getShortScore();
+            $markup = '<div class="game-meta">';
+
+            $categories_list = get_the_term_list($id, 'platform', '', ', ');
+            $markup .= sprintf('<p class="platform"><strong><span class="screen-reader-text">%1$s </span>%2$s</strong></p>',
+                _x('Categories', 'Used before category names.', 'twentyfifteen'),
+                $categories_list
+            );
+
+            $categories_list = get_the_term_list($id, 'genre', '', ', ');
+            $markup .= sprintf('<p class="genre"><span class="screen-reader-text">%1$s </span>%2$s</p>',
+                _x('Categories', 'Used before category names.', 'twentyfifteen'),
+                $categories_list
+            );
+
+            if ($developer_list = get_the_term_list($id, 'developer', '', ', ')) {
+                $markup .= sprintf('<span class=" developer"><span class="screen-reader-text">%1$s </span>%2$s</span>',
+                    _x('Categories', 'Used before category names.', 'twentyfifteen'),
+                    $developer_list
+                );
+            }
+
+            if ($publisher_list = get_the_term_list($id, 'publisher', '', ', ')) {
+                $markup .= sprintf(' &mdash; <span class=" publisher"><span class="screen-reader-text">%1$s </span>%2$s</span>',
+                    _x('Categories', 'Used before category names.', 'twentyfifteen'),
+                    $publisher_list
+                );
+            }
+
+            $markup .= '</div>';
+
+            /*
+            $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+
+            if (get_the_time('U') !== get_the_modified_time('U')) {
+                $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+            }
+
+            $time_string = sprintf($time_string,
+                esc_attr(get_the_date('c')),
+                get_the_date(),
+                esc_attr(get_the_modified_date('c')),
+                get_the_modified_date()
+            );
+            $markup .= sprintf('<p class="posted-on">Veröffentlicht am  <span class="screen-reader-text">%1$s </span><a href="%2$s" rel="bookmark">%3$s</a></p>',
+                _x('Posted on', 'Used before publish date.', 'twentyfifteen'),
+                esc_url(get_permalink()),
+                $time_string
+            );
+            */
+
+            $markup .= $this->getShortScore();
 
             $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
+
+
 
             return $content . $markup;
         }
@@ -219,13 +272,14 @@ class MarcTVShortScore
         $comment = get_comment($comment_id);
 
         if (get_post_type($comment->comment_post_ID) == 'game') {
-            add_comment_meta($comment_id, 'score', $_POST['score'],true);
+            add_comment_meta($comment_id, 'score', $_POST['score'], true);
             $this->save_ratings_to_post($comment->comment_post_ID);
         }
     }
 
 
-    public function updateScoreOnPost($comment_id) {
+    public function updateScoreOnPost($comment_id)
+    {
         $comment = get_comment($comment_id);
         $this->save_ratings_to_post($comment->comment_post_ID);
 
