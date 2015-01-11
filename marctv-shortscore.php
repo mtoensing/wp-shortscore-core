@@ -408,7 +408,7 @@ class MarcTVShortScore
                 $query->set('order', 'DESC');
             }
         }
-    }¥
+    }
 }
 
 
