@@ -46,6 +46,7 @@ class MarcTVShortScore
 
     public function initComments()
     {
+        add_filter( 'get_avatar', array( $this, 'get_avatar' ), 10, 5 );
         add_filter('pre_comment_content', 'esc_html');
         add_filter('comment_form_defaults', array($this, 'change_comment_form_defaults'));
         add_action('comment_post', array($this, 'save_comment_meta_data'));
@@ -65,7 +66,7 @@ class MarcTVShortScore
         add_filter('preprocess_comment', array($this, 'verify_comment_duplicate_email'));
 
         add_filter('comment_form_default_fields', array($this, 'alter_comment_form_fields'));
-        add_filter('comment_text', array($this, 'append_score'), 99);
+        //add_filter('comment_text', array($this, 'append_score'), 99);
         add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
         add_filter('the_title', array($this, 'add_hreview_title'));
 
@@ -138,6 +139,23 @@ class MarcTVShortScore
         return $default;
     }
 
+    public function get_avatar($avatar , $id_or_email , $size = '96'  , $default , $alt = false){
+
+        global $post;
+
+        $markup = '';
+
+        if (get_post_type($post->ID) == 'game') {
+
+            $score = get_comment_meta(get_comment_ID(), 'score', true);
+
+            if (!empty($score)) {
+                return '<div class="avatar rating shortscore">' . $score . '</div>';
+            }
+        }
+
+        return $markup;
+    }
 
     public static function getShortScore($id = '')
     {
