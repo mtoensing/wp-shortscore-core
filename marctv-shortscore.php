@@ -108,9 +108,9 @@ class MarcTVShortScore
 
     public function change_comment_form_defaults($default)
     {
-        global $post;
+      $post_id =   get_the_ID();
 
-        if (get_post_type($post->ID) == 'game') {
+        if (get_post_type($post_id) == 'game') {
 
             $markup = '<p class="comment-form-score"><label for="score">' . __('ShortScore 1 to 10 (e.g. 7.5)', 'marctv-shortscore') . '<span class="required">*</span></label><select id="score" name="score">';
 
@@ -131,6 +131,9 @@ class MarcTVShortScore
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
 
             $markup .= '</select>';
+
+            $default['must_log_in'] =  '<p class="must-log-in">' . sprintf( __( 'You must be <a href="%s">logged in</a> to post a ShortScore.','marctv-shortscore' ), '/login/' ) . '</p>';
+
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Submit ShortScore:', 'marctv-shortscore');
             $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
