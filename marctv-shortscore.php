@@ -46,7 +46,7 @@ class MarcTVShortScore
 
     public function initComments()
     {
-        //add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
+        add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
         add_filter('pre_comment_content', 'esc_html');
         add_filter('comment_form_defaults', array($this, 'change_comment_form_defaults'));
         add_action('comment_post', array($this, 'save_comment_meta_data'));
