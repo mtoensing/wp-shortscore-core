@@ -394,7 +394,7 @@ class MarcTVShortScore
             $platform_list = get_the_term_list($pid, 'platform','',', ');
             $platform_string = strip_tags($platform_list);
 
-            $comment_text =  '<h4>' . get_the_title( $comment->comment_post_ID ) . '</h4><p><em>'. $platform_string . '</em></p>' .  $comment_text;
+            $comment_text =  '<h4><a href="' . get_permalink($comment->comment_post_ID) .'">' . get_the_title( $comment->comment_post_ID ) . '</a></h4><p><em>'. $platform_string . '</em></p>' .  $comment_text;
         }
 
         $score = get_comment_meta(get_comment_ID(), 'score', true);
