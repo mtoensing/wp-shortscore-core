@@ -132,10 +132,10 @@ class MarcTVShortScore
 
             $markup .= '</select>';
 
-            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%s">logged in</a> to post a ShortScore.', 'marctv-shortscore'), '/login/') . '</p>';
+            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%1s">logged in</a> to post a ShortScore. <a href="%2s">Registration</a> is fast and free!', 'marctv-shortscore'), '/login/','/login/login-register/') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.', 'marctv-shortscore') . '</p>';
-            $default['title_reply'] = __('Submit ShortScore:', 'marctv-shortscore');
+            $default['title_reply'] = __('Submit ShortScore', 'marctv-shortscore');
             $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
             $default['comment_field'] = $markup . $default['comment_field'];
         }

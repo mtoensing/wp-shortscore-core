@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
-"POT-Creation-Date: 2015-01-11 23:58+0100\n"
-"PO-Revision-Date: 2015-01-11 23:59+0100\n"
+"POT-Creation-Date: 2015-01-12 20:46+0100\n"
+"PO-Revision-Date: 2015-01-12 20:47+0100\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
@@ -32,18 +32,20 @@ msgstr "<strong>Achtung: </strong> Deine E-Mail-Adresse muss bestätigt werden!"
 
 #: marctv-shortscore.php:135
 #, php-format
-msgid "You must be <a href=\"%s\">logged in</a> to post a ShortScore."
+msgid ""
+"You must be <a href=\"%1s\">logged in</a> to post a ShortScore. <a href=\"%2s"
+"\">Registration</a> is fast and free!"
 msgstr ""
-"Du musst <a href=\"%s\">angemeldet</a>  sein, um deinen ShortScore abgeben "
-"zu können."
+"Du musst Dich <a href=\"%1s\">anmelden</a> um deinen ShortScore abgeben zu "
+"können. Die <a href=\"%2s\">Registrierung</a> geht schnell uns ist kostenlos!"
 
 #: marctv-shortscore.php:137
 msgid "Each email address is only allow once per game."
 msgstr "Jede E-Mail Adresse ist nur einmal erlaubt."
 
 #: marctv-shortscore.php:138
-msgid "Submit ShortScore:"
-msgstr "ShortScore abgeben:"
+msgid "Submit ShortScore"
+msgstr "ShortScore abgeben"
 
 #: marctv-shortscore.php:139
 msgid "Your short review text:"
@@ -58,7 +60,7 @@ msgstr "%s von %s basierend auf %s Communitybewertungen"
 #: marctv-shortscore.php:227 marctv-shortscore.php:234
 msgctxt "Used before category names."
 msgid "Categories"
-msgstr ""
+msgstr "Kategorien"
 
 #: marctv-shortscore.php:263
 #, php-format
@@ -80,6 +82,14 @@ msgid ""
 msgstr ""
 "Tut uns leid aber diese E-Mail Adresse hat bereits eine ShortScore für "
 "dieses Spiel abgegeben. "
+
+#~ msgid "You must be <a href=\"%s\">logged in</a> to post a ShortScore."
+#~ msgstr ""
+#~ "Du musst <a href=\"%s\">angemeldet</a>  sein, um deinen ShortScore "
+#~ "abgeben zu können."
+
+#~ msgid "Submit ShortScore:"
+#~ msgstr "ShortScore abgeben"
 
 #~ msgid ""
 #~ "Sorry, this email address already submitted a shortscore for this game."
