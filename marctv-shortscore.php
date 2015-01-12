@@ -46,7 +46,7 @@ class MarcTVShortScore
 
     public function initComments()
     {
-        add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
+        //add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
         add_filter('pre_comment_content', 'esc_html');
         add_filter('comment_form_defaults', array($this, 'change_comment_form_defaults'));
         add_action('comment_post', array($this, 'save_comment_meta_data'));
@@ -66,7 +66,7 @@ class MarcTVShortScore
         add_filter('preprocess_comment', array($this, 'verify_comment_duplicate_email'));
 
         add_filter('comment_form_default_fields', array($this, 'alter_comment_form_fields'));
-        //add_filter('comment_text', array($this, 'append_score'), 99);
+        add_filter('comment_text', array($this, 'append_score'), 99);
         add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
         add_filter('the_title', array($this, 'add_hreview_title'));
 
@@ -108,7 +108,7 @@ class MarcTVShortScore
 
     public function change_comment_form_defaults($default)
     {
-      $post_id =   get_the_ID();
+        $post_id = get_the_ID();
 
         if (get_post_type($post_id) == 'game') {
 
@@ -132,7 +132,7 @@ class MarcTVShortScore
 
             $markup .= '</select>';
 
-            $default['must_log_in'] =  '<p class="must-log-in">' . sprintf( __( 'You must be <a href="%s">logged in</a> to post a ShortScore.','marctv-shortscore' ), '/login/' ) . '</p>';
+            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%s">logged in</a> to post a ShortScore.', 'marctv-shortscore'), '/login/') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Submit ShortScore:', 'marctv-shortscore');
@@ -146,11 +146,11 @@ class MarcTVShortScore
     public function get_avatar($avatar, $id_or_email, $size = '96', $default, $alt = false)
     {
 
-        global $post;
+        $id = get_the_ID();
 
         $markup = '';
 
-        if (get_post_type($post->ID) == 'game') {
+        if (get_post_type($id) == 'game') {
 
             $score = get_comment_meta(get_comment_ID(), 'score', true);
 
@@ -383,15 +383,24 @@ class MarcTVShortScore
 
     public function append_score($comment_text)
     {
-        global $post;
+        $comment_ID = get_comment_ID();
 
-        if (get_post_type($post->ID) == 'game') {
+        $comment = get_comment( $comment_ID );
 
-            $score = get_comment_meta(get_comment_ID(), 'score', true);
+        $cid = $comment->user_id;
+        $pid = $comment->comment_post_ID;
 
-            if (!empty($score)) {
-                return $comment_text . '<div class="rating shortscore">' . $score . '</div>';
-            }
+        if(is_author($cid)){
+            $platform_list = get_the_term_list($pid, 'platform','',', ');
+            $platform_string = strip_tags($platform_list);
+
+            $comment_text =  '<h4>' . get_the_title( $comment->comment_post_ID ) . '</h4><p><em>'. $platform_string . '</em></p>' .  $comment_text;
+        }
+
+        $score = get_comment_meta(get_comment_ID(), 'score', true);
+
+        if (!empty($score)) {
+            return $comment_text . '<div class="rating shortscore">' . $score . '</div>';
         }
 
         return $comment_text;
