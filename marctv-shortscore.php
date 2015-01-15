@@ -338,7 +338,7 @@ class MarcTVShortScore
                 wp_die(__('Error: please fill the required field (score).', 'marctv-shortscore'));
             }
 
-            if ($score < 1 || $score > 10) {
+            if ($score < 0 || $score > 10) {
                 wp_die(__('Error: enter a rating smaller than 10 and greater than 0 for (score).', 'marctv-shortscore'));
             }
 
