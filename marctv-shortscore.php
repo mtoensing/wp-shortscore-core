@@ -35,6 +35,7 @@ class MarcTVShortScore
     public function initFrontend()
     {
         add_action('wp_print_styles', array($this, 'enqueScripts'));
+	    add_filter('get_comment_author_link', array($this, 'comment_author_profile_link'));
     }
 
     public function enqueScripts()
@@ -96,9 +97,9 @@ class MarcTVShortScore
 
     function add_hreview_title($title)
     {
-        global $post;
+        $id = get_the_ID();
 
-        if (get_post_type($post->ID) == 'game' && is_single()) {
+        if ($id >= 0 && get_post_type($id) == 'game' && is_single()) {
             $title = '<span class="fn">' . $title . '</span>';
         }
 
@@ -132,7 +133,7 @@ class MarcTVShortScore
 
             $markup .= '</select>';
 
-            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%1s">logged in</a> to post a ShortScore. <a href="%2s">Registration</a> is fast and free!', 'marctv-shortscore'), '/login/','/login/login-register/') . '</p>';
+            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%1s">logged in</a> to post a ShortScore. <a href="%2s">Registration</a> is fast and free!', 'marctv-shortscore'), '/login/','/register/') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Submit ShortScore', 'marctv-shortscore');
@@ -282,8 +283,10 @@ class MarcTVShortScore
 
     public function updateScoreOnPost($comment_id)
     {
-        $comment = get_comment($comment_id);
-        $this->save_ratings_to_post($comment->comment_post_ID);
+	    if($comment_id >= 0) {
+            $comment = get_comment($comment_id);
+            $this->save_ratings_to_post($comment->comment_post_ID);
+	    }
 
     }
 
@@ -421,6 +424,46 @@ class MarcTVShortScore
             }
         }
     }
+
+	public function comment_author_profile_link()
+	{
+		/* Get the comment author information */
+
+		global $comment;
+		$comment_ID = $comment->user_id;
+		$author = get_comment_author($comment_ID);
+		$url = get_comment_author_url($comment_ID);
+
+		/* Check if commenter is registered or not */
+		switch ($comment_ID == 0) {
+
+			case true:
+				/* Unregistered commenter */
+
+				if (empty($url) || 'http://' == $url)
+					$return = $author;
+				else
+					$return = "<a href='$url' rel='external nofollow' class='url' target='_blank'>$author</a>";
+
+				break;
+
+			case false:
+				/* Registered Commenter */
+
+				$registeredID = get_userdata($comment_ID);
+				$authorName = $registeredID->display_name;
+				$authorID = $registeredID->ID;
+
+				/* Author+ with Posts */
+
+				$return = '<a href="' . get_author_posts_url($authorID) . '">' . $authorName . '</a>';
+
+
+				break;
+		}
+
+		return $return;
+	}
 }
 
 
