@@ -47,7 +47,6 @@ class MarcTVShortScore
 
     public function initComments()
     {
-        //add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
         add_filter('pre_comment_content', 'esc_html');
         add_filter('comment_form_defaults', array($this, 'change_comment_form_defaults'));
         add_action('comment_post', array($this, 'save_comment_meta_data'));
@@ -135,7 +134,7 @@ class MarcTVShortScore
 
             $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%1s">logged in</a> to post a ShortScore. <a href="%2s">Registration</a> is fast and free!', 'marctv-shortscore'), '/login/','/register/') . '</p>';
 
-            $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each email address is only allow once per game.', 'marctv-shortscore') . '</p>';
+            $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is only allow once per game.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Submit ShortScore', 'marctv-shortscore');
             $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
             $default['comment_field'] = $markup . $default['comment_field'];
@@ -144,24 +143,6 @@ class MarcTVShortScore
         return $default;
     }
 
-    public function get_avatar($avatar, $id_or_email, $size = '96', $default, $alt = false)
-    {
-
-        $id = get_the_ID();
-
-        $markup = '';
-
-        if (get_post_type($id) == 'game') {
-
-            $score = get_comment_meta(get_comment_ID(), 'score', true);
-
-            if (!empty($score)) {
-                return '<div class="avatar rating shortscore">' . $score . '</div>';
-            }
-        }
-
-        return $markup;
-    }
 
     public static function getShortScore($id = '')
     {
@@ -172,8 +153,8 @@ class MarcTVShortScore
 
         if (get_post_type($id) == 'game') {
             $score_count = get_post_meta($id, 'score_count', true);
-
-            $markup = '<div class="rating">';
+			$markup =  '<a href="' . get_permalink($id) . '">';
+            $markup .= '<div class="rating">';
 
             if ($score_count > 0) {
 
@@ -188,13 +169,15 @@ class MarcTVShortScore
                 );
 
             } else {
-                $markup = '<div class="rating"><div class="average shortscore">?</div>';
+                $markup .= '<div class="rating"><div class="average shortscore">?</div>';
 
             }
 
-            $markup .= '</div>';
+            $markup .= '</div></a>';
+
 
             return $markup;
+
         }
 
         return false;
@@ -239,30 +222,9 @@ class MarcTVShortScore
 
             $markup .= '</div>';
 
-            /*
-            $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
-
-            if (get_the_time('U') !== get_the_modified_time('U')) {
-                $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
-            }
-
-            $time_string = sprintf($time_string,
-                esc_attr(get_the_date('c')),
-                get_the_date(),
-                esc_attr(get_the_modified_date('c')),
-                get_the_modified_date()
-            );
-            $markup .= sprintf('<p class="posted-on">Veröffentlicht am  <span class="screen-reader-text">%1$s </span><a href="%2$s" rel="bookmark">%3$s</a></p>',
-                _x('Posted on', 'Used before publish date.', 'twentyfifteen'),
-                esc_url(get_permalink()),
-                $time_string
-            );
-            */
-
             $markup .= $this->getShortScore();
 
             $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
-
 
             return $content . $markup;
         }
@@ -362,10 +324,12 @@ class MarcTVShortScore
 
         foreach ($comments as $comment) :
             if ($email == $comment->comment_author_email) {
-                wp_die(__('Sorry, this email address has already submitted a shortscore for this game.', 'marctv-shortscore'));
+	            var_dump($comment->comment_author_email);
+
+                wp_die(__('Sorry, this account has already submitted a shortscore for this game.', 'marctv-shortscore'));
             }
         endforeach;
-
+	    wp_die();
 
         return $commentdata;
     }
@@ -397,13 +361,13 @@ class MarcTVShortScore
             $platform_list = get_the_term_list($pid, 'platform','',', ');
             $platform_string = strip_tags($platform_list);
 
-            $comment_text =  '<h4><a href="' . get_permalink($comment->comment_post_ID) .'">' . get_the_title( $comment->comment_post_ID ) . '</a></h4><p><em>'. $platform_string . '</em></p>' .  $comment_text;
+            $comment_text =  '<h4><a href="' . get_comment_link( $comment_ID) .'">' . get_the_title( $comment->comment_post_ID ) . '</a></h4><p><em>'. $platform_string . '</em></p>';
         }
 
         $score = get_comment_meta(get_comment_ID(), 'score', true);
 
         if (!empty($score)) {
-            return $comment_text . '<div class="rating shortscore">' . $score . '</div>';
+            return $comment_text . '<a href="' . get_comment_link( $comment_ID) .'"><div class="rating shortscore">' . $score . '</div></a>';
         }
 
         return $comment_text;
