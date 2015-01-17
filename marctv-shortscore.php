@@ -109,10 +109,12 @@ class MarcTVShortScore {
 		$markup = '<ol>';
 
 		foreach ( $result as $author ) {
-			$markup .= '<li>';
-			$markup .= '<a href="' . get_author_posts_url($author->user_id) . '">'. $author->name . '</a> ';
-			$markup .= 'hat ' .$author->count .' SHORTSCORES  geschrieben.';
-			$markup .= '</li>';
+			if ($author->user_id > 0){
+				$markup .= '<li>';
+				$markup .= '<a href="' . get_author_posts_url($author->user_id) . '">'. $author->name . '</a> ';
+				$markup .= 'hat ' .$author->count .' SHORTSCORES  geschrieben.';
+				$markup .= '</li>';
+			}
 		}
 
 		$markup .= '</ol>';

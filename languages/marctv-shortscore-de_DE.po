@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
 "POT-Creation-Date: 2015-01-17 18:28+0100\n"
-"PO-Revision-Date: 2015-01-17 18:28+0100\n"
+"PO-Revision-Date: 2015-01-17 18:48+0100\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
@@ -49,7 +49,7 @@ msgstr "Jeder Account darf nur einen SHORTSCORE pro Spiel abgeben."
 
 #: marctv-shortscore.php:153
 msgid "Submit ShortScore"
-msgstr "SHORTSCORE abgeben"
+msgstr "SHORTSCORE abschicken"
 
 #: marctv-shortscore.php:154
 msgid "Your short review text:"
