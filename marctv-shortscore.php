@@ -101,7 +101,7 @@ class MarcTVShortScore {
 
 	public function list_top_authors( $atts ) {
 		$query = "SELECT comment_author as name,user_id as user_id, COUNT(*) as count
-		FROM wp_comments WHERE comment_approved ='1' AND comment_type ='' GROUP BY comment_author ORDER BY COUNT(*) DESC LIMIT 100";
+		FROM wp_comments WHERE comment_approved ='1' AND comment_type ='' GROUP BY user_id ORDER BY COUNT(*) DESC LIMIT 100";
 
 		global $wpdb;
 
@@ -124,6 +124,7 @@ class MarcTVShortScore {
 	}
 
 	public function change_comment_form_defaults( $default ) {
+
 		$post_id = get_the_ID();
 
 		if ( get_post_type( $post_id ) == 'game' ) {
@@ -152,12 +153,12 @@ class MarcTVShortScore {
 			$default['must_log_in'] = '<p class="must-log-in">' . sprintf( __( 'You must be <a href="%1s">logged in</a> to post a ShortScore. <a href="%2s">Registration</a> is fast and free!', 'marctv-shortscore' ), '/login/', '/register/' ) . '</p>';
 
 			$default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __( 'Each account is only allow once per game.', 'marctv-shortscore' ) . '</p>';
-			$default['title_reply']         = __( 'Submit ShortScore', 'marctv-shortscore' );
+			$default['title_reply']         = __( 'Enter your SHORTSCORE', 'marctv-shortscore' );
 			$default['comment_field']       = '<p class="comment-form-comment"><label for="comment">' . __( 'Your short review text:', 'marctv-shortscore' ) . '<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
 			$default['comment_field']       = $markup . $default['comment_field'];
 		}
 
-		return $default;
+        return $default;
 	}
 
 
@@ -236,8 +237,6 @@ class MarcTVShortScore {
 			}
 
 			$markup .= '</div>';
-
-			//$markup .= $this->getShortScore();
 
 			$markup .= '<p class="shortscore-submit ">' . sprintf( __( '<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore' ), esc_url( get_permalink( $id ) . '#respond' ) ) . '</p>';
 
