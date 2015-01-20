@@ -165,7 +165,7 @@ class MarcTVShortScore
 
             $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%1s">logged in</a> to post a ShortScore. <a href="%2s">Registration</a> is fast and free!', 'marctv-shortscore'), '/login/', '/register/') . '</p>';
 
-            $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is only allow once per game.', 'marctv-shortscore') . '</p>';
+            $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is only allow once per game and you are not able to edit your SHORTSCORE', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Enter your SHORTSCORE', 'marctv-shortscore');
             $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
             $default['comment_field'] = $markup . $default['comment_field'];
@@ -184,8 +184,7 @@ class MarcTVShortScore
 
         if (get_post_type($id) == 'game') {
             $score_count = get_post_meta($id, 'score_count', true);
-            $markup = '<a href="' . get_permalink($id) . '">';
-            $markup .= '<div class="rating">';
+            $markup = '<a class="rating" href="' . get_permalink($id) . '">';
 
             if ($score_count > 0) {
 
@@ -193,18 +192,21 @@ class MarcTVShortScore
 
                 $aggregate_score = round($score_sum / $score_count, 1);
 
-                $markup .= sprintf(__('%s out of %s based on %s user reviews', 'marctv-shortscore'),
-                    '<div class="average shortscore">' . $aggregate_score . '</div>',
-                    '<span class="best">10</span>',
-                    '<span class="votes">' . $score_count . '</span>'
-                );
+                $markup .= '<div class="average shortscore">' . $aggregate_score . '</div>';
+
+                if (is_single()) {
+                    $markup .= '<div class="score-notice">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</div>',
+                            '<span class="best">10</span>',
+                            '<span class="votes">' . $score_count . '</span>'
+                        );
+                }
 
             } else {
-                $markup .= '<div class="rating"><div class="average shortscore">?</div></div>';
+                $markup .= '<div class="average shortscore">?</div>';
 
             }
 
-            $markup .= '</div></a>';
+            $markup .= '</a>';
 
 
             return $markup;
@@ -223,38 +225,70 @@ class MarcTVShortScore
 
         if (get_post_type($id) == 'game') {
 
-            $markup = '<div class="game-meta">';
+            if (is_single()) {
+                $markup = '<div class="game-meta">';
 
-            $categories_list = get_the_term_list($id, 'platform', '', ', ');
-            $markup .= sprintf('<p class="platform"><strong><span class="screen-reader-text">%1$s </span>%2$s</strong></p>',
-                _x('Categories', 'Used before category names.', 'twentyfifteen'),
-                $categories_list
-            );
-
-            $categories_list = get_the_term_list($id, 'genre', '', ', ');
-            $markup .= sprintf('<p class="genre"><span class="screen-reader-text">%1$s </span>%2$s</p>',
-                _x('Categories', 'Used before category names.', 'twentyfifteen'),
-                $categories_list
-            );
-
-            if ($developer_list = get_the_term_list($id, 'developer', '', ', ')) {
-                $markup .= sprintf('<span class=" developer"><span class="screen-reader-text">%1$s </span>%2$s</span>',
+                $categories_list = get_the_term_list($id, 'platform', '', ', ');
+                $markup .= sprintf('<p class="platform"><strong><span class="screen-reader-text">%1$s </span>%2$s</strong></p>',
                     _x('Categories', 'Used before category names.', 'twentyfifteen'),
-                    $developer_list
+                    $categories_list
                 );
-            }
 
-            if ($publisher_list = get_the_term_list($id, 'publisher', '', ', ')) {
-                $markup .= sprintf(' &mdash; <span class=" publisher"><span class="screen-reader-text">%1$s </span>%2$s</span>',
+                $markup .= $this->getShortScore();
+
+
+                $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+
+                if (get_the_time('U') !== get_the_modified_time('U')) {
+                    $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+                }
+
+                $time_string = sprintf($time_string,
+                    esc_attr(get_the_date('c')),
+                    get_the_date(),
+                    esc_attr(get_the_modified_date('c')),
+                    get_the_modified_date()
+                );
+
+                $markup .= sprintf('<p class="">Veröffentlicht am  <span class="screen-reader-text">%1$s </span><a href="%2$s" rel="bookmark">%3$s</a></p>',
+                    _x('Posted on', 'Used before publish date.', 'twentyfifteen'),
+                    esc_url(get_permalink()),
+                    $time_string
+                );
+
+                $categories_list = get_the_term_list($id, 'genre', '', ', ');
+                $markup .= sprintf('<p class="genre"><span class="screen-reader-text">%1$s </span>%2$s</p>',
                     _x('Categories', 'Used before category names.', 'twentyfifteen'),
-                    $publisher_list
+                    $categories_list
                 );
+
+
+                if ($developer_list = get_the_term_list($id, 'developer', '', ', ')) {
+                    $markup .= sprintf('<span class=" developer"><span class="screen-reader-text">%1$s </span>%2$s</span>',
+                        _x('Categories', 'Used before category names.', 'twentyfifteen'),
+                        $developer_list
+                    );
+                }
+
+                if ($publisher_list = get_the_term_list($id, 'publisher', '', ', ')) {
+                    $markup .= sprintf(' &mdash; <span class=" publisher"><span class="screen-reader-text">%1$s </span>%2$s</span>',
+                        _x('Categories', 'Used before category names.', 'twentyfifteen'),
+                        $publisher_list
+                    );
+                }
+
+                $markup .= '</div>';
+
+
+                $yturl = get_post_meta($id, 'Youtube', true);
+
+
+                if($yturl) {
+                    $markup .= '<a href="' . $yturl . '" class="embedvideo">Trailer</a>';
+                }
+
+                $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
             }
-
-            $markup .= '</div>';
-
-            $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
-
             return $content . $markup;
         }
 
