@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
 "POT-Creation-Date: 2015-01-19 16:39+0100\n"
-"PO-Revision-Date: 2015-01-19 16:40+0100\n"
+"PO-Revision-Date: 2015-01-22 11:34+0100\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
@@ -57,7 +57,7 @@ msgstr "SPORTSCORE abgeben"
 
 #: marctv-shortscore.php:170
 msgid "Your short review text:"
-msgstr "Dein kurzer Reviewtext:"
+msgstr "Dein kurzes Fazit:"
 
 #: marctv-shortscore.php:198
 #, php-format

@@ -279,15 +279,14 @@ class MarcTVShortScore
 
                 $markup .= '</div>';
 
+                $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
                 $yturl = get_post_meta($id, 'Youtube', true);
-
-
-                if($yturl) {
+                
+                if ($yturl) {
                     $markup .= '<a href="' . $yturl . '" class="embedvideo">' . get_the_title($id) . '</a>';
                 }
 
-                $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
             }
             return $content . $markup;
         }
