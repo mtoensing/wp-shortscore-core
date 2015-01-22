@@ -47,6 +47,26 @@ class MarcTVShortScore
 
     }
 
+
+    /*
+     * http://www.mdj.us/web-development/php-programming/calculating-the-median-average-values-of-an-array-with-php/
+     *
+     * */
+    public function calculateMedian($arr) {
+        sort($arr);
+        $count = count($arr); //total numbers in array
+        $middleval = floor(($count-1)/2); // find the middle value, or the lowest middle value
+        if($count % 2) { // odd number, middle is the median
+            $median = $arr[$middleval];
+        } else { // even number, calculate avg of 2 medians
+            $low = $arr[$middleval];
+            $high = $arr[$middleval+1];
+            $median = (($low+$high)/2);
+        }
+        return $median;
+    }
+
+
     public function initComments()
     {
         add_filter('pre_comment_content', 'esc_html');
@@ -188,11 +208,9 @@ class MarcTVShortScore
 
             if ($score_count > 0) {
 
-                $score_sum = get_post_meta($id, 'score_sum', true);
+                $shortscore = get_post_meta($id, 'score_value', true);
 
-                $aggregate_score = round($score_sum / $score_count, 1);
-
-                $markup .= '<div class="average shortscore">' . $aggregate_score . '</div>';
+                $markup .= '<div class="average shortscore">' . $shortscore . '</div>';
 
                 if (is_single()) {
                     $markup .= '<div class="score-notice">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</div>',
@@ -282,7 +300,7 @@ class MarcTVShortScore
                 $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
                 $yturl = get_post_meta($id, 'Youtube', true);
-                
+
                 if ($yturl) {
                     $markup .= '<a href="' . $yturl . '" class="embedvideo">' . get_the_title($id) . '</a>';
                 }
@@ -323,6 +341,7 @@ class MarcTVShortScore
 
         $score_sum = 0;
         $score_count = 0;
+        $score_arr = array();
 
         $comments = get_comments($args);
 
@@ -333,12 +352,17 @@ class MarcTVShortScore
             if ($meta_score) {
                 $score_count++;
                 $score_sum = $score_sum + $meta_score;
+                $score_arr[] = $meta_score;
             }
 
         endforeach;
 
         if ($score_sum > 0 && $score_count > 0) {
-            $score_value = round($score_sum / $score_count, 1);
+            // Average
+            //$score_value = round($score_sum / $score_count, 1);
+
+            /* use median instead of average calculation */
+            $score_value = $this->calculateMedian($score_arr);
 
             add_post_meta($post_ID, 'score_value', $score_value, true) || update_post_meta($post_ID, 'score_value', $score_value);
             add_post_meta($post_ID, 'score_sum', $score_sum, true) || update_post_meta($post_ID, 'score_sum', $score_sum);
