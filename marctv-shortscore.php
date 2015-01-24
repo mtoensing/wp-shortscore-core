@@ -268,7 +268,7 @@ class MarcTVShortScore
                     get_the_modified_date()
                 );
 
-                $markup .= sprintf('<p class="">Veröffentlicht am  <span class="screen-reader-text">%1$s </span><a href="%2$s" rel="bookmark">%3$s</a></p>',
+                $markup .= sprintf('<p class="posted-on">Veröffentlicht am  <span class="screen-reader-text">%1$s </span><a href="%2$s" rel="bookmark">%3$s</a></p>',
                     _x('Posted on', 'Used before publish date.', 'twentyfifteen'),
                     esc_url(get_permalink()),
                     $time_string
@@ -362,7 +362,7 @@ class MarcTVShortScore
             //$score_value = round($score_sum / $score_count, 1);
 
             /* use median instead of average calculation */
-            $score_value = $this->calculateMedian($score_arr);
+            $score_value = round($this->calculateMedian($score_arr),1);
 
             add_post_meta($post_ID, 'score_value', $score_value, true) || update_post_meta($post_ID, 'score_value', $score_value);
             add_post_meta($post_ID, 'score_sum', $score_sum, true) || update_post_meta($post_ID, 'score_sum', $score_sum);
