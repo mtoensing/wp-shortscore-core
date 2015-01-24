@@ -40,28 +40,22 @@ class MarcTVShortScore
         add_shortcode('list_top_authors', array($this, 'list_top_authors'));
     }
 
-    public function enqueScripts()
-    {
-        wp_enqueue_style($this->pluginPrefix . '_style', plugins_url(false, __FILE__) . "/marctv-shortscore.css", false, $this->version);
-        wp_enqueue_script($this->pluginPrefix . '-js', plugins_url(false, __FILE__) . "/marctv-shortscore.js", array("jquery"), $this->version, true);
-
-    }
-
 
     /*
      * http://www.mdj.us/web-development/php-programming/calculating-the-median-average-values-of-an-array-with-php/
      *
      * */
-    public function calculateMedian($arr) {
+    public function calculateMedian($arr)
+    {
         sort($arr);
         $count = count($arr); //total numbers in array
-        $middleval = floor(($count-1)/2); // find the middle value, or the lowest middle value
-        if($count % 2) { // odd number, middle is the median
+        $middleval = floor(($count - 1) / 2); // find the middle value, or the lowest middle value
+        if ($count % 2) { // odd number, middle is the median
             $median = $arr[$middleval];
         } else { // even number, calculate avg of 2 medians
             $low = $arr[$middleval];
-            $high = $arr[$middleval+1];
-            $median = (($low+$high)/2);
+            $high = $arr[$middleval + 1];
+            $median = (($low + $high) / 2);
         }
         return $median;
     }
@@ -162,16 +156,18 @@ class MarcTVShortScore
 
         if (get_post_type($post_id) == 'game') {
 
-            $markup = '<p class="comment-form-score"><label for="score">' . __('ShortScore 1 to 10 (e.g. 7.5)', 'marctv-shortscore') . '<span class="required">*</span></label><select id="score" name="score">';
+            $markup = '<p class="comment-form-score"><label for="score">' . __('SHORTSCORE 1 to 10. The higher the better.', 'marctv-shortscore') . '<span class="required">*</span></label>';
 
-            for ($i = 1; $i <= 20; $i++) {
-                if ($i == 10) {
-                    $markup .= '<option size="4"  value="' . $i / 2 . '">' . $i / 2 . '</option>';
+            $markup .= '<select id="score" name="score">';
+            for ($i = 1; $i <= 10; $i++) {
+                if ($i == 5) {
+                    $markup .= '<option size="4"  value="' . $i . '">' . $i . '</option>';
                     $markup .= '<option size="4" selected="selected" value="">?</option>';
                 } else {
-                    $markup .= '<option size="4" value="' . $i / 2 . '">' . $i / 2 . '</option>';
+                    $markup .= '<option size="4" value="' . $i . '">' . $i . '</option>';
                 }
             }
+            $markup .= '</select>';
 
             $commenter = wp_get_current_commenter();
             $req = get_option('require_name_email');
@@ -180,8 +176,6 @@ class MarcTVShortScore
                 '<input id="email" name="email" type="text" value="' . esc_attr($commenter['comment_author_email']) .
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
             $default['label_submit'] = __('Submit SHORTSCORE', 'marctv-shortscore');
-
-            $markup .= '</select>';
 
             $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%1s">logged in</a> to post a ShortScore. <a href="%2s">Registration</a> is fast and free!', 'marctv-shortscore'), '/login/', '/register/') . '</p>';
 
@@ -362,7 +356,7 @@ class MarcTVShortScore
             //$score_value = round($score_sum / $score_count, 1);
 
             /* use median instead of average calculation */
-            $score_value = round($this->calculateMedian($score_arr),1);
+            $score_value = round($this->calculateMedian($score_arr), 1);
 
             add_post_meta($post_ID, 'score_value', $score_value, true) || update_post_meta($post_ID, 'score_value', $score_value);
             add_post_meta($post_ID, 'score_sum', $score_sum, true) || update_post_meta($post_ID, 'score_sum', $score_sum);
