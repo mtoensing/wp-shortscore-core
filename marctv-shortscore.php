@@ -164,12 +164,12 @@ class MarcTVShortScore
 
             $markup = '<p class="comment-form-score"><label for="score">' . __('ShortScore 1 to 10 (e.g. 7.5)', 'marctv-shortscore') . '<span class="required">*</span></label><select id="score" name="score">';
 
-            for ($i = 1; $i <= 100; $i++) {
-                if ($i == 50) {
-                    $markup .= '<option size="4"  value="' . $i / 10 . '">' . $i / 10 . '</option>';
+            for ($i = 1; $i <= 20; $i++) {
+                if ($i == 10) {
+                    $markup .= '<option size="4"  value="' . $i / 2 . '">' . $i / 2 . '</option>';
                     $markup .= '<option size="4" selected="selected" value="">?</option>';
                 } else {
-                    $markup .= '<option size="4" value="' . $i / 10 . '">' . $i / 10 . '</option>';
+                    $markup .= '<option size="4" value="' . $i / 2 . '">' . $i / 2 . '</option>';
                 }
             }
 
