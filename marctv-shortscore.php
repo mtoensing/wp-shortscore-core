@@ -86,6 +86,9 @@ class MarcTVShortScore
         add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
         add_filter('the_title', array($this, 'add_hreview_title'));
 
+        add_action( 'add_meta_boxes_comment', array($this,'comment_add_meta_box') );
+        add_action( 'edit_comment', array($this,'comment_edit_function') );
+
 
     }
 
@@ -229,11 +232,38 @@ class MarcTVShortScore
 
     }
 
+    public function comment_add_meta_box()
+    {
+        add_meta_box( 'score', __( 'SHORTSCORE' ), array($this,'comment_meta_box_score'),'comment', 'normal', 'high' );
+    }
+
+    public function comment_meta_box_score( $comment )
+    {
+        $score = get_comment_meta( $comment->comment_ID, 'score', true );
+
+        $markup = '<p><label for="score"><?php __( "value" ); ?></label>';
+        $markup .= '<input type="text" name="score" value="' . esc_attr( $score ) .'"  class="widefat" /></p>';
+
+        echo  $markup;
+    }
+
+    public function comment_edit_function( $comment_id )
+    {
+        if( isset( $_POST['score'] ) )
+            update_comment_meta( $comment_id, 'score', esc_attr( $_POST['score'] ) );
+    }
+
+
+
+
 
     public function addShortScoreLink($content)
     {
         $id = get_the_ID();
 
+        if(is_single()) {
+            $this->save_ratings_to_post($id);
+        }
 
         if (get_post_type($id) == 'game') {
 
@@ -314,16 +344,6 @@ class MarcTVShortScore
             add_comment_meta($comment_id, 'score', $_POST['score'], true);
             $this->save_ratings_to_post($comment->comment_post_ID);
         }
-    }
-
-
-    public function updateScoreOnPost($comment_id)
-    {
-        if ($comment_id >= 0) {
-            $comment = get_comment($comment_id);
-            $this->save_ratings_to_post($comment->comment_post_ID);
-        }
-
     }
 
     public function save_ratings_to_post($post_ID)
