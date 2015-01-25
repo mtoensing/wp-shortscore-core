@@ -261,10 +261,6 @@ class MarcTVShortScore
     {
         $id = get_the_ID();
 
-        if(is_single()) {
-            $this->save_ratings_to_post($id);
-        }
-
         if (get_post_type($id) == 'game') {
 
             if (is_single()) {
