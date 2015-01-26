@@ -86,8 +86,8 @@ class MarcTVShortScore
         add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
         add_filter('the_title', array($this, 'add_hreview_title'));
 
-        add_action( 'add_meta_boxes_comment', array($this,'comment_add_meta_box') );
-        add_action( 'edit_comment', array($this,'comment_edit_function') );
+        add_action('add_meta_boxes_comment', array($this, 'comment_add_meta_box'));
+        add_action('edit_comment', array($this, 'comment_edit_function'));
 
 
     }
@@ -152,6 +152,29 @@ class MarcTVShortScore
 
     }
 
+    public function getReleaseDate()
+    {
+        $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+
+        if (get_the_time('U') !== get_the_modified_time('U')) {
+            $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+        }
+
+        $time_string = sprintf($time_string,
+            esc_attr(get_the_date('c')),
+            get_the_date(),
+            esc_attr(get_the_modified_date('c')),
+            get_the_modified_date()
+        );
+
+        $releasedate = sprintf('<p class="posted-on">Veröffentlicht am  <span class="screen-reader-text">%1$s </span>%2$s</p>',
+            _x('Posted on', 'Used before publish date.', 'twentyfifteen'),
+            $time_string
+        );
+
+        return $releasedate;
+    }
+
     public function change_comment_form_defaults($default)
     {
 
@@ -209,19 +232,25 @@ class MarcTVShortScore
 
                 $markup .= '<div class="average shortscore">' . $shortscore . '</div>';
 
-                if (is_single()) {
-                    $markup .= '<div class="score-notice">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</div>',
-                            '<span class="best">10</span>',
-                            '<span class="votes">' . $score_count . '</span>'
-                        );
-                }
 
             } else {
                 $markup .= '<div class="average shortscore">?</div>';
 
             }
 
+
             $markup .= '</a>';
+
+            if (is_single()) {
+                $markup .= '<div class="score-notice">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</div>',
+                        '<span class="best">10</span>',
+                        '<span class="votes">' . $score_count . '</span>'
+                    );
+            } else {
+                $markup .= '<div class="score-notice">' . sprintf(__('based on %s user reviews', 'marctv-shortscore') . '</div>',
+                        '<span class="votes">' . $score_count . '</span>'
+                    );
+            }
 
 
             return $markup;
@@ -234,27 +263,24 @@ class MarcTVShortScore
 
     public function comment_add_meta_box()
     {
-        add_meta_box( 'score', __( 'SHORTSCORE' ), array($this,'comment_meta_box_score'),'comment', 'normal', 'high' );
+        add_meta_box('score', __('SHORTSCORE'), array($this, 'comment_meta_box_score'), 'comment', 'normal', 'high');
     }
 
-    public function comment_meta_box_score( $comment )
+    public function comment_meta_box_score($comment)
     {
-        $score = get_comment_meta( $comment->comment_ID, 'score', true );
+        $score = get_comment_meta($comment->comment_ID, 'score', true);
 
         $markup = '<p><label for="score"><?php __( "value" ); ?></label>';
-        $markup .= '<input type="text" name="score" value="' . esc_attr( $score ) .'"  class="widefat" /></p>';
+        $markup .= '<input type="text" name="score" value="' . esc_attr($score) . '"  class="widefat" /></p>';
 
-        echo  $markup;
+        echo $markup;
     }
 
-    public function comment_edit_function( $comment_id )
+    public function comment_edit_function($comment_id)
     {
-        if( isset( $_POST['score'] ) )
-            update_comment_meta( $comment_id, 'score', esc_attr( $_POST['score'] ) );
+        if (isset($_POST['score']))
+            update_comment_meta($comment_id, 'score', esc_attr($_POST['score']));
     }
-
-
-
 
 
     public function addShortScoreLink($content)
@@ -274,25 +300,9 @@ class MarcTVShortScore
 
                 $markup .= $this->getShortScore();
 
+                $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
-                $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
-
-                if (get_the_time('U') !== get_the_modified_time('U')) {
-                    $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
-                }
-
-                $time_string = sprintf($time_string,
-                    esc_attr(get_the_date('c')),
-                    get_the_date(),
-                    esc_attr(get_the_modified_date('c')),
-                    get_the_modified_date()
-                );
-
-                $markup .= sprintf('<p class="posted-on">Veröffentlicht am  <span class="screen-reader-text">%1$s </span><a href="%2$s" rel="bookmark">%3$s</a></p>',
-                    _x('Posted on', 'Used before publish date.', 'twentyfifteen'),
-                    esc_url(get_permalink()),
-                    $time_string
-                );
+                $markup .= $this->getReleaseDate();
 
                 $categories_list = get_the_term_list($id, 'genre', '', ', ');
                 $markup .= sprintf('<p class="genre"><span class="screen-reader-text">%1$s </span>%2$s</p>',
@@ -316,8 +326,6 @@ class MarcTVShortScore
                 }
 
                 $markup .= '</div>';
-
-                $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
                 $yturl = get_post_meta($id, 'Youtube', true);
 
