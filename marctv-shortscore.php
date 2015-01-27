@@ -224,7 +224,7 @@ class MarcTVShortScore
 
         if (get_post_type($id) == 'game') {
             $score_count = get_post_meta($id, 'score_count', true);
-            $markup = '<a class="rating" href="' . get_permalink($id) . '">';
+            $markup = '<a class="score" href="' . get_permalink($id) . '">';
 
             if ($score_count > 0) {
 
@@ -241,15 +241,17 @@ class MarcTVShortScore
 
             $markup .= '</a>';
 
-            if (is_single()) {
-                $markup .= '<div class="score-notice">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</div>',
-                        '<span class="best">10</span>',
-                        '<span class="votes">' . $score_count . '</span>'
-                    );
-            } else {
-                $markup .= '<div class="score-notice">' . sprintf(__('based on %s user reviews', 'marctv-shortscore') . '</div>',
-                        '<span class="votes">' . $score_count . '</span>'
-                    );
+            if ($score_count > 0) {
+                if (is_single()) {
+                    $markup .= '<div class="score-notice">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</strong></div>',
+                            '<span class="best">10</span>',
+                            '<strong><span class="votes">' . $score_count . '</span>'
+                        );
+                } else {
+                    $markup .= '<div class="score-notice">' . sprintf(__('based on %s user reviews', 'marctv-shortscore') . '</strong></div>',
+                            '<strong><span class="votes">' . $score_count . '</span>'
+                        );
+                }
             }
 
 
@@ -290,7 +292,7 @@ class MarcTVShortScore
         if (get_post_type($id) == 'game') {
 
             if (is_single()) {
-                $markup = '<div class="game-meta">';
+                $markup = '<div class="game-meta rating">';
 
                 $categories_list = get_the_term_list($id, 'platform', '', ', ');
                 $markup .= sprintf('<p class="platform"><strong><span class="screen-reader-text">%1$s </span>%2$s</strong></p>',
@@ -465,7 +467,7 @@ class MarcTVShortScore
         $score = get_comment_meta(get_comment_ID(), 'score', true);
 
         if (!empty($score)) {
-            return $comment_text . '<a href="' . get_comment_link($comment_ID) . '"><div class="rating shortscore">' . $score . '</div></a>';
+            return $comment_text . '<div class="rating shortscore">' . $score . '</div>';
         }
 
         return $comment_text;
