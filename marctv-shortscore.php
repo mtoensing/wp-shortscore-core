@@ -34,7 +34,6 @@ class MarcTVShortScore
 
     public function initFrontend()
     {
-        add_action('wp_print_styles', array($this, 'enqueScripts'));
         add_filter('get_comment_author_link', array($this, 'comment_author_profile_link'));
 
         add_shortcode('list_top_authors', array($this, 'list_top_authors'));
@@ -152,7 +151,7 @@ class MarcTVShortScore
 
     }
 
-    public function getReleaseDate()
+    public static function getReleaseDate()
     {
         $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
 
@@ -335,6 +334,8 @@ class MarcTVShortScore
                     $markup .= '<a href="' . $yturl . '" class="embedvideo">' . get_the_title($id) . '</a>';
                 }
 
+            } else {
+                $markup = '';
             }
             return $content . $markup;
         }
@@ -494,7 +495,10 @@ class MarcTVShortScore
         /* Get the comment author information */
 
         global $comment;
-        $comment_ID = $comment->user_id;
+
+        $user_ID = $comment->user_id;
+        $comment_ID = $comment->comment_ID;
+
         $author = get_comment_author($comment_ID);
         $url = get_comment_author_url($comment_ID);
 
@@ -515,7 +519,7 @@ class MarcTVShortScore
             case false:
                 /* Registered Commenter */
 
-                $registeredID = get_userdata($comment_ID);
+                $registeredID = get_userdata($user_ID);
                 $authorName = $registeredID->display_name;
                 $authorID = $registeredID->ID;
 
