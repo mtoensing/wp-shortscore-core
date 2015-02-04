@@ -63,14 +63,14 @@ class MarcTVShortScore
     public function initComments()
     {
         add_filter('pre_comment_content', 'esc_html');
-        add_filter('comment_form_defaults', array($this, 'change_comment_form_defaults'));
-        add_action('comment_post', array($this, 'save_comment_meta_data'));
+        add_filter('comment_form_defaults', array($this, 'changeCommentformDefaults'));
+        add_action('comment_post', array($this, 'saveCommentMetadata'));
 
-        add_action('comment_post', array($this, 'save_comment_meta_data'));
-        add_action('edit_comment', array($this, 'save_comment_meta_data'));
-        add_action('deleted_comment', array($this, 'save_comment_meta_data'));
-        add_action('trashed_comment', array($this, 'save_comment_meta_data'));
-        add_action('wp_insert_comment', array($this, 'save_comment_meta_data'));
+        add_action('comment_post', array($this, 'saveCommentMetadata'));
+        add_action('edit_comment', array($this, 'saveCommentMetadata'));
+        add_action('deleted_comment', array($this, 'saveCommentMetadata'));
+        add_action('trashed_comment', array($this, 'saveCommentMetadata'));
+        add_action('wp_insert_comment', array($this, 'saveCommentMetadata'));
 
         add_action('transition_comment_status', array($this, 'comment_approved_check'), 10, 3);
 
@@ -95,7 +95,7 @@ class MarcTVShortScore
     {
 
         if ($old_status != $new_status) {
-            $this->save_comment_meta_data($comment->comment_ID);
+            $this->saveCommentMetadata($comment->comment_ID);
         }
     }
 
@@ -174,7 +174,7 @@ class MarcTVShortScore
         return $releasedate;
     }
 
-    public function change_comment_form_defaults($default)
+    public function changeCommentformDefaults($default)
     {
 
         $post_id = get_the_ID();
@@ -206,8 +206,8 @@ class MarcTVShortScore
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is only allow once per game and you are not able to edit your SHORTSCORE', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Enter your SHORTSCORE', 'marctv-shortscore');
-            $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
-            $default['comment_field'] = $markup . $default['comment_field'];
+            $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="4" aria-required="true"></textarea></p>';
+            $default['comment_field'] = $default['comment_field'] . $markup;
         }
 
         return $default;
@@ -331,7 +331,7 @@ class MarcTVShortScore
                 $yturl = get_post_meta($id, 'Youtube', true);
 
                 if ($yturl) {
-                    $markup .= '<a href="' . $yturl . '" class="embedvideo">' . get_the_title($id) . '</a>';
+                    $markup .= '<a href="' . $yturl . '" class="embedvideo">' . get_the_title($id) . ' - Trailer</a>';
                 }
 
             } else {
@@ -343,7 +343,7 @@ class MarcTVShortScore
         return $content;
     }
 
-    public function save_comment_meta_data($comment_id)
+    public function saveCommentMetadata($comment_id)
     {
         $comment = get_comment($comment_id);
 
