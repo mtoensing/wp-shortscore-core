@@ -30,6 +30,8 @@ class MarcTVShortScore
     public function initSorting()
     {
         add_action('pre_get_posts', array($this, 'my_modify_main_query'));
+        add_filter('query_vars', array($this, 'add_query_vars_filter'));
+
     }
 
     public function initFrontend()
@@ -39,6 +41,12 @@ class MarcTVShortScore
         add_shortcode('list_top_authors', array($this, 'list_top_authors'));
     }
 
+
+    public function add_query_vars_filter($vars)
+    {
+        $vars[] = "coop";
+        return $vars;
+    }
 
     /*
      * http://www.mdj.us/web-development/php-programming/calculating-the-median-average-values-of-an-array-with-php/
@@ -480,12 +488,23 @@ class MarcTVShortScore
             $query->set('post_type', array('game', 'post'));
         }
 
+        if (get_query_var('coop') == true) {
+            $query->set('meta_query', array(
+                array(
+                    'key' => 'Co-op',
+                    'value' => 'Yes',
+                    'compare' => '='
+                )
+            ));
+        }
+
         if (!is_admin()) {
             if ($query->is_archive() && $query->is_main_query()) {
                 $query->set('post_type', array('game', 'post'));
                 $query->set('meta_key', 'score_value');
                 $query->set('orderby', 'meta_value_num date');
                 $query->set('order', 'DESC');
+
             }
         }
     }
