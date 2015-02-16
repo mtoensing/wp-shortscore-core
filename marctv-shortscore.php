@@ -13,7 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 class MarcTVShortScore
 {
 
-    private $version = '0.1';
+    private $version = '0.8';
     private $pluginPrefix = 'marctv-shortscore';
 
     public function __construct()
@@ -486,16 +486,6 @@ class MarcTVShortScore
     {
         if ($query->is_home() && $query->is_main_query()) { // Run only on the homepage
             $query->set('post_type', array('game', 'post'));
-        }
-
-        if (get_query_var('coop') == true) {
-            $query->set('meta_query', array(
-                array(
-                    'key' => 'Co-op',
-                    'value' => 'Yes',
-                    'compare' => '='
-                )
-            ));
         }
 
         if (!is_admin()) {
