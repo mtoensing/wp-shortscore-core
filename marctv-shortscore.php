@@ -91,7 +91,7 @@ class MarcTVShortScore
         add_filter('comment_form_default_fields', array($this, 'alter_comment_form_fields'));
         add_filter('comment_text', array($this, 'append_score'), 99);
         add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
-        add_filter('the_title', array($this, 'add_hreview_title'));
+        //add_filter('the_title', array($this, 'add_hreview_title'));
 
         add_action('add_meta_boxes_comment', array($this, 'comment_add_meta_box'));
         add_action('edit_comment', array($this, 'comment_edit_function'));
