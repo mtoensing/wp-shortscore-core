@@ -503,7 +503,7 @@ class MarcTVShortScore
         }
 
         if (!is_admin()) {
-            if ($query->is_archive() && $query->is_main_query()) {
+            if (($query->is_search() || $query->is_archive() ) && $query->is_main_query()) {
                 $query->set('post_type', array('game', 'post'));
                 $query->set('meta_key', 'score_value');
                 $query->set('orderby', 'meta_value_num date');
