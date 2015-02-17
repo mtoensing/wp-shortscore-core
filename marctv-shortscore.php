@@ -322,14 +322,28 @@ class MarcTVShortScore
 
                 if ($developer_list = get_the_term_list($id, 'developer', '', ', ')) {
                     $markup .= sprintf('<span class=" developer"><span class="screen-reader-text">%1$s </span>%2$s</span>',
-                        _x('Categories', 'Used before category names.', 'twentyfifteen'),
+                        _x('Entwickler', 'Used before category names.', 'twentyfifteen'),
                         $developer_list
                     );
                 }
 
                 if ($publisher_list = get_the_term_list($id, 'publisher', '', ', ')) {
                     $markup .= sprintf(' &mdash; <span class=" publisher"><span class="screen-reader-text">%1$s </span>%2$s</span>',
-                        _x('Categories', 'Used before category names.', 'twentyfifteen'),
+                        _x('Publisher', 'Used before category names.', 'twentyfifteen'),
+                        $publisher_list
+                    );
+                }
+
+                if ($publisher_list = get_the_term_list($id, 'coop', '', ', ')) {
+                    $markup .= sprintf('<div class="coop">Co-op Modus: <span class="screen-reader-text">%1$s </span>%2$s</div>',
+                        _x('Kooperationsmodus', 'Used before category names.', 'twentyfifteen'),
+                        $publisher_list
+                    );
+                }
+
+                if ($publisher_list = get_the_term_list($id, 'players', '', ', ')) {
+                    $markup .= sprintf('<div class="players">Anzahl der Spieler: <span class="screen-reader-text">%1$s </span>%2$s</div>',
+                        _x('Anzahl der Spieler', 'Used before category names.', 'twentyfifteen'),
                         $publisher_list
                     );
                 }
