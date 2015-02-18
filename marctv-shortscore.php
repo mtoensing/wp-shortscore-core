@@ -249,15 +249,18 @@ class MarcTVShortScore
             $markup .= '</a>';
 
             if ($score_count > 0) {
+
+                $submit_link = esc_url(get_permalink($id)) . '#comments';
+
                 if (is_single()) {
-                    $markup .= '<div class="score-notice">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</strong></div>',
+                    $markup .= '<div class="score-notice"><a href="' . $submit_link . '">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</strong></div>',
                             '<span class="best">10</span>',
                             '<strong><span class="votes">' . $score_count . '</span>'
-                        );
+                        ) . '</a>';
                 } else {
-                    $markup .= '<div class="score-notice">' . sprintf(__('based on %s user reviews', 'marctv-shortscore') . '</strong></div>',
+                    $markup .= '<div class="score-notice"><a href="' . $submit_link . '">' . sprintf(__('based on %s user reviews', 'marctv-shortscore') . '</strong></div>',
                             '<strong><span class="votes">' . $score_count . '</span>'
-                        );
+                        ) . '</a>';
                 }
             }
 
