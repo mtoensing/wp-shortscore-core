@@ -222,6 +222,37 @@ class MarcTVShortScore
     }
 
 
+    public static function getShortScoreCount($id = ''){
+        if ($id == '') {
+            $id = get_the_ID();
+        }
+
+        $score_count = get_post_meta($id, 'score_count', true);
+
+        if ($score_count > 0) {
+
+            $submit_link = esc_url(get_permalink($id)) . '#comments';
+
+            $markup .= '<div class="score-notice">';
+
+            if (is_single()) {
+
+                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</strong></a>',
+                        '<span class="best">10</span>',
+                        '<strong><span class="votes">' . $score_count . '</span>'
+                    );
+            } else {
+                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('based on %s user reviews', 'marctv-shortscore') . '</strong></a>',
+                        '<strong><span class="votes">' . $score_count . '</span>'
+                    );
+            }
+
+            $markup .= '</div>';
+        }
+
+        return $markup;
+    }
+
     public static function getShortScore($id = '')
     {
         if ($id == '') {
@@ -245,24 +276,7 @@ class MarcTVShortScore
 
             }
 
-
             $markup .= '</a>';
-
-            if ($score_count > 0) {
-
-                $submit_link = esc_url(get_permalink($id)) . '#comments';
-
-                if (is_single()) {
-                    $markup .= '<div class="score-notice"><a href="' . $submit_link . '">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</strong></a></div>',
-                            '<span class="best">10</span>',
-                            '<strong><span class="votes">' . $score_count . '</span>'
-                        );
-                } else {
-                    $markup .= '<div class="score-notice"><a href="' . $submit_link . '">' . sprintf(__('based on %s user reviews', 'marctv-shortscore') . '</strong></a></div>',
-                            '<strong><span class="votes">' . $score_count . '</span>'
-                        );
-                }
-            }
 
 
             return $markup;
@@ -311,6 +325,8 @@ class MarcTVShortScore
                 );
 
                 $markup .= $this->getShortScore();
+
+                $markup .= $this->getShortScoreCount();
 
                 $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
