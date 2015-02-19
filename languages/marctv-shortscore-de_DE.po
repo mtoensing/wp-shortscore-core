@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
 "POT-Creation-Date: 2015-02-19 15:24+0100\n"
-"PO-Revision-Date: 2015-02-19 15:24+0100\n"
+"PO-Revision-Date: 2015-02-19 17:04+0100\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
@@ -67,7 +67,7 @@ msgstr "Dein kurzes Fazit:"
 #: marctv-shortscore.php:240
 #, php-format
 msgid "out of %s based on %s"
-msgstr "von %s basiert auf %s"
+msgstr "von %s aufgrund von %s"
 
 #: marctv-shortscore.php:242 marctv-shortscore.php:246
 #, php-format
