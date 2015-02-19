@@ -222,7 +222,8 @@ class MarcTVShortScore
     }
 
 
-    public static function getShortScoreCount($id = ''){
+    public static function getShortScoreCount($id = '')
+    {
         if ($id == '') {
             $id = get_the_ID();
         }
@@ -236,14 +237,13 @@ class MarcTVShortScore
             $markup .= '<div class="score-notice">';
 
             if (is_single()) {
-
-                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('out of %s based on %s user reviews', 'marctv-shortscore') . '</strong></a>',
+                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('out of %s based on %s', 'marctv-shortscore') . '</strong></a>',
                         '<span class="best">10</span>',
-                        '<strong><span class="votes">' . $score_count . '</span>'
+                        '<strong><span class="votes">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
                     );
             } else {
-                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('based on %s user reviews', 'marctv-shortscore') . '</strong></a>',
-                        '<strong><span class="votes">' . $score_count . '</span>'
+                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('based on %s', 'marctv-shortscore') . '</strong></a>',
+                        '<strong><span class="votes">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
                     );
             }
 
@@ -341,7 +341,7 @@ class MarcTVShortScore
 
                 if ($developer_list = get_the_term_list($id, 'developer', '', ', ')) {
                     $markup .= sprintf('<span class=" developer"><span class="screen-reader-text">%1$s </span>%2$s</span>',
-                        _x('Entwickler', 'Used before category names.', 'twentyfifteen'),
+                        _x('Developer', 'Used before category names.', 'twentyfifteen'),
                         $developer_list
                     );
                 }
@@ -355,14 +355,14 @@ class MarcTVShortScore
 
                 if ($publisher_list = get_the_term_list($id, 'coop', '', ', ')) {
                     $markup .= sprintf('<div class="coop">Co-op Modus: <span class="screen-reader-text">%1$s </span>%2$s</div>',
-                        _x('Kooperationsmodus', 'Used before category names.', 'twentyfifteen'),
+                        _x('coop mode', 'Used before category names.', 'twentyfifteen'),
                         $publisher_list
                     );
                 }
 
                 if ($publisher_list = get_the_term_list($id, 'players', '', ', ')) {
                     $markup .= sprintf('<div class="players">Anzahl der Spieler: <span class="screen-reader-text">%1$s </span>%2$s</div>',
-                        _x('Anzahl der Spieler', 'Used before category names.', 'twentyfifteen'),
+                        _x('Playercount', 'Used before category names.', 'twentyfifteen'),
                         $publisher_list
                     );
                 }
@@ -522,7 +522,7 @@ class MarcTVShortScore
         }
 
         if (!is_admin()) {
-            if (($query->is_search() || $query->is_archive() ) && $query->is_main_query()) {
+            if (($query->is_search() || $query->is_archive()) && $query->is_main_query()) {
                 $query->set('post_type', array('game', 'post'));
                 $query->set('meta_key', 'score_value');
                 $query->set('orderby', 'meta_value_num date');
