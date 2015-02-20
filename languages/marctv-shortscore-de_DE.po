@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
-"POT-Creation-Date: 2015-02-19 15:24+0100\n"
-"PO-Revision-Date: 2015-02-19 17:04+0100\n"
+"POT-Creation-Date: 2015-02-19 19:36+0100\n"
+"PO-Revision-Date: 2015-02-19 19:37+0100\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
@@ -64,67 +64,76 @@ msgstr "SPORTSCORE abgeben"
 msgid "Your short review text:"
 msgstr "Dein kurzes Fazit:"
 
-#: marctv-shortscore.php:240
+#: marctv-shortscore.php:242
 #, php-format
 msgid "out of %s based on %s"
-msgstr "von %s aufgrund von %s"
+msgstr "von %s basierend auf %s"
 
-#: marctv-shortscore.php:242 marctv-shortscore.php:246
+#: marctv-shortscore.php:244 marctv-shortscore.php:248
 #, php-format
 msgid "one user review"
 msgid_plural "%s user reviews"
 msgstr[0] "einer Bewertung"
 msgstr[1] "%s Bewertungen"
 
-#: marctv-shortscore.php:245
+#: marctv-shortscore.php:247
 #, php-format
 msgid "based on %s"
 msgstr "basiert auf %s"
 
-#: marctv-shortscore.php:292
+#: marctv-shortscore.php:253
+msgid "No reviews yet"
+msgstr "Noch keine Bewertung"
+
+#: marctv-shortscore.php:301
 msgid "SHORTSCORE"
 msgstr "SHORTSCORE"
 
-#: marctv-shortscore.php:323 marctv-shortscore.php:337
+#: marctv-shortscore.php:332
 msgctxt "Used before category names."
 msgid "Categories"
 msgstr "Kategorien"
 
-#: marctv-shortscore.php:331
+#: marctv-shortscore.php:340
 #, php-format
 msgid "<a class=\"btn\" href=\"%s\">Submit ShortScore</a>"
 msgstr "<a class=\"btn\" href=\"%s\"> SHORTSCORE abgeben</a>"
 
-#: marctv-shortscore.php:344
+#: marctv-shortscore.php:346
+msgctxt "Used before category names."
+msgid "Genre"
+msgstr ""
+
+#: marctv-shortscore.php:354
 msgctxt "Used before category names."
 msgid "Developer"
 msgstr "Entwickler"
 
-#: marctv-shortscore.php:351
+#: marctv-shortscore.php:361
 msgctxt "Used before category names."
 msgid "Publisher"
 msgstr "Publisher"
 
-#: marctv-shortscore.php:358
+#: marctv-shortscore.php:370
 msgctxt "Used before category names."
 msgid "coop mode"
 msgstr "Kooperationsmodus"
 
-#: marctv-shortscore.php:365
+#: marctv-shortscore.php:377
 msgctxt "Used before category names."
 msgid "Playercount"
 msgstr "Anzahl der Spieler"
 
-#: marctv-shortscore.php:448
+#: marctv-shortscore.php:460
 msgid "Error: please fill the required field (score)."
 msgstr "Fehler: Bitte fühl das Feld für den SHORTSCORE aus."
 
-#: marctv-shortscore.php:452
+#: marctv-shortscore.php:464
 msgid "Error: enter a rating smaller than 10 and greater than 0 for (score)."
 msgstr ""
 "Fehler: Gib einen SHORTSCORE kleiner als 10 und größer als 0 ein für (score)."
 
-#: marctv-shortscore.php:475
+#: marctv-shortscore.php:487
 msgid "Sorry, this account has already submitted a shortscore for this game."
 msgstr ""
 "Tut mir leid, aber jeder Account darf nur einen SHORTSCORE pro Spiel abgeben."

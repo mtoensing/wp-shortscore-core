@@ -228,13 +228,15 @@ class MarcTVShortScore
             $id = get_the_ID();
         }
 
+        $markup = '';
+
         $score_count = get_post_meta($id, 'score_count', true);
 
+        $submit_link = esc_url(get_permalink($id)) . '#comments';
+
+        $markup .= '<div class="score-notice">';
+
         if ($score_count > 0) {
-
-            $submit_link = esc_url(get_permalink($id)) . '#comments';
-
-            $markup .= '<div class="score-notice">';
 
             if (is_single()) {
                 $markup .= '<a href="' . $submit_link . '">' . sprintf(__('out of %s based on %s', 'marctv-shortscore') . '</strong></a>',
@@ -247,8 +249,11 @@ class MarcTVShortScore
                     );
             }
 
-            $markup .= '</div>';
+        } else {
+            $markup .= '<a href="' . $submit_link . '">' . __('No reviews yet', 'marctv-shortscore') . '</a>';
         }
+
+        $markup .= '</div>';
 
         return $markup;
     }
@@ -262,7 +267,7 @@ class MarcTVShortScore
 
         if (get_post_type($id) == 'game') {
             $score_count = get_post_meta($id, 'score_count', true);
-            if(is_single()) {
+            if (is_single()) {
                 $markup = '<a class="score" href="' . get_permalink($id) . '#comments">';
             } else {
                 $markup = '<a class="score" href="' . get_permalink($id) . '">';
@@ -320,7 +325,7 @@ class MarcTVShortScore
         if (get_post_type($id) == 'game') {
 
             if (is_single()) {
-                $markup = '<div class="game-meta rating">';
+                $markup = '<div class="rating">';
 
                 $categories_list = get_the_term_list($id, 'platform', '', ', ');
                 $markup .= sprintf('<p class="platform"><strong><span class="screen-reader-text">%1$s </span>%2$s</strong></p>',
@@ -334,11 +339,15 @@ class MarcTVShortScore
 
                 $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
+                $markup .= '</div>';
+                
+                $markup .= '<div class="game-meta rating">';
+
                 $markup .= $this->getReleaseDate();
 
                 if ($genre_list = get_the_term_list($id, 'genre', '', ', ')) {
                     $markup .= sprintf('<p class="genre"><span class="label">%1$s </span>%2$s</p>',
-                        _x('Genre', 'Used before category names.', 'marctv-shortscore').':',
+                        _x('Genre', 'Used before category names.', 'marctv-shortscore') . ':',
                         $genre_list
                     );
                 }
@@ -346,14 +355,14 @@ class MarcTVShortScore
                 $markup .= '<p>';
                 if ($developer_list = get_the_term_list($id, 'developer', '', ', ')) {
                     $markup .= sprintf('<span class="developer"><span class="label">%1$s </span>%2$s</span>',
-                        _x('Developer', 'Used before category names.', 'marctv-shortscore').':',
+                        _x('Developer', 'Used before category names.', 'marctv-shortscore') . ':',
                         $developer_list
                     );
                 }
 
                 if ($publisher_list = get_the_term_list($id, 'publisher', '', ', ')) {
                     $markup .= sprintf(' &mdash; <span class=" publisher"><span class="label">%1$s </span>%2$s</span>',
-                        _x('Publisher', 'Used before category names.', 'marctv-shortscore').':',
+                        _x('Publisher', 'Used before category names.', 'marctv-shortscore') . ':',
                         $publisher_list
                     );
                 }
@@ -362,14 +371,14 @@ class MarcTVShortScore
 
                 if ($publisher_list = get_the_term_list($id, 'coop', '', ', ')) {
                     $markup .= sprintf('<p class="coop"><span class="label">%1$s </span>%2$s</p>',
-                        _x('coop mode', 'Used before category names.', 'marctv-shortscore').':',
+                        _x('coop mode', 'Used before category names.', 'marctv-shortscore') . ':',
                         $publisher_list
                     );
                 }
 
                 if ($publisher_list = get_the_term_list($id, 'players', '', ', ')) {
                     $markup .= sprintf('<p class="players"><span class="label">%1$s </span>%2$s</p>',
-                        _x('Playercount', 'Used before category names.', 'marctv-shortscore').':',
+                        _x('Playercount', 'Used before category names.', 'marctv-shortscore') . ':',
                         $publisher_list
                     );
                 }
