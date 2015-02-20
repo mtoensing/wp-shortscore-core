@@ -174,7 +174,7 @@ class MarcTVShortScore
             get_the_modified_date()
         );
 
-        $releasedate = sprintf('<p class="posted-on">Veröffentlicht am  <span class="screen-reader-text">%1$s </span>%2$s</p>',
+        $releasedate = sprintf('<p class="posted-on"><span class="label">%1$s:</span> <span class="screen-reader-text">%1$s </span>%2$s</p>',
             _x('Posted on', 'Used before publish date.', 'twentyfifteen'),
             $time_string
         );
@@ -340,7 +340,7 @@ class MarcTVShortScore
                 $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
                 $markup .= '</div>';
-                
+
                 $markup .= '<div class="game-meta rating">';
 
                 $markup .= $this->getReleaseDate();
@@ -354,14 +354,14 @@ class MarcTVShortScore
 
                 $markup .= '<p>';
                 if ($developer_list = get_the_term_list($id, 'developer', '', ', ')) {
-                    $markup .= sprintf('<span class="developer"><span class="label">%1$s </span>%2$s</span>',
+                    $markup .= sprintf('<p class="developer"><span class="label">%1$s </span>%2$s</p>',
                         _x('Developer', 'Used before category names.', 'marctv-shortscore') . ':',
                         $developer_list
                     );
                 }
 
                 if ($publisher_list = get_the_term_list($id, 'publisher', '', ', ')) {
-                    $markup .= sprintf(' &mdash; <span class=" publisher"><span class="label">%1$s </span>%2$s</span>',
+                    $markup .= sprintf('<p class=" publisher"><span class="label">%1$s </span>%2$s</p>',
                         _x('Publisher', 'Used before category names.', 'marctv-shortscore') . ':',
                         $publisher_list
                     );
