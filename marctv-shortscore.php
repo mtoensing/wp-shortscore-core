@@ -15,6 +15,7 @@ class MarcTVShortScore
 
     private $version = '0.8';
     private $pluginPrefix = 'marctv-shortscore';
+    private $shortscore_explained_url = 'http://shortscore.de/haeufige-fragen/#calculation';
 
     public function __construct()
     {
@@ -39,6 +40,37 @@ class MarcTVShortScore
         add_filter('get_comment_author_link', array($this, 'comment_author_profile_link'));
 
         add_shortcode('list_top_authors', array($this, 'list_top_authors'));
+    }
+
+    public function initComments()
+    {
+        add_filter('pre_comment_content', 'esc_html');
+        add_filter('comment_form_defaults', array($this, 'changeCommentformDefaults'));
+
+        add_action('comment_post', array($this, 'saveCommentMetadata'));
+        add_action('comment_post', array($this, 'saveCommentMetadata'));
+        add_action('edit_comment', array($this, 'saveCommentMetadata'));
+        add_action('deleted_comment', array($this, 'saveCommentMetadata'));
+        add_action('trashed_comment', array($this, 'saveCommentMetadata'));
+        add_action('wp_insert_comment', array($this, 'saveCommentMetadata'));
+
+        add_action('transition_comment_status', array($this, 'comment_approved_check'), 10, 3);
+
+        add_filter('preprocess_comment', array($this, 'verify_comment_meta_data'));
+
+        add_filter('the_content', array($this, 'addShortScoreLink'));
+
+        add_filter('preprocess_comment', array($this, 'verify_comment_duplicate_email'));
+
+        add_filter('comment_form_default_fields', array($this, 'alter_comment_form_fields'));
+        add_filter('comment_text', array($this, 'append_score'), 99);
+        add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
+        //add_filter('the_title', array($this, 'add_hreview_title'));
+
+        add_action('add_meta_boxes_comment', array($this, 'comment_add_meta_box'));
+        add_action('edit_comment', array($this, 'comment_edit_function'));
+
+
     }
 
 
@@ -67,37 +99,6 @@ class MarcTVShortScore
         return $median;
     }
 
-
-    public function initComments()
-    {
-        add_filter('pre_comment_content', 'esc_html');
-        add_filter('comment_form_defaults', array($this, 'changeCommentformDefaults'));
-        add_action('comment_post', array($this, 'saveCommentMetadata'));
-
-        add_action('comment_post', array($this, 'saveCommentMetadata'));
-        add_action('edit_comment', array($this, 'saveCommentMetadata'));
-        add_action('deleted_comment', array($this, 'saveCommentMetadata'));
-        add_action('trashed_comment', array($this, 'saveCommentMetadata'));
-        add_action('wp_insert_comment', array($this, 'saveCommentMetadata'));
-
-        add_action('transition_comment_status', array($this, 'comment_approved_check'), 10, 3);
-
-        add_filter('preprocess_comment', array($this, 'verify_comment_meta_data'));
-
-        add_filter('the_content', array($this, 'addShortScoreLink'));
-
-        add_filter('preprocess_comment', array($this, 'verify_comment_duplicate_email'));
-
-        add_filter('comment_form_default_fields', array($this, 'alter_comment_form_fields'));
-        add_filter('comment_text', array($this, 'append_score'), 99);
-        add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
-        //add_filter('the_title', array($this, 'add_hreview_title'));
-
-        add_action('add_meta_boxes_comment', array($this, 'comment_add_meta_box'));
-        add_action('edit_comment', array($this, 'comment_edit_function'));
-
-
-    }
 
     public function comment_approved_check($new_status, $old_status, $comment)
     {
@@ -175,7 +176,7 @@ class MarcTVShortScore
         );
 
         $releasedate = sprintf('<p class="posted-on"><span class="label">%1$s:</span> <span class="screen-reader-text">%1$s </span>%2$s</p>',
-            _x('Posted on', 'Used before publish date.', 'twentyfifteen'),
+            _x('Posted on', 'Used before publish date.', 'marctv-shortscore'),
             $time_string
         );
 
@@ -322,14 +323,17 @@ class MarcTVShortScore
     {
         $id = get_the_ID();
 
+        $this->saveRatingsToPost($id);
+
         if (get_post_type($id) == 'game') {
 
             if (is_single()) {
+
                 $markup = '<div class="rating">';
 
                 $categories_list = get_the_term_list($id, 'platform', '', ', ');
                 $markup .= sprintf('<p class="platform"><strong><span class="screen-reader-text">%1$s </span>%2$s</strong></p>',
-                    _x('Categories', 'Used before category names.', 'twentyfifteen'),
+                    _x('Categories', 'Used before category names.', 'marctv-shortscore'),
                     $categories_list
                 );
 
@@ -339,9 +343,14 @@ class MarcTVShortScore
 
                 $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
+
+
                 $markup .= '</div>';
 
                 $markup .= '<div class="game-meta rating">';
+
+
+                $markup .= $this->renderBarChart($id);
 
                 $markup .= $this->getReleaseDate();
 
@@ -400,18 +409,93 @@ class MarcTVShortScore
         return $content;
     }
 
+    public function convertScoreDistribution($post_ID)
+    {
+        $score_distribution = get_post_meta($post_ID, 'score_distribution', true);
+        $score_distribution_sum = array_sum($score_distribution);
+
+        if(!empty($score_distribution ) && $score_distribution_sum != 0) {
+
+            $score_distribution_percent = array(
+                1 => 0,
+                2 => 0,
+                3 => 0,
+                4 => 0,
+                5 => 0,
+                6 => 0,
+                7 => 0,
+                8 => 0,
+                9 => 0,
+                10 => 0
+            );
+
+            $score_num = 1;
+            foreach ($score_distribution as $score_value) {
+                $score_distribution_percent[$score_num] = round($score_value * 100 / $score_distribution_sum, 1);
+                $score_num++;
+            }
+
+            return $score_distribution_percent;
+        } else {
+            return false;
+        }
+
+
+    }
+
+    public function renderBarChart($post_ID)
+    {
+        $score_value = get_post_meta($post_ID, 'score_value', true);
+        $score_distribution_percent = $this->convertScoreDistribution($post_ID);
+        $score_floor = floor($score_value);
+        $score_ceil = ceil($score_value);
+
+        if ($score_value > 0 && !empty($score_distribution_percent)) {
+            $markup = '<p>';
+            $markup .= '<span class="label">' . __('score distribution','marctv-shortscore'). ': <small>(<a href="' . $this->shortscore_explained_url . '">' .  __('what is this?','marctv-shortscore') . '</a>)</small></span>';
+
+            $score_num = 1;
+            $markup .= '<ol class="score-distribution-chart bars">';
+            foreach ($score_distribution_percent as $score_percent) {
+                $markup .= '<li style="height:' . $score_percent . 'px"></li><!-- -->';
+                $score_num++;
+            }
+            $markup .= '<li class="keep-height"></li>';
+            $markup .= '</ol>';
+            $markup .= '<ol class="score-distribution-chart labels">';
+
+            $score_num = 1;
+            foreach ($score_distribution_percent as $score_percent) {
+
+                if($score_num == $score_floor || $score_num == $score_ceil){
+                    $markup .= '<li><strong>' . $score_num . '</strong></li>';
+                }else {
+                    $markup .= '<li>' . $score_num . '</li>';
+                }
+
+                $score_num++;
+            }
+            $markup .= '</ol>';
+            $markup .= '</p>';
+            return $markup;
+        }
+
+        return false;
+    }
+
     public function saveCommentMetadata($comment_id)
     {
         $comment = get_comment($comment_id);
 
         if (get_post_type($comment->comment_post_ID) == 'game') {
             add_comment_meta($comment_id, 'score', $_POST['score'], true);
-            $this->save_ratings_to_post($comment->comment_post_ID);
+            $this->saveRatingsToPost($comment->comment_post_ID);
         }
     }
 
-    public function save_ratings_to_post($post_ID)
+    public function saveRatingsToPost($post_ID)
     {
+
         $args = array(
             'status' => 'approve',
             'post_id' => $post_ID,
@@ -420,6 +504,18 @@ class MarcTVShortScore
         $score_sum = 0;
         $score_count = 0;
         $score_arr = array();
+        $score_distribution = array(
+            1 => 0,
+            2 => 0,
+            3 => 0,
+            4 => 0,
+            5 => 0,
+            6 => 0,
+            7 => 0,
+            8 => 0,
+            9 => 0,
+            10 => 0
+        );
 
         $comments = get_comments($args);
 
@@ -427,31 +523,38 @@ class MarcTVShortScore
             $comment->comment_ID;
             $meta_score = get_comment_meta($comment->comment_ID, 'score', true);
 
+            $score_distribution[round($meta_score)]++;
+
             if ($meta_score) {
                 $score_count++;
                 $score_sum = $score_sum + $meta_score;
                 $score_arr[] = $meta_score;
             }
-
         endforeach;
 
-        if ($score_sum > 0 && $score_count > 0) {
-            // Average
-            //$score_value = round($score_sum / $score_count, 1);
+        $this->savePostMeta($post_ID, 'score_distribution', $score_distribution);
 
+        if ($score_sum > 0 && $score_count > 0) {
             /* use median instead of average calculation */
+
             $score_value = round($this->calculateMedian($score_arr), 1);
 
-            add_post_meta($post_ID, 'score_value', $score_value, true) || update_post_meta($post_ID, 'score_value', $score_value);
-            add_post_meta($post_ID, 'score_sum', $score_sum, true) || update_post_meta($post_ID, 'score_sum', $score_sum);
-            add_post_meta($post_ID, 'score_count', $score_count, true) || update_post_meta($post_ID, 'score_count', $score_count);
+            $this->savePostMeta($post_ID, 'score_value', $score_value);
+            $this->savePostMeta($post_ID, 'score_sum', $score_sum);
+            $this->savePostMeta($post_ID, 'score_count', $score_count);
+
         } else {
-            add_post_meta($post_ID, 'score_value', 0, true) || update_post_meta($post_ID, 'score_value', 0);
-            add_post_meta($post_ID, 'score_sum', 0, true) || update_post_meta($post_ID, 'score_sum', 0);
-            add_post_meta($post_ID, 'score_count', 0, true) || update_post_meta($post_ID, 'score_count', 0);
+            $this->savePostMeta($post_ID, 'score_value', 0);
+            $this->savePostMeta($post_ID, 'score_sum', 0);
+            $this->savePostMeta($post_ID, 'score_count', 0);
         }
     }
 
+
+    public function savePostMeta($post_ID, $meta_name, $meta_value)
+    {
+        add_post_meta($post_ID, $meta_name, $meta_value, true) || update_post_meta($post_ID, $meta_name, $meta_value);
+    }
 
     public function verify_comment_meta_data($commentdata)
     {
@@ -515,8 +618,9 @@ class MarcTVShortScore
 
         $comment = get_comment($comment_ID);
 
-        $cid = $comment->user_id;
-        $pid = $comment->comment_post_ID;
+        if ($comment_ID) {
+            $cid = $comment->user_id;
+        }
 
         if (is_author($cid)) {
             $comment_text = '<h4><a href="' . get_comment_link($comment_ID) . '">' . get_the_title($comment->comment_post_ID) . '</a></h4>';
