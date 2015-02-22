@@ -233,25 +233,30 @@ class MarcTVShortScore
 
         $score_count = get_post_meta($id, 'score_count', true);
 
-        $submit_link = esc_url(get_permalink($id)) . '#comments';
+        $submit_link = esc_url(get_permalink($id));
 
         $markup .= '<div class="score-notice">';
 
         if ($score_count > 0) {
 
             if (is_single()) {
-                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('out of %s based on %s', 'marctv-shortscore') . '</strong></a>',
+                $markup .= '<a href="' . $submit_link . '#comments">' . sprintf(__('out of %s based on %s', 'marctv-shortscore') . '</strong></a>',
                         '<span class="best">10</span>',
                         '<strong><span class="votes">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
                     );
             } else {
-                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('based on %s', 'marctv-shortscore') . '</strong></a>',
+                $markup .= '<a href="' . $submit_link . '#scoreheader">' . sprintf(__('based on %s', 'marctv-shortscore') . '</strong></a>',
                         '<strong><span class="votes">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
                     );
             }
 
         } else {
-            $markup .= '<a href="' . $submit_link . '">' . __('No reviews yet', 'marctv-shortscore') . '</a>';
+            if (is_single()) {
+                $markup .= '<a href="' . $submit_link . '#comments">' . __('No reviews yet', 'marctv-shortscore') . '</a>';
+            } else {
+                $markup .= '<a href="' . $submit_link . '#scoreheader">' . __('No reviews yet', 'marctv-shortscore') . '</a>';
+            }
+
         }
 
         $markup .= '</div>';
@@ -269,9 +274,9 @@ class MarcTVShortScore
         if (get_post_type($id) == 'game') {
             $score_count = get_post_meta($id, 'score_count', true);
             if (is_single()) {
-                $markup = '<a class="score" href="' . get_permalink($id) . '#comments">';
+                $markup = '<a class="score" href="' . get_permalink($id) . '#scoreheader">';
             } else {
-                $markup = '<a class="score" href="' . get_permalink($id) . '">';
+                $markup = '<a class="score" href="' . get_permalink($id) . '#scoreheader">';
             }
 
             if ($score_count > 0) {
@@ -323,8 +328,6 @@ class MarcTVShortScore
     {
         $id = get_the_ID();
 
-        $this->saveRatingsToPost($id);
-
         if (get_post_type($id) == 'game') {
 
             if (is_single()) {
@@ -342,7 +345,6 @@ class MarcTVShortScore
                 $markup .= $this->getShortScoreCount();
 
                 $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
-
 
 
                 $markup .= '</div>';
@@ -414,7 +416,7 @@ class MarcTVShortScore
         $score_distribution = get_post_meta($post_ID, 'score_distribution', true);
         $score_distribution_sum = array_sum($score_distribution);
 
-        if(!empty($score_distribution ) && $score_distribution_sum != 0) {
+        if (!empty($score_distribution) && $score_distribution_sum != 0) {
 
             $score_distribution_percent = array(
                 1 => 0,
@@ -452,7 +454,7 @@ class MarcTVShortScore
 
         if ($score_value > 0 && !empty($score_distribution_percent)) {
             $markup = '<p>';
-            $markup .= '<span class="label">' . __('score distribution','marctv-shortscore'). ': <small>(<a href="' . $this->shortscore_explained_url . '">' .  __('what is this?','marctv-shortscore') . '</a>)</small></span>';
+            $markup .= '<span class="label">' . __('score distribution', 'marctv-shortscore') . ': <small>(<a href="' . $this->shortscore_explained_url . '">' . __('what is this?', 'marctv-shortscore') . '</a>)</small></span>';
 
             $score_num = 1;
             $markup .= '<ol class="score-distribution-chart bars">';
@@ -467,9 +469,9 @@ class MarcTVShortScore
             $score_num = 1;
             foreach ($score_distribution_percent as $score_percent) {
 
-                if($score_num == $score_floor || $score_num == $score_ceil){
+                if ($score_num == $score_floor || $score_num == $score_ceil) {
                     $markup .= '<li><strong>' . $score_num . '</strong></li>';
-                }else {
+                } else {
                     $markup .= '<li>' . $score_num . '</li>';
                 }
 
