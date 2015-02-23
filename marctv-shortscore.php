@@ -453,8 +453,26 @@ class MarcTVShortScore
         $score_ceil = ceil($score_value);
 
         if ($score_value > 0 && !empty($score_distribution_percent)) {
+
+
+            $score_num = 1;
             $markup = '<p>';
             $markup .= '<span class="label">' . __('score distribution', 'marctv-shortscore') . ': <small>(<a href="' . $this->shortscore_explained_url . '">' . __('what is this?', 'marctv-shortscore') . '</a>)</small></span>';
+
+            $markup .= '<ol class="score-distribution-chart labels top">';
+
+            foreach ($score_distribution_percent as $score_percent) {
+
+                if ($score_num == $score_floor || $score_num == $score_ceil) {
+                    $markup .= '<li>&nbsp;</li>';
+                } else {
+                    $markup .= '<li>&nbsp;</li>';
+                }
+
+                $score_num++;
+            }
+            $markup .= '<li class="legend">100%</li>';
+            $markup .= '</ol>';
 
             $score_num = 1;
             $markup .= '<ol class="score-distribution-chart bars">';
@@ -464,7 +482,7 @@ class MarcTVShortScore
             }
             $markup .= '<li class="keep-height"></li>';
             $markup .= '</ol>';
-            $markup .= '<ol class="score-distribution-chart labels">';
+            $markup .= '<ol class="score-distribution-chart labels bottom">';
 
             $score_num = 1;
             foreach ($score_distribution_percent as $score_percent) {
@@ -477,6 +495,7 @@ class MarcTVShortScore
 
                 $score_num++;
             }
+            $markup .= '<li class="legend">0%</li>';
             $markup .= '</ol>';
             $markup .= '</p>';
             return $markup;
@@ -646,8 +665,12 @@ class MarcTVShortScore
         if (!is_admin()) {
             if (($query->is_search() || $query->is_archive()) && $query->is_main_query()) {
                 $query->set('post_type', array('game', 'post'));
+
+                $query->set('meta_key', 'score_count');
+                $query->set('orderby', 'meta_value_num date');
                 $query->set('meta_key', 'score_value');
                 $query->set('orderby', 'meta_value_num date');
+
                 $query->set('order', 'DESC');
 
             }
