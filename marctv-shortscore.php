@@ -414,7 +414,10 @@ class MarcTVShortScore
     public function convertScoreDistribution($post_ID)
     {
         $score_distribution = get_post_meta($post_ID, 'score_distribution', true);
-        $score_distribution_sum = array_sum($score_distribution);
+
+        if(is_array($score_distribution)){
+            $score_distribution_sum = array_sum($score_distribution);
+        }
 
         if (!empty($score_distribution) && $score_distribution_sum != 0) {
 
@@ -460,6 +463,7 @@ class MarcTVShortScore
             $markup .= '<span class="label">' . __('score distribution', 'marctv-shortscore') . ': <small>(<a href="' . $this->shortscore_explained_url . '">' . __('what is this?', 'marctv-shortscore') . '</a>)</small></span>';
 
             $markup .= '<ol class="score-distribution-chart labels top">';
+            //$markup .= '<li class="legend">100%</li>';
 
             foreach ($score_distribution_percent as $score_percent) {
 
@@ -471,19 +475,20 @@ class MarcTVShortScore
 
                 $score_num++;
             }
-            $markup .= '<li class="legend">100%</li>';
+
             $markup .= '</ol>';
 
             $score_num = 1;
             $markup .= '<ol class="score-distribution-chart bars">';
+            $markup .= '<li class="keep-height"></li>';
             foreach ($score_distribution_percent as $score_percent) {
                 $markup .= '<li style="height:' . $score_percent . 'px"></li><!-- -->';
                 $score_num++;
             }
-            $markup .= '<li class="keep-height"></li>';
+
             $markup .= '</ol>';
             $markup .= '<ol class="score-distribution-chart labels bottom">';
-
+            //$markup .= '<li class="legend">0%</li>';
             $score_num = 1;
             foreach ($score_distribution_percent as $score_percent) {
 
@@ -495,7 +500,7 @@ class MarcTVShortScore
 
                 $score_num++;
             }
-            $markup .= '<li class="legend">0%</li>';
+
             $markup .= '</ol>';
             $markup .= '</p>';
             return $markup;
