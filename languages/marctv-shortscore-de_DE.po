@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
-"POT-Creation-Date: 2015-02-21 23:49+0100\n"
-"PO-Revision-Date: 2015-02-21 23:50+0100\n"
+"POT-Creation-Date: 2015-02-24 09:25+0100\n"
+"PO-Revision-Date: 2015-02-24 09:26+0100\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
@@ -42,23 +42,24 @@ msgstr "SHORTSCORE abschicken"
 #: marctv-shortscore.php:214
 #, php-format
 msgid ""
-"You must be <a href=\"%1s\">logged in</a> to post a ShortScore. <a href=\"%2s"
-"\">Registration</a> is fast and free!"
+"You must be <a href=\"%1s\">logged in</a> to post your SHORTSCORE. <a href="
+"\"%2s\">Registration</a> is free and easy!"
 msgstr ""
-"Du musst Dich <a href=\"%1s\">anmelden</a> um deinen SHORTSCORE abgeben zu "
-"können. Die <a href=\"%2s\">Registrierung</a> geht schnell und ist kostenlos!"
+"Du musst <a href=\"%1s\">angemeldet</a> sein , um deinen SHORTSCORE abgeben "
+"zu können. Die <a href=\"%2s\">Registrierung</a> ist kostenlos und ganz "
+"einfach!"
 
 #: marctv-shortscore.php:216
 msgid ""
-"Each account is only allow once per game and you are not able to edit your "
-"SHORTSCORE"
+"Each account is allow to post only once per game. You are not allowed to "
+"edit your SHORTSCORE afterwards."
 msgstr ""
-"Jeder Benutzer kann nur einmal bewerten. Du kannst deinen SHORTSCORE danach "
-"nicht mehr ändern."
+"Du darfst nur eine SHORTSCORE pro Spiel abgeben. SHORTSCORES können nicht "
+"nachträglich bearbeitet werden."
 
 #: marctv-shortscore.php:217
-msgid "Enter your SHORTSCORE"
-msgstr "SPORTSCORE abgeben"
+msgid "Select your SHORTSCORE"
+msgstr "Gib deinen SHORTSCORE ab"
 
 #: marctv-shortscore.php:218
 msgid "Your short review text:"
@@ -81,70 +82,94 @@ msgstr[1] "%s Bewertungen"
 msgid "based on %s"
 msgstr "basiert auf %s"
 
-#: marctv-shortscore.php:254
+#: marctv-shortscore.php:255 marctv-shortscore.php:257
 msgid "No reviews yet"
 msgstr "Noch keine Bewertung"
 
-#: marctv-shortscore.php:302
+#: marctv-shortscore.php:307
 msgid "SHORTSCORE"
 msgstr "SHORTSCORE"
 
-#: marctv-shortscore.php:336
+#: marctv-shortscore.php:339
 msgctxt "Used before category names."
 msgid "Categories"
 msgstr "Kategorien"
 
-#: marctv-shortscore.php:344
+#: marctv-shortscore.php:347
 #, php-format
 msgid "<a class=\"btn\" href=\"%s\">Submit ShortScore</a>"
 msgstr "<a class=\"btn\" href=\"%s\"> SHORTSCORE abgeben</a>"
 
-#: marctv-shortscore.php:359
+#: marctv-shortscore.php:361
 msgctxt "Used before category names."
 msgid "Genre"
 msgstr "Genre"
 
-#: marctv-shortscore.php:367
+#: marctv-shortscore.php:369
 msgctxt "Used before category names."
 msgid "Developer"
 msgstr "Entwickler"
 
-#: marctv-shortscore.php:374
+#: marctv-shortscore.php:376
 msgctxt "Used before category names."
 msgid "Publisher"
 msgstr "Publisher"
 
-#: marctv-shortscore.php:383
+#: marctv-shortscore.php:385
 msgctxt "Used before category names."
 msgid "coop mode"
 msgstr "Kooperationsmodus"
 
-#: marctv-shortscore.php:390
+#: marctv-shortscore.php:392
 msgctxt "Used before category names."
 msgid "Playercount"
 msgstr "Anzahl der Spieler"
 
-#: marctv-shortscore.php:455
+#: marctv-shortscore.php:463
 msgid "score distribution"
-msgstr "Verteilung der Wertungen"
+msgstr "Werteverteilung"
 
-#: marctv-shortscore.php:455
+#: marctv-shortscore.php:463
 msgid "what is this?"
 msgstr "Was ist das?"
 
-#: marctv-shortscore.php:566
+#: marctv-shortscore.php:593
 msgid "Error: please fill the required field (score)."
 msgstr "Fehler: Bitte fühl das Feld für den SHORTSCORE aus."
 
-#: marctv-shortscore.php:570
+#: marctv-shortscore.php:597
 msgid "Error: enter a rating smaller than 10 and greater than 0 for (score)."
 msgstr ""
 "Fehler: Gib einen SHORTSCORE kleiner als 10 und größer als 0 ein für (score)."
 
-#: marctv-shortscore.php:593
-msgid "Sorry, this account has already submitted a shortscore for this game."
+#: marctv-shortscore.php:620
+msgid "Sorry, this account has already submitted a SHORTSCORE for this game."
 msgstr ""
 "Tut mir leid, aber jeder Account darf nur einen SHORTSCORE pro Spiel abgeben."
+
+#~ msgid ""
+#~ "You must be <a href=\"%1s\">logged in</a> to post a ShortScore. <a href="
+#~ "\"%2s\">Registration</a> is fast and free!"
+#~ msgstr ""
+#~ "Du musst Dich <a href=\"%1s\">anmelden</a> um deinen SHORTSCORE abgeben "
+#~ "zu können. Die <a href=\"%2s\">Registrierung</a> geht schnell und ist "
+#~ "kostenlos!"
+
+#~ msgid ""
+#~ "Each account is only allow once per game and you are not able to edit "
+#~ "your SHORTSCORE"
+#~ msgstr ""
+#~ "Jeder Benutzer kann nur einmal bewerten. Du kannst deinen SHORTSCORE "
+#~ "danach nicht mehr ändern."
+
+#~ msgid "Enter your SHORTSCORE"
+#~ msgstr "SPORTSCORE abgeben"
+
+#~ msgid ""
+#~ "Sorry, this account has already submitted a shortscore for this game."
+#~ msgstr ""
+#~ "Tut mir leid, aber jeder Account darf nur einen SHORTSCORE pro Spiel "
+#~ "abgeben."
 
 #~ msgctxt "marctv-shortscore"
 #~ msgid "score distribution"

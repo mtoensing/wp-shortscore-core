@@ -211,10 +211,10 @@ class MarcTVShortScore
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
             $default['label_submit'] = __('Submit SHORTSCORE', 'marctv-shortscore');
 
-            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%1s">logged in</a> to post a ShortScore. <a href="%2s">Registration</a> is fast and free!', 'marctv-shortscore'), '/login/', '/register/') . '</p>';
+            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%1s">logged in</a> to post your SHORTSCORE. <a href="%2s">Registration</a> is free and easy!', 'marctv-shortscore'), '/login/', '/register/') . '</p>';
 
-            $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is only allow once per game and you are not able to edit your SHORTSCORE', 'marctv-shortscore') . '</p>';
-            $default['title_reply'] = __('Enter your SHORTSCORE', 'marctv-shortscore');
+            $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is allow to post only once per game. You are not allowed to edit your SHORTSCORE afterwards.', 'marctv-shortscore') . '</p>';
+            $default['title_reply'] = __('Select your SHORTSCORE', 'marctv-shortscore');
             $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="4" aria-required="true"></textarea></p>';
             $default['comment_field'] = $default['comment_field'] . $markup;
         }
@@ -462,21 +462,21 @@ class MarcTVShortScore
             $markup = '<p>';
             $markup .= '<span class="label">' . __('score distribution', 'marctv-shortscore') . ': <small>(<a href="' . $this->shortscore_explained_url . '">' . __('what is this?', 'marctv-shortscore') . '</a>)</small></span>';
 
-            $markup .= '<ol class="score-distribution-chart labels top">';
+            //$markup .= '<ol class="score-distribution-chart labels top">';
             //$markup .= '<li class="legend">100%</li>';
 
             foreach ($score_distribution_percent as $score_percent) {
 
                 if ($score_num == $score_floor || $score_num == $score_ceil) {
-                    $markup .= '<li>&nbsp;</li>';
+                    //$markup .= '<li>&nbsp;</li>';
                 } else {
-                    $markup .= '<li>&nbsp;</li>';
+                    //$markup .= '<li>&nbsp;</li>';
                 }
 
                 $score_num++;
             }
 
-            $markup .= '</ol>';
+            //$markup .= '</ol>';
 
             $score_num = 1;
             $markup .= '<ol class="score-distribution-chart bars">';
@@ -617,7 +617,7 @@ class MarcTVShortScore
 
         foreach ($comments as $comment) :
             if ($email == $comment->comment_author_email) {
-                wp_die(__('Sorry, this account has already submitted a shortscore for this game.', 'marctv-shortscore'));
+                wp_die(__('Sorry, this account has already submitted a SHORTSCORE for this game.', 'marctv-shortscore'));
             }
         endforeach;
 
