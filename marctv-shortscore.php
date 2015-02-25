@@ -176,7 +176,7 @@ class MarcTVShortScore
         );
 
         $releasedate = sprintf('<p class="posted-on"><span class="label">%1$s:</span> <span class="screen-reader-text">%1$s </span>%2$s</p>',
-            _x('Posted on', 'Used before publish date.', 'marctv-shortscore'),
+            _x('First published on', 'Used before publish date.', 'marctv-shortscore'),
             $time_string
         );
 
@@ -395,6 +395,13 @@ class MarcTVShortScore
                 }
 
                 $markup .= '</div>';
+
+                $overview = get_post_meta($id, 'Overview', true);
+
+                if ($overview) {
+                    $markup .= '<h2>Overview</h2>';
+                    $markup .= '<p class="overview">' . $overview . '</p>';
+                }
 
                 $yturl = get_post_meta($id, 'Youtube', true);
 
