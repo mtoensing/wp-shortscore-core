@@ -15,7 +15,7 @@ class MarcTVShortScore
 
     private $version = '0.8';
     private $pluginPrefix = 'marctv-shortscore';
-    private $shortscore_explained_url = 'http://shortscore.de/haeufige-fragen/#calculation';
+    private $shortscore_explained_url = 'http://shortscore.org/faq/#calculation';
 
     public function __construct()
     {
@@ -211,7 +211,7 @@ class MarcTVShortScore
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
             $default['label_submit'] = __('Submit SHORTSCORE', 'marctv-shortscore');
 
-            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('You must be <a href="%1s">logged in</a> to post your SHORTSCORE. <a href="%2s">Registration</a> is free and easy!', 'marctv-shortscore'), '/login/', '/register/') . '</p>';
+            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a href="%1s">Sign in</a> to post your SHORTSCORE. <a href="%2s">Registration</a> is free and easy!', 'marctv-shortscore'), '/login/', '/register/') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is allow to post only once per game. You are not allowed to edit your SHORTSCORE afterwards.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Select your SHORTSCORE', 'marctv-shortscore');
@@ -511,7 +511,9 @@ class MarcTVShortScore
 
     public function saveCommentMetadata($comment_id)
     {
+
         $comment = get_comment($comment_id);
+
 
         if (get_post_type($comment->comment_post_ID) == 'game') {
             add_comment_meta($comment_id, 'score', $_POST['score'], true);
@@ -521,12 +523,6 @@ class MarcTVShortScore
 
     public function saveRatingsToPost($post_ID)
     {
-
-        $args = array(
-            'status' => 'approve',
-            'post_id' => $post_ID,
-        );
-
         $score_sum = 0;
         $score_count = 0;
         $score_arr = array();
@@ -541,6 +537,10 @@ class MarcTVShortScore
             8 => 0,
             9 => 0,
             10 => 0
+        );
+        $args = array(
+            'status' => 'approve',
+            'post_id' => $post_ID,
         );
 
         $comments = get_comments($args);
