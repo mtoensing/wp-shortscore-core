@@ -175,7 +175,7 @@ class MarcTVShortScore
             get_the_modified_date()
         );
 
-        $releasedate = sprintf('<p class="posted-on"><span class="label">%1$s:</span> <span class="screen-reader-text">%1$s </span>%2$s</p>',
+        $releasedate = sprintf('<p class="posted-on"><span class="label">%1$s</span> <span class="screen-reader-text">%1$s </span>%2$s</p>',
             _x('First published on', 'Used before publish date.', 'marctv-shortscore'),
             $time_string
         );
@@ -245,7 +245,7 @@ class MarcTVShortScore
                         '<strong><span class="votes">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
                     );
             } else {
-                $markup .= '<a href="' . $submit_link . '#scoreheader">' . sprintf(__('based on %s', 'marctv-shortscore') . '</strong></a>',
+                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('based on %s', 'marctv-shortscore') . '</strong></a>',
                         '<strong><span class="votes">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
                     );
             }
@@ -254,7 +254,7 @@ class MarcTVShortScore
             if (is_single()) {
                 $markup .= '<a href="' . $submit_link . '#comments">' . __('No reviews yet', 'marctv-shortscore') . '</a>';
             } else {
-                $markup .= '<a href="' . $submit_link . '#scoreheader">' . __('No reviews yet', 'marctv-shortscore') . '</a>';
+                $markup .= '<a href="' . $submit_link . '">' . __('No reviews yet', 'marctv-shortscore') . '</a>';
             }
 
         }
@@ -274,9 +274,9 @@ class MarcTVShortScore
         if (get_post_type($id) == 'game') {
             $score_count = get_post_meta($id, 'score_count', true);
             if (is_single()) {
-                $markup = '<a class="score" href="' . get_permalink($id) . '#scoreheader">';
+                $markup = '<a class="score" href="' . get_permalink($id) . '">';
             } else {
-                $markup = '<a class="score" href="' . get_permalink($id) . '#scoreheader">';
+                $markup = '<a class="score" href="' . get_permalink($id) . '">';
             }
 
             if ($score_count > 0) {
@@ -284,7 +284,6 @@ class MarcTVShortScore
                 $shortscore = get_post_meta($id, 'score_value', true);
 
                 $markup .= '<div class="average shortscore">' . $shortscore . '</div>';
-
 
             } else {
                 $markup .= '<div class="average shortscore">?</div>';
@@ -382,7 +381,7 @@ class MarcTVShortScore
 
                 if ($publisher_list = get_the_term_list($id, 'coop', '', ', ')) {
                     $markup .= sprintf('<p class="coop"><span class="label">%1$s </span>%2$s</p>',
-                        _x('coop mode', 'Used before category names.', 'marctv-shortscore') . ':',
+                        _x('cooperation mode', 'Used before category names.', 'marctv-shortscore') . ':',
                         $publisher_list
                     );
                 }
@@ -396,18 +395,19 @@ class MarcTVShortScore
 
                 $markup .= '</div>';
 
-                $overview = get_post_meta($id, 'Overview', true);
-
-                if ($overview) {
-                    $markup .= '<h2>Overview</h2>';
-                    $markup .= '<p class="overview">' . $overview . '</p>';
-                }
-
                 $yturl = get_post_meta($id, 'Youtube', true);
 
                 if ($yturl) {
                     $markup .= '<a href="' . $yturl . '" class="embedvideo">' . get_the_title($id) . ' - Trailer</a>';
                 }
+
+                $overview = get_post_meta($id, 'Overview', true);
+
+                if ($overview) {
+                    $markup .= '<h2>About ' . get_the_title($id)  . '</h2>';
+                    $markup .= '<p class="overview">' . $overview . '</p>';
+                }
+
 
             } else {
                 $markup = '';
