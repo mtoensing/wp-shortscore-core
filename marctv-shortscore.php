@@ -403,11 +403,11 @@ class MarcTVShortScore
 
                 $overview = get_post_meta($id, 'Overview', true);
 
-                if ($overview) {
+                if(is_string($overview) && $overview != ''){
+                    $overview = wpautop($overview);
                     $markup .= '<h2>About ' . get_the_title($id)  . '</h2>';
                     $markup .= '<p class="overview">' . $overview . '</p>';
                 }
-
 
             } else {
                 $markup = '';
