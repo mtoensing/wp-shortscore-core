@@ -176,7 +176,7 @@ class MarcTVShortScore
         );
 
         $releasedate = sprintf('<p class="posted-on"><span class="label">%1$s</span> <span class="screen-reader-text">%1$s </span>%2$s</p>',
-            _x('First published on', 'Used before publish date.', 'marctv-shortscore'),
+            _x('Initial release date:', 'Used before publish date.', 'marctv-shortscore'),
             $time_string
         );
 
@@ -388,7 +388,7 @@ class MarcTVShortScore
 
                 if ($publisher_list = get_the_term_list($id, 'players', '', ', ')) {
                     $markup .= sprintf('<p class="players"><span class="label">%1$s </span>%2$s</p>',
-                        _x('Playercount', 'Used before category names.', 'marctv-shortscore') . ':',
+                        _x('player count', 'Used before category names.', 'marctv-shortscore') . ':',
                         $publisher_list
                     );
                 }
