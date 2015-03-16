@@ -283,10 +283,12 @@ class MarcTVShortScore
 
                 $shortscore = get_post_meta($id, 'score_value', true);
 
-                $markup .= '<div class="average shortscore">' . $shortscore . '</div>';
+                $score_int = floor($shortscore);
+
+                $markup .= '<div class="average shortscore shortscore-' . $score_int . '">' . $shortscore . '</div>';
 
             } else {
-                $markup .= '<div class="average shortscore">?</div>';
+                $markup .= '<div class="average shortscore shortscore-0">?</div>';
 
             }
 
@@ -662,7 +664,10 @@ class MarcTVShortScore
         $score = get_comment_meta(get_comment_ID(), 'score', true);
 
         if (!empty($score)) {
-            return $comment_text . '<div class="rating shortscore">' . $score . '</div>';
+
+            $score_int = floor($score);
+
+            return $comment_text . '<div class="rating shortscore shortscore-' . $score_int . '">' . $score . '</div>';
         }
 
         return $comment_text;
