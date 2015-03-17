@@ -188,7 +188,11 @@ class MarcTVShortScore
 
         $post_id = get_the_ID();
 
+
+
         if (get_post_type($post_id) == 'game') {
+
+            $permalink = get_permalink($post_id);
 
             $markup = '<p class="comment-form-score"><label for="score">' . __('SHORTSCORE 1 to 10. The higher the better.', 'marctv-shortscore') . '<span class="required">*</span></label>';
 
@@ -211,7 +215,7 @@ class MarcTVShortScore
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
             $default['label_submit'] = __('Submit SHORTSCORE', 'marctv-shortscore');
 
-            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a href="%1s">Sign in</a> to post your SHORTSCORE. <a href="%2s">Registration</a> is free and easy!', 'marctv-shortscore'), '/login/', '/register/') . '</p>';
+            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a href="%1s">Sign in</a> to post your SHORTSCORE. <a href="%2s">Registration</a> is free and easy!', 'marctv-shortscore'), '/login/?redirect_to=' . $permalink .'#respond', '/register/') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is allow to post only once per game. You are not allowed to edit your SHORTSCORE afterwards.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Select your SHORTSCORE', 'marctv-shortscore');
