@@ -399,6 +399,13 @@ class MarcTVShortScore
                     );
                 }
 
+                if ($fps_list = get_the_term_list($id, 'fps', '', ', ')) {
+                    $markup .= sprintf('<p class="coop"><span class="label">%1$s </span>%2$s</p>',
+                        _x('frame rate', 'Used before category names.', 'marctv-shortscore') . ':',
+                        $fps_list
+                    );
+                }
+
                 $markup .= '</div>';
 
                 $yturl = get_post_meta($id, 'Youtube', true);
