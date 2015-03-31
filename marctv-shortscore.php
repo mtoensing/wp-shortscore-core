@@ -215,7 +215,7 @@ class MarcTVShortScore
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
             $default['label_submit'] = __('Submit SHORTSCORE', 'marctv-shortscore');
 
-            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a href="%1s">Sign in</a> to post your SHORTSCORE. <a href="%2s">Registration</a> is free and easy!', 'marctv-shortscore'), '/login/?redirect_to=' . $permalink .'#respond', '/register/') . '</p>';
+            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a class ="btn" href="%1s">sign in</a> or <a class ="btn" href="%2s">register</a>', 'marctv-shortscore'), '/login/?redirect_to=' . $permalink .'#respond', '/register/?redirect_to=' . $permalink .'#respond') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is allow to post only once per game. You are not allowed to edit your SHORTSCORE afterwards.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Select your SHORTSCORE', 'marctv-shortscore');
@@ -513,7 +513,7 @@ class MarcTVShortScore
             foreach ($score_distribution_percent as $score_percent) {
 
                 if ($score_num == $score_floor || $score_num == $score_ceil) {
-                    $markup .= '<li><strong>' . $score_num . '</strong></li>';
+                    $markup .= '<li class="selected"><strong>' . $score_num . '</strong></li>';
                 } else {
                     $markup .= '<li>' . $score_num . '</li>';
                 }
