@@ -136,7 +136,7 @@ class MarcTVShortScore
     public function list_top_authors($atts)
     {
         $query = "SELECT comment_author as name,user_id as user_id, COUNT(*) as count
-		FROM wp_comments WHERE comment_approved ='1' AND comment_type ='' GROUP BY user_id ORDER BY COUNT(*) DESC LIMIT 100";
+		FROM wp_comments WHERE comment_approved ='1' AND comment_type ='' GROUP BY user_id ORDER BY COUNT(*) DESC LIMIT 10";
 
         global $wpdb;
 
