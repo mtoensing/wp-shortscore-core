@@ -31,7 +31,6 @@ class MarcTVShortScore
     public function initSorting()
     {
         add_action('pre_get_posts', array($this, 'my_modify_main_query'));
-        add_filter('query_vars', array($this, 'add_query_vars_filter'));
 
     }
 
@@ -73,12 +72,6 @@ class MarcTVShortScore
 
     }
 
-
-    public function add_query_vars_filter($vars)
-    {
-        $vars[] = "coop";
-        return $vars;
-    }
 
     /*
      * http://www.mdj.us/web-development/php-programming/calculating-the-median-average-values-of-an-array-with-php/
@@ -419,7 +412,7 @@ class MarcTVShortScore
                 if(is_string($overview) && $overview != ''){
                     $overview = wpautop($overview);
                     $markup .= '<h2>About ' . get_the_title($id)  . '</h2>';
-                    $markup .= '<p class="overview">' . $overview . '</p>';
+                    $markup .= '<div class="overview">' . $overview . '</div>';
                 }
 
             } else {
