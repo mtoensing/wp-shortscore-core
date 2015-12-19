@@ -698,47 +698,13 @@ class MarcTVShortScore
         }
     }
 
-    public function comment_author_profile_link()
+    public function comment_author_profile_link($authorName)
     {
-        /* Get the comment author information */
 
-        global $comment;
+        $user = get_user_by( 'login', $authorName );
 
-        $user_ID = $comment->user_id;
-        $comment_ID = $comment->comment_ID;
-
-        $author = get_comment_author($comment_ID);
-        $url = get_comment_author_url($comment_ID);
-
-        /* Check if commenter is registered or not */
-        switch ($comment_ID == 0) {
-
-            case true:
-                /* Unregistered commenter */
-
-                if (empty($url) || 'http://' == $url) {
-                    $return = $author;
-                } else {
-                    $return = "<a href='$url' rel='external nofollow' class='url' target='_blank'>$author</a>";
-                }
-
-                break;
-
-            case false:
-                /* Registered Commenter */
-
-                $registeredID = get_userdata($user_ID);
-                $authorName = $registeredID->display_name;
-                $authorID = $registeredID->ID;
-
-                /* Author+ with Posts */
-
-                $return = '<a href="' . get_author_posts_url($authorID) . '">' . $authorName . '</a>';
-
-
-                break;
-        }
-
+        $return = '<a href="' . get_author_posts_url($user->ID) . '">' . $authorName . '</a>';
+        
         return $return;
     }
 }
