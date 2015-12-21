@@ -61,7 +61,6 @@ class MarcTVShortScore
 
         add_filter('preprocess_comment', array($this, 'verify_comment_duplicate_email'));
 
-        add_filter('comment_form_default_fields', array($this, 'alter_comment_form_fields'));
         add_filter('comment_text', array($this, 'append_score'), 99);
         add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
         //add_filter('the_title', array($this, 'add_hreview_title'));
@@ -104,9 +103,9 @@ class MarcTVShortScore
 
     public function add_hreview_aggregate_class($classes)
     {
-        global $post;
+        $id = get_the_ID();
 
-        if (get_post_type($post->ID) == 'game') {
+        if (get_post_type($id) == 'game') {
             $classes[] = 'hreview-aggregate';
         }
 
@@ -597,9 +596,9 @@ class MarcTVShortScore
 
     public function verify_comment_meta_data($commentdata)
     {
-        global $post;
+        $id = get_the_ID();
 
-        if (get_post_type($post->ID) == 'game') {
+        if (get_post_type($id) == 'game') {
             $score = $_POST['score'];
 
             if (empty($score)) {
@@ -634,20 +633,6 @@ class MarcTVShortScore
 
         return $commentdata;
     }
-
-
-    public function alter_comment_form_fields($default)
-    {
-
-        global $post;
-
-        if (get_post_type($post->ID) == 'game') {
-            $default['url'] = '';  //removes website field
-        }
-
-        return $default;
-    }
-
 
     public function append_score($comment_text)
     {
