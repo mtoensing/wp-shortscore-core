@@ -617,13 +617,11 @@ class MarcTVShortScore
 
     public function verify_comment_duplicate_email($commentdata)
     {
-        global $post;
-
         $email = $commentdata["comment_author_email"];
 
         $args = array(
             'status' => 'approve',
-            'post_id' => $post->ID
+            'post_id' => $commentdata["comment_post_ID"]
         );
 
         $comments = get_comments($args);
@@ -704,7 +702,7 @@ class MarcTVShortScore
         $user = get_user_by( 'login', $authorName );
 
         $return = '<a href="' . get_author_posts_url($user->ID) . '">' . $authorName . '</a>';
-        
+
         return $return;
     }
 }
