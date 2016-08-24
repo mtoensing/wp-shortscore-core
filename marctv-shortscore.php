@@ -650,11 +650,13 @@ class MarcTVShortScore
 
         $score = get_comment_meta(get_comment_ID(), 'score', true);
 
+
         if (!empty($score)) {
 
             $score_int = floor($score);
 
-            return $comment_text . '<div class="rating shortscore shortscore-' . $score_int . '">' . $score . '</div>';
+
+            return '<div class="rating shortscore shortscore-' . $score_int . '">' . $score . '</div>'   . $comment_text ;
         }
 
         return $comment_text;
