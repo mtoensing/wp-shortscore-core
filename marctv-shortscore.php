@@ -7,6 +7,8 @@ Description: Extends the comment fields by a review score field and alters queri
 Version:  0.8
 Author:  Marc Tönsing
 Author URI: marctv.de
+Text Domain: marctv-shortscore
+Domain Path: /languages
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
