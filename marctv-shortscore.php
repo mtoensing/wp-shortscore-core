@@ -1,7 +1,7 @@
 <?php
 
 /*
-Plugin Name: MarcTV ShortScore
+Plugin Name: SHORTSCORE Core
 Plugin URI: http://marctv.de/blog/marctv-wordpress-plugins/
 Description: Extends the comment fields by a review score field and alters queries.
 Version:  0.8
@@ -15,19 +15,24 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 class MarcTVShortScore
 {
 
-    private $version = '0.8';
+    private $version = '0.9';
     private $pluginPrefix = 'marctv-shortscore';
     private $shortscore_explained_url = 'http://shortscore.org/faq/#calculation';
 
     public function __construct()
     {
-        load_plugin_textdomain('marctv-shortscore', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+        add_action('plugins_loaded', array($this, 'wan_load_textdomain'));
 
         $this->initComments();
 
         $this->initFrontend();
 
         $this->initSorting();
+    }
+
+
+    public function wan_load_textdomain() {
+        load_plugin_textdomain('marctv-shortscore', false, dirname(plugin_basename(__FILE__)) . '/languages/');
     }
 
     public function initSorting()
@@ -64,7 +69,7 @@ class MarcTVShortScore
         add_filter('preprocess_comment', array($this, 'verify_comment_duplicate_email'));
 
         add_filter('comment_text', array($this, 'append_score'), 99);
-        add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
+        //add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
         //add_filter('the_title', array($this, 'add_hreview_title'));
 
         add_action('add_meta_boxes_comment', array($this, 'comment_add_meta_box'));
@@ -108,8 +113,10 @@ class MarcTVShortScore
         $id = get_the_ID();
 
         if (get_post_type($id) == 'game') {
-            $classes[] = 'hreview-aggregate';
+            $classes[] = 'hreview';
         }
+
+
 
         return $classes;
     }
@@ -240,11 +247,11 @@ class MarcTVShortScore
             if (is_single()) {
                 $markup .= '<a href="' . $submit_link . '#comments">' . sprintf(__('out of %s based on %s', 'marctv-shortscore') . '</strong></a>',
                         '<span class="best">10</span>',
-                        '<strong><span class="votes">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
+                        '<strong><span class="count">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
                     );
             } else {
                 $markup .= '<a href="' . $submit_link . '">' . sprintf(__('based on %s', 'marctv-shortscore') . '</strong></a>',
-                        '<strong><span class="votes">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
+                        '<strong><span class="count">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
                     );
             }
 
@@ -286,7 +293,7 @@ class MarcTVShortScore
                 $markup .= '<div class="average shortscore shortscore-' . $score_int . '">' . $shortscore . '</div>';
 
             } else {
-                $markup .= '<div class="average shortscore shortscore-0">?</div>';
+                $markup .= '<div class="shortscore shortscore-0">?</div>';
 
             }
 
@@ -331,7 +338,19 @@ class MarcTVShortScore
 
             if (is_single()) {
 
-                $markup = '<div class="rating">';
+                $markup = '';
+
+                $score_count = get_post_meta($id, 'score_count', true);
+
+                if($score_count < 1) {
+                    $markup .= '<div class="shortscore-box">';
+                } else {
+                    $markup .= '<div class="shortscore-box hreview-aggregate">';
+                }
+
+                $markup .= '<div class="item"><span class="fn">' . get_the_title($id).  '</span></div>';
+                //$markup .= '<div class="reviewer"><span class="fn">SHORTSCORE</span></div>';
+                $markup .= '<div class="rating">';
 
                 $categories_list = get_the_term_list($id, 'platform', '', ', ');
                 $markup .= sprintf('<p class="platform"><strong><span class="screen-reader-text">%1$s </span>%2$s</strong></p>',
@@ -345,76 +364,11 @@ class MarcTVShortScore
 
                 $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
 
-
-                $markup .= '</div>';
-
-                $markup .= '<div class="game-meta rating">';
-
-
                 $markup .= $this->renderBarChart($id);
 
-                $markup .= $this->getReleaseDate();
-
-                if ($genre_list = get_the_term_list($id, 'genre', '', ', ')) {
-                    $markup .= sprintf('<p class="genre"><span class="label">%1$s </span>%2$s</p>',
-                        _x('Genre', 'Used before category names.', 'marctv-shortscore') . ':',
-                        $genre_list
-                    );
-                }
-
-                $markup .= '<p>';
-                if ($developer_list = get_the_term_list($id, 'developer', '', ', ')) {
-                    $markup .= sprintf('<p class="developer"><span class="label">%1$s </span>%2$s</p>',
-                        _x('Developer', 'Used before category names.', 'marctv-shortscore') . ':',
-                        $developer_list
-                    );
-                }
-
-                if ($publisher_list = get_the_term_list($id, 'publisher', '', ', ')) {
-                    $markup .= sprintf('<p class=" publisher"><span class="label">%1$s </span>%2$s</p>',
-                        _x('Publisher', 'Used before category names.', 'marctv-shortscore') . ':',
-                        $publisher_list
-                    );
-                }
-                $markup .= '</p>';
-
-
-                if ($publisher_list = get_the_term_list($id, 'coop', '', ', ')) {
-                    $markup .= sprintf('<p class="coop"><span class="label">%1$s </span>%2$s</p>',
-                        _x('cooperation mode', 'Used before category names.', 'marctv-shortscore') . ':',
-                        $publisher_list
-                    );
-                }
-
-                if ($publisher_list = get_the_term_list($id, 'players', '', ', ')) {
-                    $markup .= sprintf('<p class="players"><span class="label">%1$s </span>%2$s</p>',
-                        _x('player count', 'Used before category names.', 'marctv-shortscore') . ':',
-                        $publisher_list
-                    );
-                }
-
-                if ($fps_list = get_the_term_list($id, 'fps', '', ', ')) {
-                    $markup .= sprintf('<p class="coop"><span class="label">%1$s </span>%2$s</p>',
-                        _x('frame rate', 'Used before category names.', 'marctv-shortscore') . ':',
-                        $fps_list
-                    );
-                }
-
                 $markup .= '</div>';
 
-                $yturl = get_post_meta($id, 'Youtube', true);
 
-                if ($yturl) {
-                    $markup .= '<a href="' . $yturl . '" class="embedvideo">' . get_the_title($id) . ' - Trailer</a>';
-                }
-
-                $overview = get_post_meta($id, 'Overview', true);
-
-                if(is_string($overview) && $overview != ''){
-                    $overview = wpautop($overview);
-                    $markup .= '<h2>About ' . get_the_title($id)  . '</h2>';
-                    $markup .= '<div class="overview">' . $overview . '</div>';
-                }
 
             } else {
                 $markup = '';
@@ -423,6 +377,85 @@ class MarcTVShortScore
         }
 
         return $content;
+    }
+
+
+
+    public function getGameMeta(){
+        $id = get_the_ID();
+
+        $markup = '<div class="game-meta rating">';
+
+
+        $markup .= $this->renderBarChart($id);
+
+        $markup .= $this->getReleaseDate();
+
+        if ($genre_list = get_the_term_list($id, 'genre', '', ', ')) {
+            $markup .= sprintf('<p class="genre"><span class="label">%1$s </span>%2$s</p>',
+                _x('Genre', 'Used before category names.', 'marctv-shortscore') . ':',
+                $genre_list
+            );
+        }
+
+        $markup .= '<p>';
+        if ($developer_list = get_the_term_list($id, 'developer', '', ', ')) {
+            $markup .= sprintf('<p class="developer"><span class="label">%1$s </span>%2$s</p>',
+                _x('Developer', 'Used before category names.', 'marctv-shortscore') . ':',
+                $developer_list
+            );
+        }
+
+        if ($publisher_list = get_the_term_list($id, 'publisher', '', ', ')) {
+            $markup .= sprintf('<p class=" publisher"><span class="label">%1$s </span>%2$s</p>',
+                _x('Publisher', 'Used before category names.', 'marctv-shortscore') . ':',
+                $publisher_list
+            );
+        }
+        $markup .= '</p>';
+
+
+        if ($publisher_list = get_the_term_list($id, 'coop', '', ', ')) {
+            $markup .= sprintf('<p class="coop"><span class="label">%1$s </span>%2$s</p>',
+                _x('cooperation mode', 'Used before category names.', 'marctv-shortscore') . ':',
+                $publisher_list
+            );
+        }
+
+        if ($publisher_list = get_the_term_list($id, 'players', '', ', ')) {
+            $markup .= sprintf('<p class="players"><span class="label">%1$s </span>%2$s</p>',
+                _x('player count', 'Used before category names.', 'marctv-shortscore') . ':',
+                $publisher_list
+            );
+        }
+
+        if ($fps_list = get_the_term_list($id, 'fps', '', ', ')) {
+            $markup .= sprintf('<p class="coop"><span class="label">%1$s </span>%2$s</p>',
+                _x('frame rate', 'Used before category names.', 'marctv-shortscore') . ':',
+                $fps_list
+            );
+        }
+
+        $markup .= '</div>';
+
+        $markup .= '</div>';
+
+        $yturl = get_post_meta($id, 'Youtube', true);
+
+        if ($yturl) {
+            $markup .= '<a href="' . $yturl . '" class="embedvideo">' . get_the_title($id) . ' - Trailer</a>';
+        }
+
+        $overview = get_post_meta($id, 'Overview', true);
+
+
+        if(is_string($overview) && $overview != ''){
+            $overview = wpautop($overview);
+            //    $markup .= '<h2>About ' . get_the_title($id)  . '</h2>';
+            //    $markup .= '<div class="overview">' . $overview . '</div>';
+        }
+
+        return $markup;
     }
 
     public function convertScoreDistribution($post_ID)

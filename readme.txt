@@ -1,9 +1,9 @@
-=== MarcTV ShortScore ===
+=== SHORTSCORE Core ===
 Contributors:  MarcDK
 Tags: comments, shortscore, extend, custom field
 Requires at least: 3.0
-Tested up to: 4.01
-Stable tag: 0.2
+Tested up to: 4.6
+Stable tag: 0.4
 License: GPL2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,16 +13,15 @@ Extends the comment fields by a review score field.
 
 Extends the comment fields by a review score field and add hreview-aggregate.
 
-= Features =
-
-
 == Changelog ==
+
+= 0.4 =
+
+new name. less clutter.
 
 = 0.3 =
 
 Save comments on publish or approved.
-
-
 
 = 0.2 =
 
