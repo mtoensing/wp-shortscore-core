@@ -219,7 +219,8 @@ class MarcTVShortScore
             $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a class ="btn" href="%1s">sign in</a> or <a class ="btn" href="%2s">register</a>', 'marctv-shortscore'), '/login/?redirect_to=' . $permalink .'#comments', '/register/?redirect_to=' . $permalink .'#comments') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is allow to post only once per game. You are not allowed to edit your SHORTSCORE afterwards.', 'marctv-shortscore') . '</p>';
-            $default['title_reply'] = __('Select your SHORTSCORE', 'marctv-shortscore');
+            $default['title_reply'] = '';
+            //$default['title_reply'] = __('Select your SHORTSCORE', 'marctv-shortscore');
             $default['comment_field'] = '<p class="comment-form-comment"><label for="comment">' . __('Your short review text:', 'marctv-shortscore') . '<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="4" aria-required="true"></textarea></p>';
             $default['comment_field'] = $default['comment_field'] . $markup;
         }
