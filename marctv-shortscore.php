@@ -216,7 +216,7 @@ class MarcTVShortScore
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
             $default['label_submit'] = __('Submit SHORTSCORE', 'marctv-shortscore');
 
-            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a class ="btn" href="%1s">sign in</a> or <a class ="btn" href="%2s">register</a>', 'marctv-shortscore'), '/login/?redirect_to=' . $permalink .'#respond', '/register/?redirect_to=' . $permalink .'#respond') . '</p>';
+            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a class ="btn" href="%1s">sign in</a> or <a class ="btn" href="%2s">register</a>', 'marctv-shortscore'), '/login/?redirect_to=' . $permalink .'#comments', '/register/?redirect_to=' . $permalink .'#comments') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is allow to post only once per game. You are not allowed to edit your SHORTSCORE afterwards.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = __('Select your SHORTSCORE', 'marctv-shortscore');
@@ -362,7 +362,7 @@ class MarcTVShortScore
 
                 $markup .= $this->getShortScoreCount();
 
-                $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#respond')) . '</p>';
+                $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#comments')) . '</p>';
 
                 $markup .= $this->renderBarChart($id);
 
@@ -508,7 +508,7 @@ class MarcTVShortScore
             $score_num = 1;
             $markup = '<p>';
             $markup .= '<span class="label">' . __('score distribution', 'marctv-shortscore') . ': <small>(<a href="' . $this->shortscore_explained_url . '">' . __('what is this?', 'marctv-shortscore') . '</a>)</small></span>';
-
+            $markup .= '</p>';
             //$markup .= '<ol class="score-distribution-chart labels top">';
             //$markup .= '<li class="legend">100%</li>';
 
@@ -549,7 +549,7 @@ class MarcTVShortScore
             }
 
             $markup .= '</ol>';
-            $markup .= '</p>';
+
             return $markup;
         }
 
