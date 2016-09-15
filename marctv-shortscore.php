@@ -280,9 +280,9 @@ class MarcTVShortScore
         if (get_post_type($id) == 'game') {
             $score_count = get_post_meta($id, 'score_count', true);
             if (is_single()) {
-                $markup = '<a class="score" href="' . get_permalink($id) . '">';
+                $markup = '<a class="score" href="' . get_permalink($id) . '#comments">';
             } else {
-                $markup = '<a class="score" href="' . get_permalink($id) . '">';
+                $markup = '<a class="score" href="' . get_permalink($id) . '#comments">';
             }
 
             if ($score_count > 0) {
