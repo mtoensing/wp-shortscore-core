@@ -246,13 +246,13 @@ class MarcTVShortScore
         if ($score_count > 0) {
 
             if (is_single()) {
-                $markup .= '<a href="' . $submit_link . '#comments">' . sprintf(__('out of %s based on %s', 'marctv-shortscore') . '</strong></a>',
+                $markup .= '<a href="' . $submit_link . '#comments">' . sprintf(__('out of %s based on %s', 'marctv-shortscore') . '</a>',
                         '<span class="best">10</span>',
-                        '<strong><span class="count">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
+                        '<span class="count">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
                     );
             } else {
-                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('based on %s', 'marctv-shortscore') . '</strong></a>',
-                        '<strong><span class="count">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
+                $markup .= '<a href="' . $submit_link . '">' . sprintf(__('based on %s', 'marctv-shortscore') . '</a>',
+                        '<span class="count">' . sprintf(_n('one user review', '%s user reviews', $score_count, 'marctv-shortscore'), $score_count) . '</span>'
                     );
             }
 
@@ -363,8 +363,9 @@ class MarcTVShortScore
 
                 $markup .= $this->getShortScoreCount();
 
-                $markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#comments')) . '</p>';
-
+                if(!is_user_logged_in()){
+                    //$markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#comments')) . '</p>';
+                }
                 $markup .= $this->renderBarChart($id);
 
                 $markup .= '</div>';
