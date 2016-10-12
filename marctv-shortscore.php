@@ -28,6 +28,10 @@ class MarcTVShortScore
         $this->initFrontend();
 
         $this->initSorting();
+
+        if(is_admin()){
+            add_action('save_post', array($this, 'saveRatingsToPost'));
+        }
     }
 
 
@@ -560,7 +564,6 @@ class MarcTVShortScore
 
     public function saveCommentMetadata($comment_id)
     {
-
         $comment = get_comment($comment_id);
 
 
@@ -572,6 +575,10 @@ class MarcTVShortScore
 
     public function saveRatingsToPost($post_ID)
     {
+        if($post_ID == ''){
+            $post_ID = get_the_ID();
+        }
+
         $score_sum = 0;
         $score_count = 0;
         $score_arr = array();
