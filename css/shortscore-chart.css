@@ -1,0 +1,101 @@
+
+.score-distribution-chart {
+    height: 100px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    list-style-type: none;
+}
+
+.score-distribution-chart li {
+    width: 10%;
+    display: inline-block;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    vertical-align: baseline;
+    color: #fff;
+}
+
+.score-distribution-chart.bottom li.selected {
+    color: #fff;
+    background-color: #7b7b7b;
+}
+
+.score-distribution-chart.bars li.keep-height {
+    width: 0 ! important;
+    height:100px ! important;
+    background: #efefef;
+    font-size: 80%;
+}
+
+.score-distribution-chart.bottom {
+    height: 1.6em;
+    margin-bottom: 5em;
+    border-top: none;
+    color: #fff;
+}
+
+.score-distribution-chart.bottom li {
+    white-space: nowrap;
+    background-color: #333;
+}
+
+.score-distribution-chart.top{
+    height: 1.6em;
+    margin-bottom: 0;
+    border-top: none;
+}
+
+
+.score-distribution-chart.top li {
+    background-color: transparent;
+    background: none;
+    color: black;
+}
+
+
+.score-distribution-chart.bars li{
+    background-color: #333;
+
+
+    background-image: -webkit-linear-gradient(to bottom, #333, #7b7b7b);
+    background-image: -moz-linear-gradient(to bottom, #333, #7b7b7b);
+    background-image: -ms-linear-gradient(to bottom, #333, #7b7b7b);
+    background-image: -o-linear-gradient(to bottom, #333, #7b7b7b);
+    background-image: linear-gradient(to bottom, #333, #7b7b7b);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+    color: #fff;
+    -webkit-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-radius-bottomright: 0;
+    -moz-border-radius-bottomleft: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+
+
+}
+
+.score-distribution-chart.bars {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAAAAACoWZBhAAAAEUlEQVQIW2M4AAcM/+GAVkwAZvNhJ2flJ+MAAAAASUVORK5CYII=');
+}
+
+.score-distribution-chart li.legend {
+    font-size: 1.1rem;
+    color: #333;
+    white-space: nowrap;
+    background-color: transparent;
+}
+
+.score-distribution-chart.top .legend {
+    vertical-align: bottom;
+}
+
+.score-distribution-chart.bottom .legend {
+    vertical-align: top;
+}

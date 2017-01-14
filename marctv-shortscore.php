@@ -45,11 +45,30 @@ class MarcTVShortScore
 
     }
 
+
+    public function remove_image( $html) {
+        if(is_home() || is_archive() ) {
+            $html = preg_replace("/<img[^>]+\>/i", " ", $html);
+        }
+
+        return $html;
+    }
+
     public function initFrontend()
     {
         add_filter('get_comment_author_link', array($this, 'comment_author_profile_link'));
 
         add_shortcode('list_top_authors', array($this, 'list_top_authors'));
+
+        wp_enqueue_style("shortscore-base", plugins_url('css/shortscore.css', __FILE__), $this->version);
+
+        wp_enqueue_style("shortscore-chart", plugins_url('css/shortscore-chart.css', __FILE__), $this->version);
+
+        wp_enqueue_style("shortscore-ui", plugins_url('css/shortscore-ui.css', __FILE__), $this->version);
+
+
+            add_filter('post_thumbnail_html', array($this,'remove_image'), 99, 5);
+
     }
 
     public function initComments()
@@ -710,6 +729,21 @@ class MarcTVShortScore
     {
         if ($query->is_home() && $query->is_main_query()) { // Run only on the homepage
             $query->set('post_type', array('game', 'post'));
+            $query->set( 'tax_query', array(
+                'relation' => 'OR',
+                array(
+                    'taxonomy' => 'platform',
+                    'field' => 'id',
+                    'terms' => array(
+                        3, //PS4
+                        1312, //PC
+                        158, //XBOX ONE
+                        955, // WiiU
+                        5070, //3DS
+                    ),
+                    'operator' => 'IN'
+                )
+            ) );
         }
 
         if (!is_admin()) {

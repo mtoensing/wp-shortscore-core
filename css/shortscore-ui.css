@@ -1,0 +1,18 @@
+.btn {
+    background-color: #108D4F; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover {
+    background-color: #59b185;
+    color: white;
+}
+
+.comments-title {
+    display: none;
+}
