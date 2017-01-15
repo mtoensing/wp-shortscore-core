@@ -35,6 +35,19 @@ class MarcTVShortScore
     }
 
 
+
+    public function shortscore_author_template($template){
+
+        if (is_author()) {
+            return dirname( __FILE__ ) . '/shortscore_author.php';
+        }
+
+        return $template;
+
+    }
+
+
+
     public function wan_load_textdomain() {
         load_plugin_textdomain('marctv-shortscore', false, dirname(plugin_basename(__FILE__)) . '/languages/');
     }
@@ -54,21 +67,28 @@ class MarcTVShortScore
         return $html;
     }
 
-    public function initFrontend()
-    {
-        add_filter('get_comment_author_link', array($this, 'comment_author_profile_link'));
 
-        add_shortcode('list_top_authors', array($this, 'list_top_authors'));
-
+    public function add_shortscore_css() {
         wp_enqueue_style("shortscore-base", plugins_url('css/shortscore.css', __FILE__), $this->version);
 
         wp_enqueue_style("shortscore-chart", plugins_url('css/shortscore-chart.css', __FILE__), $this->version);
 
         wp_enqueue_style("shortscore-ui", plugins_url('css/shortscore-ui.css', __FILE__), $this->version);
+    }
 
+    public function initFrontend()
+    {
+        add_action('wp_enqueue_scripts',  array($this, 'add_shortscore_css') );
 
-            add_filter('post_thumbnail_html', array($this,'remove_image'), 99, 5);
+        add_filter('get_comment_author_link', array($this, 'comment_author_profile_link'));
 
+        add_shortcode('list_top_authors', array($this, 'list_top_authors'));
+
+        add_filter('get_the_archive_title' , array($this,'my_cat_title') );
+
+        add_filter('post_thumbnail_html', array($this,'remove_image'), 99, 5);
+
+        add_filter('template_include', array($this,'shortscore_author_template') );
     }
 
     public function initComments()
@@ -761,7 +781,39 @@ class MarcTVShortScore
         }
     }
 
-    public function comment_author_profile_link($authorName)
+    public function my_cat_title($title) {
+    $tax = get_taxonomy( get_queried_object()->taxonomy );
+
+    if(isset($tax->labels->singular_name)) {
+
+        $tax_name = $tax->labels->singular_name;
+
+        switch ($tax_name) {
+            case 'Platform':
+                $title = sprintf(__('Best user-rated "%s" games','marctv-shortscore'),(single_term_title( '', false )));
+                break;
+            case 'Genre':
+                $title = sprintf(__('Best user-rated "%s" games','marctv-shortscore'),strtolower(single_term_title( '', false )));
+                break;
+            case 'Publisher':
+                $title = sprintf(__('Best user-rated "%s" games','marctv-shortscore'),(single_term_title( '', false )));
+                break;
+            case 'Developer':
+                $title = sprintf(__('Best user-rated "%s" games','marctv-shortscore'),(single_term_title( '', false )));
+                break;
+            case 'Players':
+                $title = sprintf(__('Best user-rated %s games','marctv-shortscore'),(single_term_title( '', false )));
+                break;
+            case 'Co-op':
+                $title = sprintf(__('Best user-rated games with %s ','marctv-shortscore'),(single_term_title( '', false )));
+                break;
+        }
+}
+return $title;
+}
+
+
+public function comment_author_profile_link($authorName)
     {
 
         $user = get_user_by( 'login', $authorName );
@@ -771,6 +823,7 @@ class MarcTVShortScore
         return $return;
     }
 }
+
 
 
 /**
