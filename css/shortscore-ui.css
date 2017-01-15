@@ -16,3 +16,21 @@
 .comments-title {
     display: none;
 }
+
+html body.author.archive #primary,
+html body.page-two-column #comments {
+
+margin-left: auto;
+margin-right: auto;
+width: 740px;
+
+}
+
+html body.author .comment-author.vcard {
+    display: none;
+}
+
+
+html body.author .comment-content .shortscore {
+    margin: 0;
+}

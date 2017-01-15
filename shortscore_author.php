@@ -12,7 +12,6 @@ get_header();
 $curauth = (isset($_GET['author_name'])) ? get_user_by('slug', $author_name) : get_userdata(intval($author));
 
 
-
 /* sort by score */
 $args = array(
     'status' => 'approve',
@@ -24,70 +23,79 @@ $args = array(
 $comments = get_comments($args);
 
 ?>
+    <div class="wrap">
+        <div id="primary" class="content-area">
+            <main id="main" class="site-main" role="main">
 
-<section id="primary" class="content-area">
-    <main id="main" class="site-main" role="main">
-        <header class="page-header">
-            <h1 class="page-title">
-                <?php printf(__("%s's SHORTSCORES", 'shortscore_theme'), $curauth->nickname); ?>
-            </h1>
-            <p><?php _e('Sorted by highest SHORTSCORE', 'shortscore_theme'); ?></p>
-        </header>
-        <!-- .page-header -->
+                <article class="page type-page status-publish has-post-thumbnail hentry">
 
-        <?php if(!empty($comments) ) : ?>
-        <div class="page-content">
-            <h2><?php printf(__("%s's favourites", 'marctv-shortscore'), $curauth->nickname); ?> <sup>beta</sup></h2>
-            <p><?php
-                printf(__("Genres</br>%s", 'marctv-shortscore'), get_favourite_terms($comments,'genre',3))
-                ?></p>
+                    <header class="entry-header full-width">
+                        <h1 class="page-title">
+                            <?php printf(__("%s's SHORTSCORES", 'shortscore_theme'), $curauth->nickname); ?>
+                        </h1>
+                        <p><?php _e('Sorted by highest SHORTSCORE', 'shortscore_theme'); ?></p>
+                    </header>
 
-            <p><?php
-                printf(__("Platforms</br> %s", 'marctv-shortscore'), get_favourite_terms($comments,'platform',3))
-                ?></p>
-            <p><?php
-                printf(__("Developers</br> %s", 'marctv-shortscore'), get_favourite_terms($comments,'developer',3))
-                ?></p>
-        </div>
-        <?php endif; ?>
-        <div id="comments" class="comments-area">
-            <h2 class="comments-title">
-                <?php
-                if (count($comments) <= 0) {
-                    _e('No SHORTSCORES yet', 'shortscore_theme');
-                } else {
-                    printf(_nx('One SHORTSCORE by &ldquo;%2$s&rdquo;', '%1$s SHORTSCORES by &ldquo;%2$s&rdquo;', count($comments), 'comments title', 'shortscore_theme'),
-                        number_format_i18n(count($comments)), $curauth->nickname);
-                }
-                ?>
-            </h2>
+                    <div class="entry-content full-width">
+                        <!-- .page-header -->
 
-            <?php
-            if (count($comments) <= 0) {
-                echo '<p>' . sprintf(__('There are no SHORTSCORES by &ldquo;%s&ldquo;', 'shortscore_theme'), $curauth->nickname) . '</p>';
-                echo get_search_form();
-            }
-            ?>
+                        <?php if (!empty($comments)) : ?>
 
-            <ol class="comment-list">
-                <?php
+                            <h2><?php printf(__("%s's favourites", 'marctv-shortscore'), $curauth->nickname); ?>
+                                <sup>beta</sup></h2>
+                            <p><?php
+                                printf(__("Genres</br>%s", 'marctv-shortscore'), MarcTVShortScore::get_favourite_terms($comments, 'genre', 3))
+                                ?></p>
 
-                wp_list_comments(array(
-                    'style' => 'ol',
-                    'short_ping' => true,
-                    'avatar_size' => 56,
-                    'per_page' => 0,
-                ), $comments);
+                            <p><?php
+                                printf(__("Platforms</br> %s", 'marctv-shortscore'), MarcTVShortScore::get_favourite_terms($comments, 'platform', 3))
+                                ?></p>
+                            <p><?php
+                                printf(__("Developers</br> %s", 'marctv-shortscore'), MarcTVShortScore::get_favourite_terms($comments, 'developer', 3))
+                                ?></p>
+                </article>
 
-                ?>
-            </ol>
-            <!-- .comment-list -->
+                        <?php endif; ?>
+                        <div id="comments" class="comments-area">
+                            <h2 class="comments-title">
+                                <?php
+                                if (count($comments) <= 0) {
+                                    _e('No SHORTSCORES yet', 'shortscore_theme');
+                                } else {
+                                    printf(_nx('One SHORTSCORE by &ldquo;%2$s&rdquo;', '%1$s SHORTSCORES by &ldquo;%2$s&rdquo;', count($comments), 'comments title', 'shortscore_theme'),
+                                        number_format_i18n(count($comments)), $curauth->nickname);
+                                }
+                                ?>
+                            </h2>
 
-        </div>
-        <!-- .comments-area -->
+                            <?php
+                            if (count($comments) <= 0) {
+                                echo '<p>' . sprintf(__('There are no SHORTSCORES by &ldquo;%s&ldquo;', 'shortscore_theme'), $curauth->nickname) . '</p>';
+                                echo get_search_form();
+                            }
+                            ?>
+                            </article>
+                            <ol class="comment-list">
+                                <?php
 
-    </main>
-    <!-- .site-main -->
-</section><!-- .content-area -->
+                                wp_list_comments(array(
+                                    'style' => 'ol',
+                                    'short_ping' => true,
+                                    'avatar_size' => 56,
+                                    'per_page' => 0,
+                                ), $comments);
 
-<?php get_footer(); ?>
+                                ?>
+                            </ol>
+                            <!-- .comment-list -->
+
+                        </div>
+                        <!-- .comments-area -->
+                    </div>
+
+
+            </main><!-- #main -->
+        </div><!-- #primary -->
+    </div><!-- .wrap -->
+
+<?php get_footer();

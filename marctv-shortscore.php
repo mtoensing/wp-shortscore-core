@@ -29,17 +29,17 @@ class MarcTVShortScore
 
         $this->initSorting();
 
-        if(is_admin()){
+        if (is_admin()) {
             add_action('save_post', array($this, 'saveRatingsToPost'));
         }
     }
 
 
-
-    public function shortscore_author_template($template){
+    public function shortscore_author_template($template)
+    {
 
         if (is_author()) {
-            return dirname( __FILE__ ) . '/shortscore_author.php';
+            return dirname(__FILE__) . '/shortscore_author.php';
         }
 
         return $template;
@@ -47,8 +47,8 @@ class MarcTVShortScore
     }
 
 
-
-    public function wan_load_textdomain() {
+    public function wan_load_textdomain()
+    {
         load_plugin_textdomain('marctv-shortscore', false, dirname(plugin_basename(__FILE__)) . '/languages/');
     }
 
@@ -59,8 +59,9 @@ class MarcTVShortScore
     }
 
 
-    public function remove_image( $html) {
-        if(is_home() || is_archive() ) {
+    public function remove_image($html)
+    {
+        if (is_home() || is_archive()) {
             $html = preg_replace("/<img[^>]+\>/i", " ", $html);
         }
 
@@ -68,7 +69,8 @@ class MarcTVShortScore
     }
 
 
-    public function add_shortscore_css() {
+    public function add_shortscore_css()
+    {
         wp_enqueue_style("shortscore-base", plugins_url('css/shortscore.css', __FILE__), $this->version);
 
         wp_enqueue_style("shortscore-chart", plugins_url('css/shortscore-chart.css', __FILE__), $this->version);
@@ -76,19 +78,27 @@ class MarcTVShortScore
         wp_enqueue_style("shortscore-ui", plugins_url('css/shortscore-ui.css', __FILE__), $this->version);
     }
 
+    public function shortscore_setup () {
+        add_image_size( 'twentyseventeen-featured-image', 300, 300, true );
+    }
+
     public function initFrontend()
     {
-        add_action('wp_enqueue_scripts',  array($this, 'add_shortscore_css') );
+
+
+        add_action( 'after_setup_theme', array($this, 'shortscore_setup' ), 99 );
+
+        add_action('wp_enqueue_scripts', array($this, 'add_shortscore_css') );
 
         add_filter('get_comment_author_link', array($this, 'comment_author_profile_link'));
 
         add_shortcode('list_top_authors', array($this, 'list_top_authors'));
 
-        add_filter('get_the_archive_title' , array($this,'my_cat_title') );
+        add_filter('get_the_archive_title', array($this, 'my_cat_title'));
 
-        add_filter('post_thumbnail_html', array($this,'remove_image'), 99, 5);
+        add_filter('post_thumbnail_html', array($this, 'remove_image'), 99, 5);
 
-        add_filter('template_include', array($this,'shortscore_author_template') );
+        add_filter('template_include', array($this, 'shortscore_author_template'));
     }
 
     public function initComments()
@@ -158,7 +168,6 @@ class MarcTVShortScore
         if (get_post_type($id) == 'game') {
             $classes[] = 'hreview';
         }
-
 
 
         return $classes;
@@ -233,7 +242,6 @@ class MarcTVShortScore
         $post_id = get_the_ID();
 
 
-
         if (get_post_type($post_id) == 'game') {
 
             $permalink = get_permalink($post_id);
@@ -259,7 +267,7 @@ class MarcTVShortScore
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
             $default['label_submit'] = __('Submit SHORTSCORE', 'marctv-shortscore');
 
-            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a class ="btn" href="%1s">sign in</a> or <a class ="btn" href="%2s">register</a>', 'marctv-shortscore'), '/login/?redirect_to=' . $permalink .'#comments', '/register/?redirect_to=' . $permalink .'#comments') . '</p>';
+            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a class ="btn" href="%1s">sign in</a> or <a class ="btn" href="%2s">register</a>', 'marctv-shortscore'), '/login/?redirect_to=' . $permalink . '#comments', '/register/?redirect_to=' . $permalink . '#comments') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is allow to post only once per game. You are not allowed to edit your SHORTSCORE afterwards.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = '';
@@ -386,13 +394,13 @@ class MarcTVShortScore
 
                 $score_count = get_post_meta($id, 'score_count', true);
 
-                if($score_count < 1) {
+                if ($score_count < 1) {
                     $markup .= '<div class="shortscore-box">';
                 } else {
                     $markup .= '<div class="shortscore-box hreview-aggregate">';
                 }
 
-                $markup .= '<div class="item"><span class="fn">' . get_the_title($id).  '</span></div>';
+                $markup .= '<div class="item"><span class="fn">' . get_the_title($id) . '</span></div>';
                 //$markup .= '<div class="reviewer"><span class="fn">SHORTSCORE</span></div>';
                 $markup .= '<div class="rating">';
 
@@ -406,13 +414,12 @@ class MarcTVShortScore
 
                 $markup .= $this->getShortScoreCount();
 
-                if(!is_user_logged_in()){
+                if (!is_user_logged_in()) {
                     //$markup .= '<p class="shortscore-submit ">' . sprintf(__('<a class="btn" href="%s">Submit ShortScore</a>', 'marctv-shortscore'), esc_url(get_permalink($id) . '#comments')) . '</p>';
                 }
                 $markup .= $this->renderBarChart($id);
 
                 $markup .= '</div>';
-
 
 
             } else {
@@ -425,8 +432,65 @@ class MarcTVShortScore
     }
 
 
+    /**
+     * @param $comments
+     * @param $tax_slug taxonomy slug
+     * @param $limit
+     * @return string HTML
+     */
+    public static function get_favourite_terms($comments, $tax_slug, $limit)
+    {
 
-    public function getGameMeta(){
+        $genre_names = array();
+
+        foreach ($comments as $comment) {
+            $postID = $comment->comment_post_ID;
+            $genres = wp_get_post_terms($postID, $tax_slug);
+
+            $score = get_comment_meta($comment->comment_ID, 'score', true);;
+
+            if ($score > 5) {
+                foreach ($genres as $genre) {
+                    $genre_names[] = $genre->term_id;
+
+                }
+            }
+
+        }
+
+        $genre_count = array_count_values($genre_names);
+        arsort($genre_names);
+
+
+        $counter = 0;
+        $genre_links = array();
+        foreach ($genre_count as $genre_id => $count) {
+            $genre_links[] = '<a href="' . get_term_link($genre_id, $tax_slug) . '">' . get_term($genre_id, $tax_slug)->name . '</a>';
+            $counter++;
+            if ($counter >= $limit) {
+                break;
+            }
+        }
+
+        $markup = '';
+        for ($i = 0; $i < count($genre_links); $i++) {
+            $nexttolast = count($genre_links) - 2;
+            if ($i < $nexttolast) {
+                $markup .= $genre_links[$i] . ', ';
+            } else if ($i > $nexttolast && $nexttolast >= 0) {
+                $markup .= __('and', 'marctv-shortscore') . ' ' . $genre_links[$i];
+            } else {
+                $markup .= $genre_links[$i] . ' ';
+            }
+
+        }
+
+        return $markup;
+    }
+
+
+    public function getGameMeta()
+    {
         $id = get_the_ID();
 
         $markup = '<div class="game-meta rating">';
@@ -494,7 +558,7 @@ class MarcTVShortScore
         $overview = get_post_meta($id, 'Overview', true);
 
 
-        if(is_string($overview) && $overview != ''){
+        if (is_string($overview) && $overview != '') {
             $overview = wpautop($overview);
             //    $markup .= '<h2>About ' . get_the_title($id)  . '</h2>';
             //    $markup .= '<div class="overview">' . $overview . '</div>';
@@ -507,7 +571,7 @@ class MarcTVShortScore
     {
         $score_distribution = get_post_meta($post_ID, 'score_distribution', true);
 
-        if(is_array($score_distribution)){
+        if (is_array($score_distribution)) {
             $score_distribution_sum = array_sum($score_distribution);
         }
 
@@ -614,7 +678,7 @@ class MarcTVShortScore
 
     public function saveRatingsToPost($post_ID)
     {
-        if($post_ID == ''){
+        if ($post_ID == '') {
             $post_ID = get_the_ID();
         }
 
@@ -739,7 +803,7 @@ class MarcTVShortScore
             $score_int = floor($score);
 
 
-            return '<div class="rating shortscore shortscore-' . $score_int . '">' . $score . '</div>'   . $comment_text ;
+            return '<div class="rating shortscore shortscore-' . $score_int . '">' . $score . '</div>' . $comment_text;
         }
 
         return $comment_text;
@@ -749,7 +813,7 @@ class MarcTVShortScore
     {
         if ($query->is_home() && $query->is_main_query()) { // Run only on the homepage
             $query->set('post_type', array('game', 'post'));
-            $query->set( 'tax_query', array(
+            $query->set('tax_query', array(
                 'relation' => 'OR',
                 array(
                     'taxonomy' => 'platform',
@@ -763,7 +827,7 @@ class MarcTVShortScore
                     ),
                     'operator' => 'IN'
                 )
-            ) );
+            ));
         }
 
         if (!is_admin()) {
@@ -781,49 +845,49 @@ class MarcTVShortScore
         }
     }
 
-    public function my_cat_title($title) {
-    $tax = get_taxonomy( get_queried_object()->taxonomy );
+    public function my_cat_title($title)
+    {
+        $tax = get_taxonomy(get_queried_object()->taxonomy);
 
-    if(isset($tax->labels->singular_name)) {
+        if (isset($tax->labels->singular_name)) {
 
-        $tax_name = $tax->labels->singular_name;
+            $tax_name = $tax->labels->singular_name;
 
-        switch ($tax_name) {
-            case 'Platform':
-                $title = sprintf(__('Best user-rated "%s" games','marctv-shortscore'),(single_term_title( '', false )));
-                break;
-            case 'Genre':
-                $title = sprintf(__('Best user-rated "%s" games','marctv-shortscore'),strtolower(single_term_title( '', false )));
-                break;
-            case 'Publisher':
-                $title = sprintf(__('Best user-rated "%s" games','marctv-shortscore'),(single_term_title( '', false )));
-                break;
-            case 'Developer':
-                $title = sprintf(__('Best user-rated "%s" games','marctv-shortscore'),(single_term_title( '', false )));
-                break;
-            case 'Players':
-                $title = sprintf(__('Best user-rated %s games','marctv-shortscore'),(single_term_title( '', false )));
-                break;
-            case 'Co-op':
-                $title = sprintf(__('Best user-rated games with %s ','marctv-shortscore'),(single_term_title( '', false )));
-                break;
+            switch ($tax_name) {
+                case 'Platform':
+                    $title = sprintf(__('Best user-rated "%s" games', 'marctv-shortscore'), (single_term_title('', false)));
+                    break;
+                case 'Genre':
+                    $title = sprintf(__('Best user-rated "%s" games', 'marctv-shortscore'), strtolower(single_term_title('', false)));
+                    break;
+                case 'Publisher':
+                    $title = sprintf(__('Best user-rated "%s" games', 'marctv-shortscore'), (single_term_title('', false)));
+                    break;
+                case 'Developer':
+                    $title = sprintf(__('Best user-rated "%s" games', 'marctv-shortscore'), (single_term_title('', false)));
+                    break;
+                case 'Players':
+                    $title = sprintf(__('Best user-rated %s games', 'marctv-shortscore'), (single_term_title('', false)));
+                    break;
+                case 'Co-op':
+                    $title = sprintf(__('Best user-rated games with %s ', 'marctv-shortscore'), (single_term_title('', false)));
+                    break;
+            }
         }
-}
-return $title;
-}
+        return $title;
+    }
 
 
-public function comment_author_profile_link($authorName)
+    public function comment_author_profile_link($authorName)
     {
 
-        $user = get_user_by( 'login', $authorName );
+        $user = get_user_by('login', $authorName);
 
         $return = '<a href="' . get_author_posts_url($user->ID) . '">' . $authorName . '</a>';
 
         return $return;
     }
 }
-
 
 
 /**
