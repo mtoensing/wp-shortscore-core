@@ -34,3 +34,16 @@ html body.author .comment-author.vcard {
 html body.author .comment-content .shortscore {
     margin: 0;
 }
+
+.page-header {
+    display: none;
+}
+
+.must-log-in {
+    margin: 0 auto;
+    width: 15em;
+}
+
+.logged-in .hide_loggedin {
+    display: none;
+}
