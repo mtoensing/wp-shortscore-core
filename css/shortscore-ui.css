@@ -47,3 +47,8 @@ html body.author .comment-content .shortscore {
 .logged-in .hide_loggedin {
     display: none;
 }
+
+.widget_wp_sidebarlogin .avatar_container,
+#sidebar-login .avatar_container {
+  float: right;
+}

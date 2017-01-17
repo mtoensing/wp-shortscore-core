@@ -82,9 +82,35 @@ class MarcTVShortScore
         add_image_size( 'twentyseventeen-featured-image', 300, 300, true );
     }
 
-    public function initFrontend()
+
+    public function shortscore_remove_jetpack() {
+    	if( class_exists( 'Jetpack' ) && !current_user_can( 'manage_options' ) ) {
+    		remove_menu_page( 'jetpack' );
+    	}
+    }
+
+    public function add_login_logout_link($items, $args)
     {
 
+       if ( $args->theme_location == 'top' ) {
+        ob_start();
+        wp_loginout('index.php');
+        $loginoutlink = ob_get_contents();
+        ob_end_clean();
+        $items .= '<li>'. $loginoutlink .'</li>';
+        return $items;
+        }
+
+        return $items;
+        
+    }
+
+
+    public function initFrontend()
+    {
+        add_filter('wp_nav_menu_items', array($this, 'add_login_logout_link'), 10, 2 );
+
+        add_action( 'admin_init', array($this, 'shortscore_remove_jetpack') );
 
         add_action( 'after_setup_theme', array($this, 'shortscore_setup' ), 99 );
 
