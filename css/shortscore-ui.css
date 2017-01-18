@@ -52,3 +52,7 @@ html body.author .comment-content .shortscore {
 #sidebar-login .avatar_container {
   float: right;
 }
+
+.home .post-thumbnail {
+//    display: none;
+}
