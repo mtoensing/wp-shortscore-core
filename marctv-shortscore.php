@@ -146,7 +146,6 @@ class MarcTVShortScore
       $html = '<style type="text/css">
           #login h1 a, .login h1 a {
               background-image: url(https://shortscore.org/shortscore-logo-trans.png);
-              padding-bottom: 30px;
           }
 
           #login {
