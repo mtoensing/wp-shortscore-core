@@ -116,16 +116,53 @@ class MarcTVShortScore
 
         add_action('wp_enqueue_scripts', array($this, 'add_shortscore_css') );
 
-        add_filter('get_comment_author_link', array($this, 'comment_author_profile_link'));
+        add_filter('get_comment_author_link', array($this, 'comment_author_profile_link') );
 
-        add_shortcode('list_top_authors', array($this, 'list_top_authors'));
+        add_shortcode('list_top_authors', array($this, 'list_top_authors') );
 
-        add_filter('get_the_archive_title', array($this, 'my_cat_title'));
+        add_filter('get_the_archive_title', array($this, 'my_cat_title') );
 
         add_filter('post_thumbnail_html', array($this, 'remove_image'), 99, 5);
 
-        add_filter('template_include', array($this, 'shortscore_author_template'));
+        add_filter('template_include', array($this, 'shortscore_author_template') );
+
+        add_action( 'login_enqueue_scripts', array($this, 'shortscoreLogin') );
+
+        add_filter( 'login_headerurl', array($this, 'shortscoreLogoURL') );
+
+        add_filter( 'login_headertitle', array($this, 'shortscoreLogoURLTitle') );
     }
+
+    public function shortscoreLogoURLTitle() {
+        return 'SHORTSCORE';
+    }
+
+    public function shortscoreLogoURL() {
+        return home_url();
+    }
+
+    public function shortscoreLogin() {
+
+      $html = '<style type="text/css">
+          #login h1 a, .login h1 a {
+              background-image: url(https://shortscore.org/shortscore-logo-trans.png);
+              padding-bottom: 30px;
+          }
+
+          #login {
+            background-color: #fff;
+          }
+
+          html body {
+            background-color: #262626;
+          }
+
+      </style>';
+
+      echo $html;
+
+
+   }
 
     public function initComments()
     {
