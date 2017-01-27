@@ -1,22 +1,22 @@
 <?php
 
 /*
-Plugin Name: SHORTSCORE Core
-Plugin URI: http://marctv.de/blog/marctv-wordpress-plugins/
-Description: Extends the comment fields by a review score field and alters queries.
-Version:  0.9
-Author:  Marc Tönsing
-Author URI: marctv.de
-Text Domain: marctv-shortscore
-Domain Path: /languages
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Plugin Name:        SHORTSCORE Core
+Plugin URI:         http://marctv.de/blog/marctv-wordpress-plugins/
+GitHub Plugin URI:  mtoensing/wp-shortscore-core
+Description:        Extends the comment fields by a review score field and alters queries.
+Version:            1.0
+Author:             Marc Tönsing
+Author URI:         http://marc.tv
+Text Domain:        marctv-shortscore
+Domain Path:        /languages
+License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 class MarcTVShortScore
 {
 
-    private $version = '0.9';
-    private $pluginPrefix = 'marctv-shortscore';
+    private $version = '1.0';
     private $shortscore_explained_url = 'http://shortscore.org/faq/#calculation';
 
     public function __construct()
@@ -39,7 +39,7 @@ class MarcTVShortScore
     {
 
         if (is_author()) {
-            return dirname(__FILE__) . '/shortscore_author.php';
+            return dirname(__FILE__) . '/templates/shortscore_author.php';
         }
 
         return $template;

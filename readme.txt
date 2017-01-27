@@ -3,8 +3,9 @@ Contributors:  MarcDK
 Tags: comments, shortscore, extend, custom field
 Requires at least: 3.0
 Tested up to: 4.6
-Stable tag: 0.4
+Stable tag: 1.0
 License: GPL2
+GitHub Plugin URI: mtoensing/wp-shortscore-core
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Extends the comment fields by a review score field.
@@ -14,6 +15,10 @@ Extends the comment fields by a review score field.
 Extends the comment fields by a review score field and add hreview-aggregate.
 
 == Changelog ==
+
+= 1.0 =
+
+removed all features from theme and moved them into this plugin
 
 = 0.4 =
 
@@ -33,5 +38,5 @@ Save comments on publish or approved.
 
 * Comments feature a new field called rating from 1-10 with form validation.
 * Removed HTML from comments.
-* Added new post type called "game".
+* Added new post type "game".
 
