@@ -884,8 +884,7 @@ class MarcTVShortScore
                         3, //PS4
                         1312, //PC
                         158, //XBOX ONE
-                        955, // WiiU
-                        5070, //3DS
+                        4971, //Switch
                     ),
                     'operator' => 'IN'
                 )
