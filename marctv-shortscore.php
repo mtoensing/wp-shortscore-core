@@ -5,7 +5,7 @@ Plugin Name:        SHORTSCORE Core
 Plugin URI:         http://marctv.de/blog/marctv-wordpress-plugins/
 GitHub Plugin URI:  mtoensing/wp-shortscore-core
 Description:        Extends the comment fields by a review score field and alters queries.
-Version:            3.1
+Version:            3.2
 Author:             Marc Tönsing
 Author URI:         http://marc.tv
 Text Domain:        marctv-shortscore
@@ -16,7 +16,7 @@ License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 class MarcTVShortScore
 {
 
-    private $version = '3.0';
+    private $version = '3.2';
     private $shortscore_explained_url = 'http://shortscore.org/faq/#calculation';
 
     public function __construct()
@@ -874,7 +874,9 @@ class MarcTVShortScore
     public function my_modify_main_query($query)
     {
         if ($query->is_home() && $query->is_main_query()) { // Run only on the homepage
+
             $query->set('post_type', array('game', 'post'));
+
             $query->set('tax_query', array(
                 'relation' => 'OR',
                 array(
@@ -889,7 +891,21 @@ class MarcTVShortScore
                     'operator' => 'IN'
                 )
             ));
+	        $meta_query = array(
+		        array(
+			        'key'=>'score_count',
+			        'value'=>'0',
+			        'type' => 'numeric',
+			        'compare'=>'>',
+		        ),
+	        );
+	        $query->set('meta_query',$meta_query);
+
+
+
         }
+
+	    remove_filter( 'posts_where', 'my_has_comments_filter' );
 
         if (!is_admin()) {
             if (($query->is_search() || $query->is_archive()) && $query->is_main_query()) {

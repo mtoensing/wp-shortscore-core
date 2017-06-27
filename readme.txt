@@ -2,8 +2,8 @@
 Contributors:  MarcDK
 Tags: comments, shortscore, extend, custom field
 Requires at least: 3.0
-Tested up to: 4.6
-Stable tag: 3.1
+Tested up to: 4.8
+Stable tag: 3.2
 License: GPL2
 GitHub Plugin URI: mtoensing/wp-shortscore-core
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,6 +15,11 @@ Extends the comment fields by a review score field.
 Extends the comment fields by a review score field and add hreview-aggregate.
 
 == Changelog ==
+
+
+= 3.2 =
+
+better main query
 
 = 1.0 =
 
