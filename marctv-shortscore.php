@@ -131,7 +131,18 @@ class MarcTVShortScore
         add_filter( 'login_headerurl', array($this, 'shortscoreLogoURL') );
 
         add_filter( 'login_headertitle', array($this, 'shortscoreLogoURLTitle') );
+
+	    add_action('admin_init', array($this, 'disable_dashboard') );
+
     }
+
+	public function disable_dashboard() {
+		if (current_user_can('subscriber') && is_admin()) {
+			wp_redirect( home_url() );
+        exit;
+        }
+	}
+
 
     public function shortscoreLogoURLTitle() {
         return 'SHORTSCORE';
@@ -900,12 +911,7 @@ class MarcTVShortScore
 		        ),
 	        );
 	        $query->set('meta_query',$meta_query);
-
-
-
         }
-
-	    remove_filter( 'posts_where', 'my_has_comments_filter' );
 
         if (!is_admin()) {
             if (($query->is_search() || $query->is_archive()) && $query->is_main_query()) {
