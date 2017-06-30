@@ -116,7 +116,7 @@ class MarcTVShortScore
 
         add_action('wp_enqueue_scripts', array($this, 'add_shortscore_css') );
 
-        add_filter('get_comment_author_link', array($this, 'comment_author_profile_link') );
+        //add_filter('get_comment_author_link', array($this, 'comment_author_profile_link') );
 
         add_shortcode('list_top_authors', array($this, 'list_top_authors') );
 
@@ -966,7 +966,9 @@ class MarcTVShortScore
 
         $user = get_user_by('login', $authorName);
 
-        $return = '<a href="' . get_author_posts_url($user->ID) . '">' . $authorName . '</a>';
+	    $author_link = '<a href="' . get_author_posts_url($user->ID) . '">' . $authorName . '</a>';
+
+        $return = $author_link;
 
         return $return;
     }
