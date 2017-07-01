@@ -16,11 +16,14 @@ jQuery(document).ready(function($){
         polyfill: false,
         onSlide: function(position, value) {
           valueOutput(value);
+            gaEvent('rangeslider', 'click', value);
          },
         onSlideEnd: function(position, value) {
-            console.info("HEY");
-            $('#fakescore').delay( 100 ).hide();
-            $('.must-log-in').delay( 100 ).fadeIn("20");
+            if(!$('body').hasClass('logged-in')) {
+                $('#fakescore').delay(100).hide();
+                $('.must-log-in').delay(100).fadeIn("20");
+                gaEvent('rangeslider', 'click', 'logged-out');
+            }
         }
     });
 
@@ -40,7 +43,32 @@ jQuery(document).ready(function($){
         valueOutput($inputRange[i]);
     }
 
+    function gaEvent(category, action, label) {
 
+        if (window._gaq && _gaq.push) {
+            _gaq.push(['_trackEvent', category, action, label]);
+        }
+
+        if (window.ga && ga.create) {
+            ga('send', 'event', {
+                eventCategory: category,
+                eventAction: action,
+                eventLabel: label
+            });
+        }
+
+        if (window.__gaTracker && __gaTracker.create) {
+            __gaTracker('send', 'event', {
+                eventCategory: category,
+                eventAction: action,
+                eventLabel: label
+            });
+        }
+
+        if ('undefined' !== typeof _paq) {
+            _paq.push(['trackEvent', category, action, label]);
+        }
+    };
 
     $.fn.removeClassPrefix = function(prefix) {
         this.each(function(i, el) {
