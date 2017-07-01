@@ -49,3 +49,8 @@ html body.author .comment-content .shortscore {
 #sidebar-login .avatar_container {
   float: right;
 }
+
+div#respond {
+    padding: 0.7em;
+    background: #fafafa;
+}
