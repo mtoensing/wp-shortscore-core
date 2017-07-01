@@ -54,3 +54,9 @@ div#respond {
     padding: 0.7em;
     background: #fafafa;
 }
+
+ #respond h2 {
+    text-align: center;
+    margin-top: 0;
+    padding-top: 0;
+}

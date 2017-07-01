@@ -5,7 +5,7 @@ Plugin Name:        SHORTSCORE Core
 Plugin URI:         http://marctv.de/blog/marctv-wordpress-plugins/
 GitHub Plugin URI:  mtoensing/wp-shortscore-core
 Description:        Extends the comment fields by a review score field and alters queries.
-Version:            3.6
+Version:            3.7
 Author:             Marc Tönsing
 Author URI:         http://marc.tv
 Text Domain:        marctv-shortscore
@@ -110,7 +110,9 @@ class MarcTVShortScore
     {
         add_filter('wp_nav_menu_items', array($this, 'add_login_logout_link'), 10, 2 );
 
-        add_action( 'admin_init', array($this, 'shortscore_remove_jetpack') );
+add_action('wp_print_styles', array($this, 'add_shortscore_rangeslider_scripts'));
+
+add_action( 'admin_init', array($this, 'shortscore_remove_jetpack') );
 
         add_action( 'after_setup_theme', array($this, 'shortscore_setup' ), 99 );
 
@@ -143,6 +145,18 @@ class MarcTVShortScore
         }
 	}
 
+	public function add_shortscore_rangeslider_scripts()
+	{
+
+		if (! is_admin()) {
+
+			wp_enqueue_style("jquery.shortscorerangeslider.css", plugins_url('rangeslider/rangeslider.css', __FILE__), $this->version);
+
+			wp_enqueue_script("jquery.shortscorerangeslider.js", plugins_url('rangeslider/rangeslider.js', __FILE__), array("jquery"),$this->version,false);
+
+			wp_enqueue_script("jquery.shortscorerangeslider-init.js", plugins_url('rangeslider/rangeslider-init.js', __FILE__), array("jquery"), $this->version,false);
+		}
+	}
 
     public function shortscoreLogoURLTitle() {
         return 'SHORTSCORE';
@@ -340,7 +354,7 @@ class MarcTVShortScore
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
             $default['label_submit'] = __('Submit SHORTSCORE', 'marctv-shortscore');
 
-            $default['must_log_in'] = '<p class="must-log-in">' . sprintf(__('<a class ="btn" href="%1s">sign in</a> or <a class ="btn" href="%2s">register</a>', 'marctv-shortscore'), '/wp-login.php?redirect_to=' . $permalink . '#comments', 'http://shortscore.org/wp-login.php?action=register&redirect_to=' . $permalink . '#comments') . '</p>';
+            $default['must_log_in'] = '<h2>' . __('Would like to rate this game?', 'marctv-shortscore') . '</h2><div id="fakescore"></div><p class="must-log-in">' . sprintf(__('<a class ="btn" href="%1s">sign in</a> or <a class ="btn" href="%2s">register</a>', 'marctv-shortscore'), '/wp-login.php?redirect_to=' . $permalink . '%23respond', 'http://shortscore.org/wp-login.php?action=register&redirect_to=' . $permalink . '%23respond') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is allow to post only once per game. You are not allowed to edit your SHORTSCORE afterwards.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = '';

@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MarcTV ShortScore\n"
-"POT-Creation-Date: 2015-02-24 09:28+0100\n"
-"PO-Revision-Date: 2016-08-27 13:06+0200\n"
+"POT-Creation-Date: 2017-07-01 21:27+0200\n"
+"PO-Revision-Date: 2017-07-01 21:28+0200\n"
 "Last-Translator: Marc Tönsing <marc@marctv.de>\n"
 "Language-Team: Marc Tönsing <marc@marctv.de>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.12\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
@@ -18,37 +18,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: marctv-shortscore.php:179
+#: marctv-shortscore.php:319
 msgctxt "Used before publish date."
-msgid "Posted on"
-msgstr "Veröffentlicht am"
+msgid "Initial release date:"
+msgstr "Veröffentlichungsdaten: "
 
-#: marctv-shortscore.php:193
+#: marctv-shortscore.php:336
 msgid "SHORTSCORE 1 to 10. The higher the better."
 msgstr "Deine SHORTSCORE zwischen 1 und 10 Punkten. Höher ist besser."
 
-#: marctv-shortscore.php:209
+#: marctv-shortscore.php:352
 msgid "Email"
 msgstr "E-Mail"
 
-#: marctv-shortscore.php:211
+#: marctv-shortscore.php:354
 msgid "<strong>Warning: </strong> Your email address needs to be verified!"
 msgstr "<strong>Achtung: </strong> Deine E-Mail-Adresse muss bestätigt werden!"
 
-#: marctv-shortscore.php:212
+#: marctv-shortscore.php:355
 msgid "Submit SHORTSCORE"
 msgstr "SHORTSCORE abschicken"
 
-#: marctv-shortscore.php:214
+#: marctv-shortscore.php:357
+msgid "Would like to rate this game?"
+msgstr "Möchtest Du dieses Spiel bewerten?"
+
+#: marctv-shortscore.php:357
 #, php-format
 msgid ""
-"<a href=\"%1s\">Sign in</a> to post your SHORTSCORE. <a href=\"%2s"
-"\">Registration</a> is free and easy!"
+"<a class =\"btn\" href=\"%1s\">sign in</a> or <a class =\"btn\" href=\"%2s"
+"\">register</a>"
 msgstr ""
-"<a href=\"%1s\">Melde dich an</a>, um deinen SHORTSCORE abzugeben. Die <a "
-"href=\"%2s\">Registrierung</a> ist kostenlos und ganz einfach!"
 
-#: marctv-shortscore.php:216
+#: marctv-shortscore.php:359
 msgid ""
 "Each account is allow to post only once per game. You are not allowed to "
 "edit your SHORTSCORE afterwards."
@@ -56,95 +58,182 @@ msgstr ""
 "Du darfst nur eine SHORTSCORE pro Spiel abgeben. SHORTSCORES können nicht "
 "nachträglich bearbeitet werden."
 
-#: marctv-shortscore.php:217
-msgid "Select your SHORTSCORE"
-msgstr "Gib deinen SHORTSCORE ab"
-
-#: marctv-shortscore.php:218
+#: marctv-shortscore.php:362
 msgid "Your short review text:"
 msgstr "Dein kurzes Fazit:"
 
-#: marctv-shortscore.php:243
+#: marctv-shortscore.php:387
 #, php-format
 msgid "out of %s based on %s"
 msgstr "von %s basierend auf %s"
 
-#: marctv-shortscore.php:245 marctv-shortscore.php:249
+#: marctv-shortscore.php:389 marctv-shortscore.php:393
 #, php-format
 msgid "one user review"
 msgid_plural "%s user reviews"
 msgstr[0] "einer Bewertung"
 msgstr[1] "%s Bewertungen"
 
-#: marctv-shortscore.php:248
+#: marctv-shortscore.php:392
 #, php-format
 msgid "based on %s"
 msgstr "basiert auf %s"
 
-#: marctv-shortscore.php:255 marctv-shortscore.php:257
+#: marctv-shortscore.php:399 marctv-shortscore.php:401
 msgid "No reviews yet"
 msgstr "Noch keine Bewertung"
 
-#: marctv-shortscore.php:307
+#: marctv-shortscore.php:452
 msgid "SHORTSCORE"
 msgstr "SHORTSCORE"
 
-#: marctv-shortscore.php:339
+#: marctv-shortscore.php:496
 msgctxt "Used before category names."
 msgid "Categories"
 msgstr "Kategorien"
 
-#: marctv-shortscore.php:347
-#, php-format
-msgid "<a class=\"btn\" href=\"%s\">Submit ShortScore</a>"
-msgstr "<a class=\"btn\" href=\"%s\"> SHORTSCORE abgeben</a>"
+#: marctv-shortscore.php:568
+msgid "and"
+msgstr ""
 
-#: marctv-shortscore.php:361
+#: marctv-shortscore.php:592
 msgctxt "Used before category names."
 msgid "Genre"
 msgstr "Genre"
 
-#: marctv-shortscore.php:369
+#: marctv-shortscore.php:600
 msgctxt "Used before category names."
 msgid "Developer"
 msgstr "Entwickler"
 
-#: marctv-shortscore.php:376
+#: marctv-shortscore.php:607
 msgctxt "Used before category names."
 msgid "Publisher"
 msgstr "Publisher"
 
-#: marctv-shortscore.php:385
+#: marctv-shortscore.php:616
 msgctxt "Used before category names."
-msgid "coop mode"
-msgstr "Kooperationsmodus"
+msgid "cooperation mode"
+msgstr ""
 
-#: marctv-shortscore.php:392
+#: marctv-shortscore.php:623
 msgctxt "Used before category names."
-msgid "Playercount"
-msgstr "Anzahl der Spieler"
+msgid "player count"
+msgstr ""
 
-#: marctv-shortscore.php:463
+#: marctv-shortscore.php:630
+msgctxt "Used before category names."
+msgid "frame rate"
+msgstr ""
+
+#: marctv-shortscore.php:706
 msgid "score distribution"
 msgstr "Werteverteilung"
 
-#: marctv-shortscore.php:463
+#: marctv-shortscore.php:706
 msgid "what is this?"
 msgstr "Was ist das?"
 
-#: marctv-shortscore.php:593
+#: marctv-shortscore.php:839
 msgid "Error: please fill the required field (score)."
 msgstr "Fehler: Bitte fühl das Feld für den SHORTSCORE aus."
 
-#: marctv-shortscore.php:597
+#: marctv-shortscore.php:843
 msgid "Error: enter a rating smaller than 10 and greater than 0 for (score)."
 msgstr ""
 "Fehler: Gib einen SHORTSCORE kleiner als 10 und größer als 0 ein für (score)."
 
-#: marctv-shortscore.php:620
+#: marctv-shortscore.php:864
 msgid "Sorry, this account has already submitted a SHORTSCORE for this game."
 msgstr ""
 "Tut mir leid, aber jeder Account darf nur einen SHORTSCORE pro Spiel abgeben."
+
+#: marctv-shortscore.php:955 marctv-shortscore.php:958
+#: marctv-shortscore.php:961 marctv-shortscore.php:964
+#, php-format
+msgid "Best user-rated \"%s\" games"
+msgstr ""
+
+#: marctv-shortscore.php:967
+#, php-format
+msgid "Best user-rated %s games"
+msgstr ""
+
+#: marctv-shortscore.php:970
+#, php-format
+msgid "Best user-rated games with %s "
+msgstr ""
+
+#: templates/shortscore_author.php:34
+#, php-format
+msgid "%s's SHORTSCORES"
+msgstr ""
+
+#: templates/shortscore_author.php:36
+msgid "Sorted by highest SHORTSCORE"
+msgstr ""
+
+#: templates/shortscore_author.php:44
+#, php-format
+msgid "%s's favourites"
+msgstr ""
+
+#: templates/shortscore_author.php:47
+#, php-format
+msgid "Genres</br>%s"
+msgstr ""
+
+#: templates/shortscore_author.php:51
+#, php-format
+msgid "Platforms</br> %s"
+msgstr ""
+
+#: templates/shortscore_author.php:54
+#, php-format
+msgid "Developers</br> %s"
+msgstr ""
+
+#: templates/shortscore_author.php:63
+msgid "No SHORTSCORES yet"
+msgstr ""
+
+#: templates/shortscore_author.php:65
+#, php-format
+msgctxt "comments title"
+msgid "One SHORTSCORE by &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s SHORTSCORES by &ldquo;%2$s&rdquo;"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/shortscore_author.php:73
+#, php-format
+msgid "There are no SHORTSCORES by &ldquo;%s&ldquo;"
+msgstr ""
+
+#~ msgctxt "Used before publish date."
+#~ msgid "Posted on"
+#~ msgstr "Veröffentlicht am"
+
+#~ msgid ""
+#~ "<a href=\"%1s\">Sign in</a> to post your SHORTSCORE. <a href=\"%2s"
+#~ "\">Registration</a> is free and easy!"
+#~ msgstr ""
+#~ "<a href=\"%1s\">Melde dich an</a>, um deinen SHORTSCORE abzugeben. Die <a "
+#~ "href=\"%2s\">Registrierung</a> ist kostenlos und ganz einfach!"
+
+#~ msgid "Select your SHORTSCORE"
+#~ msgstr "Gib deinen SHORTSCORE ab"
+
+#~ msgid "<a class=\"btn\" href=\"%s\">Submit ShortScore</a>"
+#~ msgstr "<a class=\"btn\" href=\"%s\"> SHORTSCORE abgeben</a>"
+
+#~ msgctxt "Used before category names."
+#~ msgid "coop mode"
+#~ msgstr "Kooperationsmodus"
+
+#~ msgctxt "Used before category names."
+#~ msgid "Playercount"
+#~ msgstr "Anzahl der Spieler"
 
 #~ msgid ""
 #~ "You must be <a href=\"%1s\">logged in</a> to post your SHORTSCORE. <a "
