@@ -5,7 +5,7 @@ Plugin Name:        SHORTSCORE Core
 Plugin URI:         http://marctv.de/blog/marctv-wordpress-plugins/
 GitHub Plugin URI:  mtoensing/wp-shortscore-core
 Description:        Extends the comment fields by a review score field and alters queries.
-Version:            4.0
+Version:            4.1
 Author:             Marc Tönsing
 Author URI:         http://marc.tv
 Text Domain:        marctv-shortscore
@@ -229,7 +229,7 @@ class MarcTVShortScore
         add_filter('preprocess_comment', array($this, 'verify_comment_duplicate_email'));
 
         add_filter('comment_text', array($this, 'append_score'), 99);
-        
+
         //add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
         //add_filter('the_title', array($this, 'add_hreview_title'));
 
@@ -375,7 +375,7 @@ class MarcTVShortScore
                 '" size="30"' . $aria_req . ' /><span class="email-notice form-allowed-tags">' . __('<strong>Warning: </strong> Your email address needs to be verified!', 'marctv-shortscore') . '</span></p>';
             $default['label_submit'] = __('Submit SHORTSCORE', 'marctv-shortscore');
 
-            $default['must_log_in'] = '<h2>' . __('Would like to rate this game?', 'marctv-shortscore') . '</h2><div id="fakescore"></div><p class="must-log-in">' . sprintf(__('<a class ="btn" href="%1s">sign in</a> or <a class ="btn" href="%2s">register</a>', 'marctv-shortscore'), '/wp-login.php?redirect_to=' . $permalink . '%23respond', 'http://shortscore.org/wp-login.php?action=register&redirect_to=' . $permalink . '%23respond') . '</p>';
+            $default['must_log_in'] = '<h2>' . __('Would you like to rate this game?', 'marctv-shortscore') . '</h2><div id="fakescore"></div><p class="must-log-in">' . sprintf(__('<a class ="btn" href="%1s">sign in</a> or <a class ="btn" href="%2s">register</a>', 'marctv-shortscore'), '/wp-login.php?redirect_to=' . $permalink . '%23respond', 'http://shortscore.org/wp-login.php?action=register&redirect_to=' . $permalink . '%23respond') . '</p>';
 
             $default['comment_notes_after'] = '<p class="form-allowed-tags" id="form-allowed-tags">' . __('Each account is allow to post only once per game. You are not allowed to edit your SHORTSCORE afterwards.', 'marctv-shortscore') . '</p>';
             $default['title_reply'] = '';
@@ -499,6 +499,8 @@ class MarcTVShortScore
             if (is_single()) {
 
                 $markup = '';
+
+	            $markup .= '<a class="ratelink" href="#respond">' . __('Rate this game', 'marctv-shortscore') . '</a>';
 
                 $score_count = get_post_meta($id, 'score_count', true);
 

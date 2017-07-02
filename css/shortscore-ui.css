@@ -60,3 +60,19 @@ div#respond {
     margin-top: 0;
     padding-top: 0;
 }
+
+.entry-content a.ratelink {
+    color: #108d4f;
+    font-size: 130%;
+    text-decoration: none;
+    border: none;
+    box-shadow: none;
+    margin-bottom: 0.9em;
+    display: block;
+}
+
+.entry-content a.ratelink:hover {
+    text-decoration: none;
+    border: none;
+    box-shadow: none;
+}
