@@ -61,18 +61,20 @@ div#respond {
     padding-top: 0;
 }
 
-.entry-content a.ratelink {
+.entry-content .shortscorelink a {
     color: #108d4f;
     font-size: 130%;
-    text-decoration: none;
-    border: none;
-    box-shadow: none;
-    margin-bottom: 0.9em;
-    display: block;
 }
 
-.entry-content a.ratelink:hover {
+.entry-content .shortscorelink {
+    margin-bottom: 1em;
+}
+
+.single-game .rating a,
+.single-game .rating a:active,
+.single-game .rating a:hover {
     text-decoration: none;
     border: none;
     box-shadow: none;
 }
+
