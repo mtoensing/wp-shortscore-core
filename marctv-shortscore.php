@@ -5,7 +5,7 @@ Plugin Name:        SHORTSCORE Core
 Plugin URI:         http://marctv.de/blog/marctv-wordpress-plugins/
 GitHub Plugin URI:  mtoensing/wp-shortscore-core
 Description:        Extends the comment fields by a review score field and alters queries.
-Version:            3.9
+Version:            4.0
 Author:             Marc Tönsing
 Author URI:         http://marc.tv
 Text Domain:        marctv-shortscore
@@ -145,20 +145,26 @@ add_action( 'admin_init', array($this, 'shortscore_remove_jetpack') );
     }
 
 	public function dashboard_Redirect(){
-		wp_redirect(admin_url('profile.php'));
+		if (current_user_can('subscriber') && is_admin()) {
+			wp_redirect( admin_url( 'profile.php' ) );
+		}
 	}
 
 
 	public function my_remove_menu_pages() {
-		remove_menu_page('link-manager.php');
-		remove_menu_page('index.php');
+		if (current_user_can('subscriber') && is_admin()) {
+			remove_menu_page( 'link-manager.php' );
+			remove_menu_page( 'index.php' );
+		}
 	}
 
     public function remove_admin_bar_links() {
-	    global $wp_admin_bar;
-	    $wp_admin_bar->remove_menu('wp-logo');
-	    $wp_admin_bar->remove_menu('updates');
-	    $wp_admin_bar->remove_menu('dashboard');
+	    if (current_user_can('subscriber') && is_admin()) {
+		    global $wp_admin_bar;
+		    $wp_admin_bar->remove_menu( 'wp-logo' );
+		    $wp_admin_bar->remove_menu( 'updates' );
+		    $wp_admin_bar->remove_menu( 'dashboard' );
+	    }
 
     }
 
