@@ -5,7 +5,7 @@ Plugin Name:        SHORTSCORE Core
 Plugin URI:         http://marctv.de/blog/marctv-wordpress-plugins/
 GitHub Plugin URI:  mtoensing/wp-shortscore-core
 Description:        Extends the comment fields by a review score field and alters queries.
-Version:            3.8
+Version:            3.9
 Author:             Marc Tönsing
 Author URI:         http://marc.tv
 Text Domain:        marctv-shortscore
@@ -16,7 +16,7 @@ License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 class MarcTVShortScore
 {
 
-    private $version = '3.2';
+    private $version = '3.9';
     private $shortscore_explained_url = 'http://shortscore.org/faq/#calculation';
 
     public function __construct()
@@ -134,7 +134,31 @@ add_action( 'admin_init', array($this, 'shortscore_remove_jetpack') );
 
         add_filter( 'login_headertitle', array($this, 'shortscoreLogoURLTitle') );
 
-	    add_action('admin_init', array($this, 'disable_dashboard') );
+	    //add_action('admin_init', array($this, 'disable_dashboard') );
+
+	    add_action( 'wp_before_admin_bar_render',  array($this, 'remove_admin_bar_links') );
+
+	    add_action( 'admin_menu',  array($this, 'my_remove_menu_pages') );
+
+	    add_action('load-index.php', array($this, 'dashboard_Redirect') );
+
+    }
+
+	public function dashboard_Redirect(){
+		wp_redirect(admin_url('profile.php'));
+	}
+
+
+	public function my_remove_menu_pages() {
+		remove_menu_page('link-manager.php');
+		remove_menu_page('index.php');
+	}
+
+    public function remove_admin_bar_links() {
+	    global $wp_admin_bar;
+	    $wp_admin_bar->remove_menu('wp-logo');
+	    $wp_admin_bar->remove_menu('updates');
+	    $wp_admin_bar->remove_menu('dashboard');
 
     }
 
