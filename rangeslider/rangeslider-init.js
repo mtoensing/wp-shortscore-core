@@ -16,13 +16,14 @@ jQuery(document).ready(function($){
         polyfill: false,
         onSlide: function(position, value) {
           valueOutput(value);
-            gaEvent('rangeslider', 'click', value);
          },
         onSlideEnd: function(position, value) {
             if(!$('body').hasClass('logged-in')) {
                 $('#fakescore').delay(100).hide();
                 $('.must-log-in').delay(100).fadeIn("20");
                 gaEvent('rangeslider', 'click', 'logged-out');
+            } else {
+                gaEvent('rangeslider', 'click', value);
             }
         }
     });

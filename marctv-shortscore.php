@@ -110,14 +110,6 @@ class MarcTVShortScore
     {
         add_filter('wp_nav_menu_items', array($this, 'add_login_logout_link'), 10, 2 );
 
-add_action('wp_print_styles', array($this, 'add_shortscore_rangeslider_scripts'));
-
-add_action( 'admin_init', array($this, 'shortscore_remove_jetpack') );
-
-        add_action( 'after_setup_theme', array($this, 'shortscore_setup' ), 99 );
-
-        add_action('wp_enqueue_scripts', array($this, 'add_shortscore_css') );
-
         //add_filter('get_comment_author_link', array($this, 'comment_author_profile_link') );
 
         add_shortcode('list_top_authors', array($this, 'list_top_authors') );
@@ -128,19 +120,25 @@ add_action( 'admin_init', array($this, 'shortscore_remove_jetpack') );
 
         add_filter('template_include', array($this, 'shortscore_author_template') );
 
-        add_action( 'login_enqueue_scripts', array($this, 'shortscoreLogin') );
-
         add_filter( 'login_headerurl', array($this, 'shortscoreLogoURL') );
 
         add_filter( 'login_headertitle', array($this, 'shortscoreLogoURLTitle') );
-
-	    //add_action('admin_init', array($this, 'disable_dashboard') );
 
 	    add_action( 'wp_before_admin_bar_render',  array($this, 'remove_admin_bar_links') );
 
 	    add_action( 'admin_menu',  array($this, 'my_remove_menu_pages') );
 
 	    add_action('load-index.php', array($this, 'dashboard_Redirect') );
+
+	    add_action('wp_print_styles', array($this, 'add_shortscore_rangeslider_scripts'));
+
+	    add_action( 'admin_init', array($this, 'shortscore_remove_jetpack') );
+
+	    add_action( 'after_setup_theme', array($this, 'shortscore_setup' ), 99 );
+
+	    add_action('wp_enqueue_scripts', array($this, 'add_shortscore_css') );
+
+	    add_action( 'login_enqueue_scripts', array($this, 'shortscoreLogin') );
 
     }
 
@@ -165,15 +163,7 @@ add_action( 'admin_init', array($this, 'shortscore_remove_jetpack') );
 		    $wp_admin_bar->remove_menu( 'updates' );
 		    $wp_admin_bar->remove_menu( 'dashboard' );
 	    }
-
     }
-
-	public function disable_dashboard() {
-		if (current_user_can('subscriber') && is_admin()) {
-			wp_redirect( home_url() );
-        exit;
-        }
-	}
 
 	public function add_shortscore_rangeslider_scripts()
 	{
@@ -239,6 +229,7 @@ add_action( 'admin_init', array($this, 'shortscore_remove_jetpack') );
         add_filter('preprocess_comment', array($this, 'verify_comment_duplicate_email'));
 
         add_filter('comment_text', array($this, 'append_score'), 99);
+        
         //add_filter('post_class', array($this, 'add_hreview_aggregate_class'));
         //add_filter('the_title', array($this, 'add_hreview_title'));
 
