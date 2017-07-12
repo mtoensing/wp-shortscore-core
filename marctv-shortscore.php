@@ -134,7 +134,18 @@ class MarcTVShortScore {
 
 		add_action( 'after_setup_theme', array( $this, 'remove_admin_bar' ) );
 
+		add_filter( 'user_contactmethods', array( $this, 'modify_user_contact_methods') );
+
 	}
+
+	public function modify_user_contact_methods( $user_contact ) {
+
+		// Add user contact methods
+		$user_contact['maniac']   = __( 'Maniac-Forum Username'   );
+
+		return $user_contact;
+	}
+
 
 	public function remove_admin_bar() {
 		if ( ! current_user_can( 'administrator' ) && ! is_admin() ) {
