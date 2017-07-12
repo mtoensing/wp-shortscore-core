@@ -5,7 +5,7 @@ Plugin Name:        SHORTSCORE Core
 Plugin URI:         http://marctv.de/blog/marctv-wordpress-plugins/
 GitHub Plugin URI:  mtoensing/wp-shortscore-core
 Description:        Extends the comment fields by a review score field and alters queries.
-Version:            4.3
+Version:            4.4
 Author:             Marc Tönsing
 Author URI:         http://marc.tv
 Text Domain:        marctv-shortscore
